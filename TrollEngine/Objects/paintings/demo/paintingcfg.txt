@@ -1,0 +1,40 @@
+[[ LOBBY B ]]
+LEVEL_ID=0x10
+AREA_ID=3
+BASE_SEGMENTED_ADDRESS=0x0E016260
+
+// top left
+NEW_PAINTING
+texture_segmented_address=0x0E007260
+x=1475
+y=1839
+z=-3737
+rotation=0
+size=378
+
+// top right
+NEW_PAINTING
+texture_segmented_address=0x0E007260
+x=3737
+y=1839
+z=-1854
+rotation=270
+size=378
+
+// bottom left
+NEW_PAINTING
+texture_segmented_address=0x0E007260
+x=-1260
+y=1839
+z=-416
+rotation=109.25
+size=378
+
+// bottom right
+NEW_PAINTING
+texture_segmented_address=0x0E007260
+x=744
+y=1839
+z=1418
+rotation=160.75
+size=378

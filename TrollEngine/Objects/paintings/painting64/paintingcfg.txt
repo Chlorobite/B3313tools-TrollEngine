@@ -1,0 +1,1110 @@
+[[ LOBBY B ]]
+LEVEL_ID=0x10
+AREA_ID=3
+BASE_SEGMENTED_ADDRESS=0x0E01DFA0
+
+// Snow painting
+NEW_PAINTING
+texture_segmented_address=0x0E005FA0
+x=-3092
+y=413
+z=317
+rotation=90
+size=614
+
+// WF painting
+NEW_PAINTING
+texture_segmented_address=0x0E000018
+texture_segmented_address_half2=0x0E001020
+x=-1245
+y=-208
+z=-2144
+rotation=0
+size=614
+
+// LLL painting
+NEW_PAINTING
+texture_segmented_address=0x0E003FA0
+x=628
+y=-208
+z=-2145
+rotation=0
+size=614
+
+// water painting
+NEW_PAINTING
+texture_segmented_address=0x0E002020
+x=3089
+y=413
+z=-297
+rotation=270
+size=614
+
+
+
+[[ LOBBY A ]]
+LEVEL_ID=0x10
+AREA_ID=4
+BASE_SEGMENTED_ADDRESS=0x0E01E020
+
+// Snow painting
+NEW_PAINTING
+texture_segmented_address=0x0E006020
+x=-3092
+y=413
+z=317
+rotation=90
+size=614
+
+// WF painting
+NEW_PAINTING
+texture_segmented_address=0x0E000018
+texture_segmented_address_half2=0x0E001020
+x=-1245
+y=-208
+z=-2144
+rotation=0
+size=614
+
+// LLL painting
+NEW_PAINTING
+texture_segmented_address=0x0E004020
+x=628
+y=-208
+z=-2145
+rotation=0
+size=614
+
+// water painting
+NEW_PAINTING
+texture_segmented_address=0x0E002020
+x=3089
+y=413
+z=-297
+rotation=270
+size=614
+
+
+
+[[ LOBBY C ]]
+LEVEL_ID=0x10
+AREA_ID=2
+BASE_SEGMENTED_ADDRESS=0x0E020820
+
+// Snow painting
+NEW_PAINTING
+texture_segmented_address=0x0E01C020
+x=-6497
+y=413
+z=318
+rotation=90
+size=614
+
+// BoB thing painting
+NEW_PAINTING
+texture_segmented_address=0x0E01E820
+x=-4650
+y=-208
+z=-2145
+rotation=0
+size=614
+
+// LLL painting
+NEW_PAINTING
+texture_segmented_address=0x0E002020
+x=628
+y=-208
+z=-2145
+rotation=0
+size=614
+
+// water painting
+NEW_PAINTING
+texture_segmented_address=0x0E000018
+texture_segmented_address_half2=0x0E001020
+x=3089
+y=413
+z=-296
+rotation=270
+size=614
+
+
+
+
+[[ CG area 5 ]]
+LEVEL_ID=0x10
+AREA_ID=5
+BASE_SEGMENTED_ADDRESS=0x0E03AAC0
+
+// Gray snow painting
+NEW_PAINTING
+texture_segmented_address=0x0E0192C0
+texture_segmented_address_half2=0x0E00A2C0
+flip=1
+x=-11132
+y=-1676
+z=-1073.5
+rotation=0
+size=872
+
+
+
+
+[[ CG area 6 ]]
+LEVEL_ID=0x10
+AREA_ID=6
+BASE_SEGMENTED_ADDRESS=0x0E017820
+
+// Bowser painting
+NEW_PAINTING
+texture_segmented_address=0x0E005020
+x=-3212
+y=340
+z=-15716
+rotation=0
+size=942
+
+
+
+
+[[ CG area 7 ]]
+LEVEL_ID=0x10
+AREA_ID=7
+BASE_SEGMENTED_ADDRESS=0x0E0333A0
+
+// Water painting=14
+NEW_PAINTING
+texture_segmented_address=0x0E015BA0
+x=-288
+y=1751
+z=-12532
+rotation=0
+size=542
+
+// "No" level painting
+NEW_PAINTING
+texture_segmented_address=0x0E019BA0
+x=-2632
+y=1831
+z=-7112
+rotation=38
+size=596
+
+// flood town painting
+NEW_PAINTING
+texture_segmented_address=0x0E01BBA0
+x=-1011.5
+y=1920
+z=-2980
+rotation=270
+size=672
+
+// red fire painting
+NEW_PAINTING
+texture_segmented_address=0x0E0313A0
+flip=1
+x=9004
+y=1932
+z=-11950
+rotation=0
+size=1376
+  
+// green fire painting, fun fact it's smaller than the red one lol
+NEW_PAINTING
+texture_segmented_address=0x0E013BA0
+flip=1
+x=10384
+y=1793
+z=-808
+rotation=180
+size=1088
+  
+// boo painting
+NEW_PAINTING
+texture_segmented_address=0x0E0233A0
+texture_segmented_address_half2=0x0E021BA0
+x=-6296
+y=1312
+z=1380
+rotation=91
+size=564
+
+
+
+[[ PSS area 7 ]]
+aka CG area 7, but dark
+LEVEL_ID=0x1B
+AREA_ID=7
+BASE_SEGMENTED_ADDRESS=0x0E0333A0
+
+// Water painting =20
+NEW_PAINTING
+texture_segmented_address=0x0E015BA0
+x=-288
+y=1751
+z=-12532
+rotation=0
+size=542
+
+// "No" level painting
+NEW_PAINTING
+texture_segmented_address=0x0E019BA0
+x=-2632
+y=1831
+z=-7112
+rotation=38
+size=596
+
+// flood town painting
+NEW_PAINTING
+texture_segmented_address=0x0E01BBA0
+x=-1011.5
+y=1920
+z=-2980
+rotation=270
+size=672
+
+// red fire painting
+NEW_PAINTING
+texture_segmented_address=0x0E0313A0
+flip=1
+x=9004
+y=1932
+z=-11950
+rotation=0
+size=1376
+
+// green fire painting
+NEW_PAINTING
+texture_segmented_address=0x0E013BA0
+flip=1
+x=10384
+y=1793
+z=-808
+rotation=180
+size=1088
+
+// boo painting
+NEW_PAINTING
+texture_segmented_address=0x0E0233A0
+texture_segmented_address_half2=0x0E021BA0
+x=-6296
+y=1312
+z=1380
+rotation=91
+size=564
+
+
+
+
+[[ BoB area 2 ]]
+LEVEL_ID=0x09
+AREA_ID=2
+BASE_SEGMENTED_ADDRESS=0x0E01D020
+
+// Foggy cloud painting =26
+NEW_PAINTING
+texture_segmented_address=0x0E006020
+flip=1
+x=592
+y=190
+z=-4084
+rotation=270
+size=614
+
+// Wing cap (tower) painting
+NEW_PAINTING
+texture_segmented_address=0x0E009820
+x=126
+y=190
+z=-1818
+rotation=180
+size=614
+
+
+
+
+[[ BoB area 6 ]]
+LEVEL_ID=0x09
+AREA_ID=6
+BASE_SEGMENTED_ADDRESS=0x0E034C30
+
+// beach =28
+NEW_PAINTING
+texture_segmented_address=0x0E016020
+flip=1
+x=760
+y=1639
+z=800
+rotation=180
+size=940
+
+// peach painting / delicious cake
+NEW_PAINTING
+texture_segmented_address=0x0E00B420
+texture_segmented_address_half2=0x0E006420
+x=-2241
+y=-1840
+z=15704
+rotation=90
+size=614
+
+// cloud 1 (to vanilla upper floor)
+NEW_PAINTING
+texture_segmented_address=0x0E018020
+x=1974
+y=645
+z=4364
+rotation=268.5
+size=713
+
+// cloud 2 (to bowser floor)
+NEW_PAINTING
+texture_segmented_address=0x0E01A020
+flip=1
+x=1420
+y=773
+z=10321
+rotation=178.5
+size=496
+
+// cloud 3 (the new one)
+NEW_PAINTING
+texture_segmented_address=0x0E01A020
+flip=1
+x=-8343
+y=848
+z=9237.25
+rotation=88.396484375
+size=786.75
+
+
+
+
+[[ WF area 3 ]]
+LEVEL_ID=0x18
+AREA_ID=3
+BASE_SEGMENTED_ADDRESS=0x0E02A020
+
+// buttlescut=33
+NEW_PAINTING
+texture_segmented_address=0x0E016420
+flip=1
+x=4019
+y=208
+z=-32
+rotation=270
+size=372
+
+// desert with building
+NEW_PAINTING
+texture_segmented_address=0x0E014420
+x=2434
+y=199
+z=-606
+rotation=90
+size=344
+
+// dark THI
+NEW_PAINTING
+texture_segmented_address=0x0E01CC20
+x=-933
+y=192
+z=2858
+rotation=90
+size=340
+
+// LLL painting
+NEW_PAINTING
+texture_segmented_address=0x0E009020
+x=-11788
+y=-169
+z=-11600
+rotation=0
+size=576
+
+// sand
+NEW_PAINTING
+texture_segmented_address=0x0E006820
+flip=1
+x=-11512
+y=-176
+z=-5040
+rotation=180
+size=600
+
+
+
+
+[[ JRB area 6 ]]
+LEVEL_ID=0x0C
+AREA_ID=6
+BASE_SEGMENTED_ADDRESS=0x0E01E830
+
+// oh no it's mr eyeball=38
+NEW_PAINTING
+texture_segmented_address=0x0E000820
+x=-3692
+y=-672
+z=5688
+rotation=180
+size=800
+
+// grass land
+NEW_PAINTING
+texture_segmented_address=0x0E017020
+x=-384
+y=-791
+z=5920
+rotation=180
+size=630
+
+// mob grinder
+NEW_PAINTING
+texture_segmented_address=0x0E01C830
+flip=1
+x=-966
+y=-453
+z=411.5
+rotation=0
+size=540
+
+
+
+[[ CCM area 2 ]]
+LEVEL_ID=0x05
+AREA_ID=2
+BASE_SEGMENTED_ADDRESS=0x0E006020
+
+// cloud=41
+NEW_PAINTING
+texture_segmented_address=0x0E000020
+flip=1
+x=0
+y=170
+z=-82
+rotation=90
+size=588
+
+
+
+[[ TTC area 6 ]]
+LEVEL_ID=0x0E
+AREA_ID=6
+BASE_SEGMENTED_ADDRESS=0x0E021820
+
+// tree logs=42
+NEW_PAINTING
+texture_segmented_address=0x0E01F820
+flip=1
+x=4464
+y=189
+z=-1686
+rotation=90
+size=624
+
+// bom tower
+NEW_PAINTING
+texture_segmented_address=0x0E001020
+x=11304
+y=200
+z=-2304
+rotation=270
+size=624
+
+// ttm like thing
+NEW_PAINTING
+texture_segmented_address=0x0E00D820
+texture_segmented_address_half2=0x0E01D820
+x=4530
+y=-232
+z=-10692
+rotation=90
+size=624
+
+
+
+
+[[ TTC area 7 ]]
+LEVEL_ID=0x0E
+AREA_ID=7
+BASE_SEGMENTED_ADDRESS=0x0E027420
+
+// cloud warp=45
+NEW_PAINTING
+texture_segmented_address=0x0E017C20
+x=-4364
+y=-878
+z=-5888
+rotation=180
+size=784
+
+// bom
+NEW_PAINTING
+texture_segmented_address=0x0E024C20
+x=-5784
+y=-808
+z=-8704
+rotation=90
+size=848
+
+// bowser
+NEW_PAINTING
+texture_segmented_address=0x0E015C20
+x=16
+y=-1334
+z=17757
+rotation=180
+size=764
+
+
+
+
+[[ BC2 area 2 ]]
+LEVEL_ID=0x13
+AREA_ID=2
+BASE_SEGMENTED_ADDRESS=0x0E019310
+
+// clock/TTC=48
+NEW_PAINTING
+texture_segmented_address=0x0E008710
+texture_segmented_address_half2=0x0E009710
+flip=1
+x=1272
+y=480
+z=-9488
+rotation=98.5
+size=504
+
+
+
+
+[[ Wing Cap area 5 ]]
+LEVEL_ID=0x1D
+AREA_ID=5
+BASE_SEGMENTED_ADDRESS=0x0E008830
+
+// spanish or vanish=49
+NEW_PAINTING
+texture_segmented_address=0x0E000018
+texture_segmented_address_half2=0x0E001020
+x=220
+y=219
+z=-7907
+rotation=0
+size=614
+
+
+
+
+[[ Vanish Cap area 2 ]]
+LEVEL_ID=0x12
+AREA_ID=2
+BASE_SEGMENTED_ADDRESS=0x0E0728B0
+
+// DS sunshine tro=50
+NEW_PAINTING
+texture_segmented_address=0x0E013220
+x=-11976
+y=1704
+z=-24068
+rotation=270
+size=338
+
+// DS gomba tro
+NEW_PAINTING
+texture_segmented_address=0x0E011A20
+texture_segmented_address_half2=0x0E016A20
+x=-13904
+y=1724
+z=-25187
+rotation=90
+size=300
+
+// wigger
+NEW_PAINTING
+texture_segmented_address=0x0E000820
+x=-16988
+y=1884
+z=-20848
+rotation=90
+size=840
+
+// red / nothing matters
+NEW_PAINTING
+texture_segmented_address=0x0E05BBB0
+texture_segmented_address_half2=0x0E05D8B0
+x=-12464
+y=1879
+z=-4304
+rotation=0
+size=836
+
+// funny hidden wf
+NEW_PAINTING
+texture_segmented_address=0x0E037720
+flip=1
+x=7504
+y=935
+z=-7071
+rotation=180
+size=688
+
+
+
+
+[[ End Cake Picture area 4 ]]
+LEVEL_ID=0x19
+AREA_ID=4
+BASE_SEGMENTED_ADDRESS=0x0E02E9B0
+
+// water=55
+NEW_PAINTING
+texture_segmented_address=0x0E02C9B0
+x=-998
+y=130
+z=-2666
+rotation=0
+size=544
+
+// piranha plant from smash
+NEW_PAINTING
+texture_segmented_address=0x0E015020
+x=344
+y=-207
+z=-3138
+rotation=0
+size=628
+
+// TTM
+NEW_PAINTING
+texture_segmented_address=0x0E00A020
+x=4240
+y=220
+z=960
+rotation=270
+size=1144
+
+// temple thing
+NEW_PAINTING
+texture_segmented_address=0x0E00C020
+x=3782
+y=152
+z=4229
+rotation=180
+size=772
+
+
+
+[[ JRB area 6 again because forgor ]]
+LEVEL_ID=0x0C
+AREA_ID=6
+BASE_SEGMENTED_ADDRESS=0x0E01E9B0
+
+// cloud warp=59
+NEW_PAINTING
+texture_segmented_address=0x0E002820
+flip=1
+x=-7897
+y=-18.5
+z=1258
+rotation=90
+size=514
+
+
+
+
+[[ TTC area 3 ]]
+LEVEL_ID=0x0E
+AREA_ID=3
+BASE_SEGMENTED_ADDRESS=0x0E038820
+
+// "that one level from the wiki"=60
+NEW_PAINTING
+texture_segmented_address=0x0E003420
+texture_segmented_address_half2=0x0E004420
+flip=1
+x=-18474
+y=150
+z=1317
+rotation=180
+size=624
+
+// fov crash level
+NEW_PAINTING
+texture_segmented_address_half2=0x0E008420
+texture_segmented_address=0x0E007420
+flip=0
+x=-12512
+y=-16
+z=-5392
+rotation=0
+size=584
+
+// gomba
+NEW_PAINTING
+texture_segmented_address=0x0E01DC20
+texture_segmented_address_half2=0x0E01EC20
+flip=1
+x=-25300
+y=136
+z=646
+rotation=0
+size=584
+
+// boo
+NEW_PAINTING
+texture_segmented_address=0x0E022C20
+texture_segmented_address_half2=0x0E023C20
+flip=1
+x=-896
+y=-786
+z=-8601
+rotation=299
+size=578
+
+
+
+
+[[ VANILLA FLOOR 1 ]]
+LEVEL_ID=0x06
+AREA_ID=1
+BASE_SEGMENTED_ADDRESS=0x0E02B030
+
+// BoB =64
+NEW_PAINTING
+texture_segmented_address=0x0E000820
+edE001820
+flip=0
+x=-5221
+y=379
+z=-153
+rotation=90
+size=614
+
+// WF
+NEW_PAINTING
+texture_segmented_address=0x0E002820
+texture_segmented_address_half2=0x0E003820
+x=-50
+y=-235
+z=-4505
+rotation=0
+size=613
+
+// DDD
+NEW_PAINTING
+texture_segmented_address=0x0E004820
+texture_segmented_address_half2=0x0E005820
+x=4301
+y=379
+z=-537
+rotation=-90
+size=614
+
+// CCM
+NEW_PAINTING
+texture_segmented_address=0x0E006820
+texture_segmented_address_half2=0x0E007820
+flip=0
+x=-2608
+y=-337
+z=-4351
+rotation=0
+size=613
+
+
+
+
+[[ VANILLA BASEMENT ]]
+LEVEL_ID=0x06
+AREA_ID=3
+BASE_SEGMENTED_ADDRESS=0x0E00E030
+
+// LLL =68
+NEW_PAINTING
+texture_segmented_address=0x0E00C030
+texture_segmented_address_half2=0x0E00D030
+flip=1
+x=21520
+y=2932
+z=-11698
+rotation=0
+size=614
+
+// SSL =69 :D
+NEW_PAINTING
+texture_segmented_address=0x0E000820
+flip=1
+x=20601
+y=2880
+z=-8834
+rotation=180
+size=615
+
+
+
+
+[[ LOBBY E ]]
+LEVEL_ID=0x10
+AREA_ID=8
+BASE_SEGMENTED_ADDRESS=0x0E01E020
+
+// Snow painting
+NEW_PAINTING=70
+texture_segmented_address=0x0E006020
+x=-3092
+y=413
+z=317
+rotation=90
+size=614
+
+// WF painting
+NEW_PAINTING=71
+texture_segmented_address=0x0E000018
+texture_segmented_address_half2=0x0E001020
+x=-1245
+y=-208
+z=-2144
+rotation=0
+size=614
+
+// LLL painting
+NEW_PAINTING=72
+texture_segmented_address=0x0E004020
+x=628
+y=-208
+z=-2145
+rotation=0
+size=614
+
+// water painting
+NEW_PAINTING=73
+texture_segmented_address=0x0E002020
+x=3089
+y=413
+z=-297
+rotation=270
+size=614
+
+
+
+
+[[ VANILLA FLOOR 2 ]]
+LEVEL_ID=0x06
+AREA_ID=2
+BASE_SEGMENTED_ADDRESS=0x0E041C20
+
+// WDW
+NEW_PAINTING=74
+texture_segmented_address=0x0E004020
+flip=1
+x=57
+y=794
+z=-3675
+rotation=0
+size=614
+
+// WDW cloud
+NEW_PAINTING=75
+texture_segmented_address=0x0E039C20
+flip=1
+x=-670
+y=947
+z=-3377
+rotation=30
+size=307
+
+// SL
+NEW_PAINTING=76
+texture_segmented_address=0x0E015C20
+x=4203
+y=896
+z=-3803
+rotation=0
+size=717
+
+// TTM
+NEW_PAINTING=77
+texture_segmented_address=0x0E03DC20
+x=476
+y=845
+z=280
+rotation=180
+size=255
+
+// THI not large
+NEW_PAINTING=78
+texture_segmented_address=0x0E00A020
+x=-3575
+y=843
+z=-528
+rotation=180
+size=393
+
+// THI not small
+NEW_PAINTING=79
+texture_segmented_address=0x0E00A020
+x=-4590
+y=998
+z=-6824
+rotation=0
+size=1640
+
+// tiktokcock
+NEW_PAINTING=80
+texture_segmented_address=0x0E03BC20
+flip=1
+x=1024
+y=2202
+z=3686
+rotation=180
+size=410
+
+// night sky
+NEW_PAINTING=81
+texture_segmented_address=0x0E008020
+x=563
+y=849
+z=-1807
+rotation=90
+size=306
+
+// behind the mirror night sky
+NEW_PAINTING=82
+texture_segmented_address=0x0E01BC20
+flip=1
+x=10147
+y=843
+z=-2099
+rotation=-90
+size=306
+
+// behind WDW
+NEW_PAINTING=83
+texture_segmented_address=0x0E006020
+flip=1
+x=10038
+y=794
+z=-3675
+rotation=0
+size=614
+
+// behind THI
+NEW_PAINTING=84
+texture_segmented_address=0x0E017C20
+x=16938
+y=897
+z=-2113
+rotation=-90
+size=816
+
+// behind water
+NEW_PAINTING=85
+texture_segmented_address=0x0E034C20
+texture_segmented_address_half2=0x0E031C20
+x=12217
+y=839
+z=-973
+rotation=240
+size=364
+
+// behind wf
+NEW_PAINTING=86
+texture_segmented_address=0x0E030C20
+texture_segmented_address_half2=0x0E033C20
+x=11409
+y=892
+z=-24
+rotation=210
+size=416
+
+// behind snow
+NEW_PAINTING=87
+texture_segmented_address=0x0E002020
+x=9626
+y=889
+z=164
+rotation=150
+size=420
+
+// behind bob
+NEW_PAINTING=88
+texture_segmented_address=0x0E032C20
+texture_segmented_address_half2=0x0E035C20
+x=8734
+y=792
+z=-549
+rotation=120
+size=632
+
+// behind ttc
+NEW_PAINTING=89
+texture_segmented_address=0x0E01DC20
+flip=1
+x=10096
+y=2202
+z=3645
+rotation=180
+size=410
+
+// behind bowser
+NEW_PAINTING=90
+texture_segmented_address=0x0E045C20
+flip=1
+x=9583
+y=4604
+z=-7344
+rotation=0
+size=615
+
+
+[ FABRICATED LOBBY ]]
+LEVEL_ID=0x06
+AREA_ID=7
+BASE_SEGMENTED_ADDRESS=0x0E01E030
+
+// BOB SNOW SLIDER
+NEW_PAINTING=91
+texture_segmented_address=0x0E01C030
+texture_segmented_address_half2=0X0E018030
+x=-3875
+y=233
+z=1063
+rotation=90
+size=614
+
+// CCM WF
+NEW_PAINTING=92
+texture_segmented_address=0x0E016030
+texture_segmented_address_half2=0X0E01A030
+x=-1235
+y=-492
+z=-3188
+rotation=0
+size=613
+
+// WF LLL
+NEW_PAINTING=93
+texture_segmented_address=0X0E01D030
+texture_segmented_address_half2=0X0E01B030
+x=1355
+y=-388
+z=-3343
+rotation=0
+size=613
+
+// JRB
+NEW_PAINTING=94
+texture_segmented_address=0x0E017030
+texture_segmented_address_half2=0X0E019030
+x=5759
+y=232
+z=672
+rotation=270
+size=614
+
+
+
+
+// TODO: HMC and king dedede
