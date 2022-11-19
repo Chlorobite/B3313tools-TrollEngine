@@ -1385,6 +1385,9 @@
 .definelabel play_warp_door_open_noise, 0x802ACA6C
 .definelabel bhv_star_door_loop_2, 0x802ACE80
 
+.definelabel should_push_or_pull_door, 0x8024D804
+.definelabel get_door_save_file_flag, 0x8024E2FC
+
 .definelabel sPowerMeterHUD, 0x803325f0
 .definelabel guTranslate, 0x80325688
 .definelabel dl_power_meter_base, 0x03029480

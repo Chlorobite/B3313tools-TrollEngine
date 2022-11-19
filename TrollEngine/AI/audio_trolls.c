@@ -313,52 +313,13 @@ void troll_sequence_player_process_sequence(register struct SequencePlayer *seqP
 
     for (i = 0; i < CHANNELS_MAX; i++) {
         if (seqPlayer->channels[i] != &gSequenceChannelNone) {
+            if (seqPlayer == &gSequencePlayers[SEQ_PLAYER_LEVEL]) {
+                seqPlayer->channels[i]->transposition = mus_transposition;
+                seqPlayer->channels[i]->freqScale = mus_pitchmul;
+            }
             sequence_channel_process_script(seqPlayer->channels[i]);
         }
     }
-}
-
-void troll_sequence_channel_init(register struct SequenceChannel *seqChannel) {
-    register s32 i;
-
-    seqChannel->enabled = FALSE;
-    seqChannel->finished = FALSE;
-    seqChannel->stopScript = FALSE;
-    seqChannel->stopSomething2 = FALSE;
-    seqChannel->hasInstrument = FALSE;
-    seqChannel->stereoHeadsetEffects = FALSE;
-    seqChannel->transposition = mus_transposition;
-    mus_transposition = 0;
-    seqChannel->largeNotes = FALSE;
-    seqChannel->scriptState.depth = 0;
-    seqChannel->volume = 1.0f;
-    seqChannel->volumeScale = 1.0f;
-    seqChannel->freqScale = mus_pitchmul;
-    mus_pitchmul = 1.0f;
-    seqChannel->pan = 0.5f;
-    seqChannel->panChannelWeight = 1.0f;
-    seqChannel->noteUnused = NULL;
-    seqChannel->reverbVol = 0;
-    seqChannel->notePriority = NOTE_PRIORITY_DEFAULT;
-    seqChannel->delay = 0;
-    seqChannel->adsr.envelope = gDefaultEnvelope;
-    seqChannel->adsr.releaseRate = 0x20;
-    seqChannel->adsr.sustain = 0;
-    seqChannel->updatesPerFrameUnused = gAudioUpdatesPerFrame;
-    seqChannel->vibratoRateTarget = 0x800;
-    seqChannel->vibratoRateStart = 0x800;
-    seqChannel->vibratoExtentTarget = 0;
-    seqChannel->vibratoExtentStart = 0;
-    seqChannel->vibratoRateChangeDelay = 0;
-    seqChannel->vibratoExtentChangeDelay = 0;
-    seqChannel->vibratoDelay = 0;
-
-    for (i = 0; i < 8; i++) {
-        seqChannel->soundScriptIO[i] = -1;
-    }
-
-    seqChannel->unused = FALSE;
-    init_note_lists(&seqChannel->notePool);
 }
 
 void troll_sequence_channel_process_script(struct SequenceChannel *seqChannel) {

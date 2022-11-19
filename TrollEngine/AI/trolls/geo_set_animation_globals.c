@@ -50,16 +50,17 @@ void geo_set_animation_globals(register struct AnimInfo *node, s32 hasAnimation)
         
         for (__i = 0; __i < render_frame_count; __i++)
             node->animFrame = geo_update_animation_frame(node, &node->animFrameAccelAssist);
+        if (node->animFrame < 0)
+            node->animFrame = 0;
     }
     node->animTimer = gAreaUpdateCounter;
+    gCurrAnimType = ANIM_TYPE_TRANSLATION;
     if (anim->flags & ANIM_FLAG_HOR_TRANS) {
         gCurrAnimType = ANIM_TYPE_VERTICAL_TRANSLATION;
     } else if (anim->flags & ANIM_FLAG_VERT_TRANS) {
         gCurrAnimType = ANIM_TYPE_LATERAL_TRANSLATION;
     } else if (anim->flags & ANIM_FLAG_6) {
         gCurrAnimType = ANIM_TYPE_NO_TRANSLATION;
-    } else {
-        gCurrAnimType = ANIM_TYPE_TRANSLATION;
     }
 
     gCurrAnimFrame = node->animFrame;

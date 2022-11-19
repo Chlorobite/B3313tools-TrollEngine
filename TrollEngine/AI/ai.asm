@@ -211,6 +211,11 @@ SW      V0, 0x0024 (SP)
 .importobj "AI/trolls/interact_coin.o"
 .endarea
 
+.org 0x8024E420
+.area 0x8024E6EC-0x8024E420
+.importobj "AI/trolls/interact_door.o"
+.endarea
+
 .org 0x8024FF04
 .area 0x80250098-0x8024FF04
 .importobj "AI/trolls/check_read_sign.o"
@@ -429,7 +434,7 @@ NOP
 
 .org 0x8031B830
 .area 0x8031B940-0x8031B830
-.importobj "AI/trolls/sequence_channel_init.o"
+.incbin "AI/trolls/sequence_channel_init.bin"
 .endarea
 
 .org 0x8031D08C
