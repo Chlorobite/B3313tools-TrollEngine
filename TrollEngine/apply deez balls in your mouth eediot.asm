@@ -25,6 +25,10 @@
 .include "O2/o2_levelscale.asm"
 
 
+; more audio size
+.orga 0xF0000
+.word 0x00004000
+
 
 
 .headersize 0x80245000
