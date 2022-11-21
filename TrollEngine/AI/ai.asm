@@ -1,8 +1,5 @@
 .include "AI/ai segment.asm"
 
-; bhv trolls
-.include "AI/trolls/bhv/bhv.asm"
-
 ; hud trolls
 .include "AI/trolls/hud/hud.asm"
 

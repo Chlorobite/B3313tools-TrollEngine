@@ -11,6 +11,7 @@
 .include "Trolls/areatroll/areatroll.asm"
 .include "Trolls/cameratroll/focus_object.asm"
 .include "Trolls/global_star_ids/global stars.asm"
+.include "Trolls/bhv/bhv.asm"
 
 .include "Objects/gombatower/gomba tower.asm"
 .include "Objects/mirror/mirror_mario.asm"
