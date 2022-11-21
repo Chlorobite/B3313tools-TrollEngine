@@ -1387,6 +1387,13 @@
 
 .definelabel should_push_or_pull_door, 0x8024D804
 .definelabel get_door_save_file_flag, 0x8024E2FC
+.definelabel warp_camera, 0x8028c7a0                
+.definelabel set_mario_y_vel_based_on_fspeed, 0x802523C8
+.definelabel set_jumping_action, 0x802530A0
+.definelabel common_slide_action_with_jump, 0x80267FA4
+
+.definelabel update_flying_yaw, 0x8026ae5c                
+.definelabel update_flying_pitch, 0x8026b004  
 
 .definelabel sPowerMeterHUD, 0x803325f0
 .definelabel guTranslate, 0x80325688

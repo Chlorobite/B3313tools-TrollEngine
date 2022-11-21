@@ -1400,8 +1400,12 @@ f32 troll_get_additive_y_vel_for_jumps(void) {
 }
 
 void troll_initiate_warp(s16 destLevel, s16 destArea, s16 destWarpNode, s32 arg3) {
-    if ((random_u16() & 1) && destArea == 4 && gCurrentArea->index != 8)
-        destArea = 8;
+    if (destLevel == 0x10) { // CG
+        if (get_red_star_count(gCurrSaveFileNum - 1) == 0)
+            destArea = 4;
+        if (destArea == 4 && gCurrentArea->index != 8 && (gCurrentArea->index == 4 || (random_u16() & 1)))
+            destArea = 8;
+    }
     
     initiate_warp(destLevel, destArea, destWarpNode, arg3);
 }
@@ -1825,7 +1829,134 @@ void troll_setup() {
     s32 i;
     
     for (i = 1; i < 256; i++) {
-        gLoadedGraphNodes[i] = (void*)0x80003313;
+        gLoadedGraphNodes[i] = (void*)(0x80003313 | (i << 16));
     }
+}
+
+void troll_check_instant_warp(void) {
+    s16 cameraAngle;
+    struct Surface *floor;
+
+    if (get_red_star_count(gCurrSaveFileNum - 1) == 0)
+        return;
+
+    if ((floor = gMarioState->floor) != NULL) {
+        s32 index = floor->type - SURFACE_INSTANT_WARP_1B;
+        if (index >= INSTANT_WARP_INDEX_START && index < INSTANT_WARP_INDEX_STOP
+            && gCurrentArea->instantWarps != NULL) {
+            struct InstantWarp *warp = &gCurrentArea->instantWarps[index];
+
+            if (warp->id != 0) {
+                gMarioState->pos[0] += warp->displacement[0];
+                gMarioState->pos[1] += warp->displacement[1];
+                gMarioState->pos[2] += warp->displacement[2];
+
+                gMarioState->marioObj->oPosX = gMarioState->pos[0];
+                gMarioState->marioObj->oPosY = gMarioState->pos[1];
+                gMarioState->marioObj->oPosZ = gMarioState->pos[2];
+
+                cameraAngle = gMarioState->area->camera->yaw;
+
+                change_area(warp->area);
+                gMarioState->area = gCurrentArea;
+
+                warp_camera(warp->displacement[0], warp->displacement[1], warp->displacement[2]);
+
+                gMarioState->area->camera->yaw = cameraAngle;
+            }
+        }
+    }
+}
+
+void set_mario_y_vel_based_on_fspeed(struct MarioState *m, f32 initialVelY, f32 multiplier);
+
+void triple_jump_set_mario_y_vel_based_on_fspeed(struct MarioState *m, f32 initialVelY, f32 multiplier) {
+    if (get_red_star_count(gCurrSaveFileNum - 1) == 0)
+        initialVelY = 62.f;
+    set_mario_y_vel_based_on_fspeed(m, initialVelY, multiplier);
+}
+void sideflip_set_mario_y_vel_based_on_fspeed(struct MarioState *m, f32 initialVelY, f32 multiplier) {
+    if (get_red_star_count(gCurrSaveFileNum - 1) == 0)
+        initialVelY = 48.f;
+    set_mario_y_vel_based_on_fspeed(m, initialVelY, multiplier);
+}
+
+s32 troll_act_crouch_slide(struct MarioState *m) {
+    s32 cancel;
+
+    if (m->input & INPUT_ABOVE_SLIDE) {
+        return set_mario_action(m, ACT_BUTT_SLIDE, 0);
+    }
+
+    if (get_red_star_count(gCurrSaveFileNum - 1) >= 2) {
+        if (m->actionTimer < 30) {
+            m->actionTimer++;
+            if (m->input & INPUT_A_PRESSED) {
+                if (m->forwardVel > 10.0f) {
+                    return set_jumping_action(m, ACT_LONG_JUMP, 0);
+                }
+            }
+        }
+
+        if (m->input & INPUT_B_PRESSED) {
+            if (m->forwardVel >= 10.0f) {
+                return set_mario_action(m, ACT_SLIDE_KICK, 0);
+            } else {
+                return set_mario_action(m, ACT_MOVE_PUNCHING, 0x0009);
+            }
+        }
+    }
+
+    if (m->input & INPUT_A_PRESSED) {
+        return set_jumping_action(m, ACT_JUMP, 0);
+    }
+
+    if (m->input & INPUT_FIRST_PERSON) {
+        return set_mario_action(m, ACT_BRAKING, 0);
+    }
+
+    cancel = common_slide_action_with_jump(m, ACT_CROUCHING, ACT_JUMP, ACT_FREEFALL,
+                                           MARIO_ANIM_START_CROUCHING);
+    return cancel;
+}
+
+s32 troll_act_crouching(struct MarioState *m) {
+    if (m->input & INPUT_STOMPED) {
+        return set_mario_action(m, ACT_SHOCKWAVE_BOUNCE, 0);
+    }
+
+    if (m->input & INPUT_A_PRESSED) {
+        return set_jumping_action(m, get_red_star_count(gCurrSaveFileNum - 1) >= 2 ? ACT_BACKFLIP : ACT_JUMP, 0);
+    }
+
+    if (m->input & INPUT_OFF_FLOOR) {
+        return set_mario_action(m, ACT_FREEFALL, 0);
+    }
+
+    if (m->input & INPUT_ABOVE_SLIDE) {
+        return set_mario_action(m, ACT_BEGIN_SLIDING, 0);
+    }
+
+    if (m->input & INPUT_FIRST_PERSON) {
+        return set_mario_action(m, ACT_STOP_CROUCHING, 0);
+    }
+
+    if (!(m->input & INPUT_Z_DOWN)) {
+        return set_mario_action(m, ACT_STOP_CROUCHING, 0);
+    }
+
+    if (get_red_star_count(gCurrSaveFileNum - 1) >= 2) {
+        if (m->input & INPUT_NONZERO_ANALOG) {
+            return set_mario_action(m, ACT_START_CRAWLING, 0);
+        }
+
+        if (m->input & INPUT_B_PRESSED) {
+            return set_mario_action(m, ACT_PUNCHING, 9);
+        }
+    }
+
+    stationary_ground_step(m);
+    set_mario_animation(m, MARIO_ANIM_CROUCHING);
+    return FALSE;
 }
 

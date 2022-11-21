@@ -235,85 +235,99 @@ void TRACKER_record_mario_state(struct MarioState *m) {
 	// display the stats lol
 	stats_tracking_debug_display();
 	
-	afkTimer++;
-	if (gPlayer1Controller->buttonPressed || gPlayer1Controller->stickMag > 32.0f || absf(lastStickMag - gPlayer1Controller->stickMag) > 1.0f) {
-		afkTimer = 0;
-	}
-	lastStickMag = gPlayer1Controller->stickMag;
-	
-	// afk for over 5 seconds
-	if (afkTimer > 150) {
-		// can't collect information about an afk player
-		return;
-	}
-	
-	object_scan();
-	
-	// update the stats
-	decay_stats();
-	avg_stats(&TRACKER_accum_deaths_enemy_knockback, TRACKER_death_reasons, 5);
-	avg_stats(&TRACKER_accum_stars_prefer_boss, TRACKER_star_preferences_gameplay, 8);
-	avg_stats(&TRACKER_accum_stars_prefer_buildings, TRACKER_star_preferences_level_type, 8);
-	avg_stats(&TRACKER_accum_stars_prefer_wing_cap, TRACKER_star_preferences_cap, 3);
-	
-	// get targets for air_time and water
-	switch (m->action & ACT_GROUP_MASK) {
-		case ACT_GROUP_AIRBORNE:
-			air_time_target = 1.0f;
-			if (m->action == ACT_FLYING) {
-				air_time_target = 2.0f;
-			}
-			break;
+	if (get_red_star_count(gCurrSaveFileNum - 1) >= 1) {
+		register s32 unlockDynamicDifficulty = get_red_star_count(gCurrSaveFileNum - 1) >= 2;
+		register s32 unlockLevelScale = get_red_star_count(gCurrSaveFileNum - 1) >= 3;
 		
-		case ACT_GROUP_SUBMERGED:
-			water_target = 1.0f;
-			if (m->forwardVel > 24.0f) { // top speed swimming
-				water_target = 2.0f;
-			}
-			break;
-	}
-	
-	// apply Mario's current stats
-	LERP(TRACKER_speed, absf(m->forwardVel), TRACKER_speed_LERP / (m->forwardVel > TRACKER_speed ? 1.0f : 3.0f));
-	LERP(TRACKER_air_time, air_time_target, TRACKER_air_time_LERP / (air_time_target > TRACKER_air_time ? 1.0f : 2.0f));
-	LERP(TRACKER_water, water_target, TRACKER_water_LERP / (water_target > TRACKER_water ? 1.0f : 2.0f));
-	LERP(TRACKER_hp, (f32)(m->health >> 8), TRACKER_hp_LERP / ((f32)(m->health >> 8) < TRACKER_hp ? 1.0f : 2.0f));
-	
-	// calculate "conclusions"
-	// collect = sqrt(accum stars + accum stars collect + accum stars secret courses)
-	TRACKER_prefer_collect = sqrtf(TRACKER_accum_stars + TRACKER_accum_stars_prefer_collect + TRACKER_accum_stars_prefer_secret_courses);
-	// explore = min(1.0 - star_preferences_gameplay[0..7]) + min(1.0 - star_preferences_level_type[0..7]) - (TRACKER_speed / 100.0f) - (sqrt(TRACKER_accum_stars) / 2.0f)
-	for (i = 0; i < 8; i++) {
-		f32 value_star_prefs_gameplay = 1.0f - absf(1.0f - TRACKER_star_preferences_gameplay[i]);
-		f32 value_star_prefs_level_type = 1.0f - absf(1.0f - TRACKER_star_preferences_level_type[i]);
+		afkTimer++;
+		if (gPlayer1Controller->buttonPressed || gPlayer1Controller->stickMag > 32.0f || absf(lastStickMag - gPlayer1Controller->stickMag) > 1.0f) {
+			afkTimer = 0;
+		}
+		lastStickMag = gPlayer1Controller->stickMag;
 		
-		if (value_star_prefs_gameplay < min_star_prefs_gameplay)
-			min_star_prefs_gameplay = value_star_prefs_gameplay;
-		if (value_star_prefs_level_type < min_star_prefs_level_type)
-			min_star_prefs_level_type = value_star_prefs_level_type;
+		// afk for over 5 seconds
+		if (afkTimer > 150) {
+			// can't collect information about an afk player
+			return;
+		}
+		
+		object_scan();
+		
+		// update the stats
+		decay_stats();
+		avg_stats(&TRACKER_accum_deaths_enemy_knockback, TRACKER_death_reasons, 5);
+		avg_stats(&TRACKER_accum_stars_prefer_boss, TRACKER_star_preferences_gameplay, 8);
+		avg_stats(&TRACKER_accum_stars_prefer_buildings, TRACKER_star_preferences_level_type, 8);
+		avg_stats(&TRACKER_accum_stars_prefer_wing_cap, TRACKER_star_preferences_cap, 3);
+		
+		// get targets for air_time and water
+		switch (m->action & ACT_GROUP_MASK) {
+			case ACT_GROUP_AIRBORNE:
+				air_time_target = 1.0f;
+				if (m->action == ACT_FLYING) {
+					air_time_target = 2.0f;
+				}
+				break;
+			
+			case ACT_GROUP_SUBMERGED:
+				water_target = 1.0f;
+				if (m->forwardVel > 24.0f) { // top speed swimming
+					water_target = 2.0f;
+				}
+				break;
+		}
+		
+		// apply Mario's current stats
+		LERP(TRACKER_speed, absf(m->forwardVel), TRACKER_speed_LERP / (m->forwardVel > TRACKER_speed ? 1.0f : 3.0f));
+		LERP(TRACKER_air_time, air_time_target, TRACKER_air_time_LERP / (air_time_target > TRACKER_air_time ? 1.0f : 2.0f));
+		LERP(TRACKER_water, water_target, TRACKER_water_LERP / (water_target > TRACKER_water ? 1.0f : 2.0f));
+		LERP(TRACKER_hp, (f32)(m->health >> 8), TRACKER_hp_LERP / ((f32)(m->health >> 8) < TRACKER_hp ? 1.0f : 2.0f));
+		
+		// calculate "conclusions"
+		// collect = sqrt(accum stars + accum stars collect + accum stars secret courses)
+		TRACKER_prefer_collect = sqrtf(TRACKER_accum_stars + TRACKER_accum_stars_prefer_collect + TRACKER_accum_stars_prefer_secret_courses);
+		// explore = min(1.0 - star_preferences_gameplay[0..7]) + min(1.0 - star_preferences_level_type[0..7]) - (TRACKER_speed / 100.0f) - (sqrt(TRACKER_accum_stars) / 2.0f)
+		for (i = 0; i < 8; i++) {
+			f32 value_star_prefs_gameplay = 1.0f - absf(1.0f - TRACKER_star_preferences_gameplay[i]);
+			f32 value_star_prefs_level_type = 1.0f - absf(1.0f - TRACKER_star_preferences_level_type[i]);
+			
+			if (value_star_prefs_gameplay < min_star_prefs_gameplay)
+				min_star_prefs_gameplay = value_star_prefs_gameplay;
+			if (value_star_prefs_level_type < min_star_prefs_level_type)
+				min_star_prefs_level_type = value_star_prefs_level_type;
+		}
+		TRACKER_prefer_exploration = min_star_prefs_gameplay + min_star_prefs_level_type - (TRACKER_speed / 100.0f) - (sqrtf(TRACKER_accum_stars) / 2.0f);
+		TRACKER_prefer_lore = TRACKER_accum_social + TRACKER_accum_nerd - (TRACKER_speed / 24.0f);
+		TRACKER_prefer_murder = TRACKER_accum_murder + TRACKER_star_preferences_gameplay[4];
+		TRACKER_prefer_parkour = (TRACKER_speed / 24.0f) + TRACKER_air_time + TRACKER_star_preferences_gameplay[5];
+		TRACKER_prefer_swimming = TRACKER_water + TRACKER_star_preferences_level_type[5];
+		// modifiers, 1.0 is the base value
+		if (unlockDynamicDifficulty)
+			TRACKER_difficulty_modifier = __max(
+				moveTo(
+					(((TRACKER_speed - 24.0f) / 16.0f) + TRACKER_accum_stars / 4.0f - TRACKER_accum_deaths) / 6.0f + __max(TRACKER_accum_murder / 6.0f, 0.4f) + 0.5f + TRACKER_boss_performance / 20.0f
+				, 1.0f, 0.1f)
+			, 0.0f);
+		else
+			TRACKER_difficulty_modifier = 1.0f;
+		if (unlockLevelScale) {
+			TRACKER_level_scale_modifier_h = moveTo(__max((__min(TRACKER_speed, 64.0f) + 24.0f) / 48.0f, 0.5f), 1.0f, 0.075f);
+			TRACKER_level_scale_modifier_v = moveTo(__max((__min(TRACKER_speed, 64.0f) + 24.0f) / 72.0f, 0.5f) + (TRACKER_air_time + 0.25f) / 2.0f, 1.0f, 0.075f);
+		}
+		else {
+			TRACKER_level_scale_modifier_h = 1.0f;
+			TRACKER_level_scale_modifier_v = 1.0f;
+		}
+		
+		if (nightMode) {
+			TRACKER_difficulty_modifier *= 0.9f;
+		}
+		//TRACKER_difficulty_modifier *= 3.3f;
+		
+		// some common calculations derived from the difficulty modifier for bhv use
+		TRACKER_difficulty_modifier_half = 0.5f + TRACKER_difficulty_modifier / 2.0f;
+		TRACKER_difficulty_modifier_sqrt_half = 0.5f + sqrtf(TRACKER_difficulty_modifier) / 2.0f;
 	}
-	TRACKER_prefer_exploration = min_star_prefs_gameplay + min_star_prefs_level_type - (TRACKER_speed / 100.0f) - (sqrtf(TRACKER_accum_stars) / 2.0f);
-	TRACKER_prefer_lore = TRACKER_accum_social + TRACKER_accum_nerd - (TRACKER_speed / 24.0f);
-	TRACKER_prefer_murder = TRACKER_accum_murder + TRACKER_star_preferences_gameplay[4];
-	TRACKER_prefer_parkour = (TRACKER_speed / 24.0f) + TRACKER_air_time + TRACKER_star_preferences_gameplay[5];
-	TRACKER_prefer_swimming = TRACKER_water + TRACKER_star_preferences_level_type[5];
-	// modifiers, 1.0 is the base value
-	TRACKER_difficulty_modifier = __max(
-		moveTo(
-			(((TRACKER_speed - 24.0f) / 16.0f) + TRACKER_accum_stars / 4.0f - TRACKER_accum_deaths) / 6.0f + __max(TRACKER_accum_murder / 6.0f, 0.4f) + 0.5f + TRACKER_boss_performance / 20.0f
-		, 1.0f, 0.1f)
-	, 0.0f);
-	TRACKER_level_scale_modifier_h = moveTo(__max((__min(TRACKER_speed, 64.0f) + 24.0f) / 48.0f, 0.5f), 1.0f, 0.075f);
-	TRACKER_level_scale_modifier_v = moveTo(__max((__min(TRACKER_speed, 64.0f) + 24.0f) / 72.0f, 0.5f) + (TRACKER_air_time + 0.25f) / 2.0f, 1.0f, 0.075f);
-	
-	if (nightMode) {
-		TRACKER_difficulty_modifier *= 0.9f;
-	}
-	//TRACKER_difficulty_modifier *= 3.3f;
-	
-	// some common calculations derived from the difficulty modifier for bhv use
-	TRACKER_difficulty_modifier_half = 0.5f + TRACKER_difficulty_modifier / 2.0f;
-	TRACKER_difficulty_modifier_sqrt_half = 0.5f + sqrtf(TRACKER_difficulty_modifier) / 2.0f;
 	
     spawningLootCoins = FALSE;
 }

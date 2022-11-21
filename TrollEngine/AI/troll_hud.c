@@ -142,6 +142,8 @@ void troll_render_hud_coins() {
 			print_text(170, HUD_TOP_Y - 17, "+"); // 'Coin' glyph
 			print_text(186, HUD_TOP_Y - 17, "*"); // 'X' glyph
 			print_text_fmt_int(198, HUD_TOP_Y - 17, "%02d", gHudDisplay.coins);
+			//print_text(234, HUD_TOP_Y - 17, "I");
+			//print_text(242, HUD_TOP_Y - 17, "100");
 			break;
 		case 1: // sonkás pizza
 		case 3: // december build

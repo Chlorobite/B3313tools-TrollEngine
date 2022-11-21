@@ -195,6 +195,10 @@ SW      V0, 0x0024 (SP)
 .endarea
 
 ; level_update.c
+.org 0x8024A374
+J       troll_check_instant_warp
+NOP
+
 .org 0x8024B13C
 .area 0x8024B390-0x8024B13C
 .importobj "AI/trolls/update_hud_values.o"
@@ -227,6 +231,11 @@ SW      V0, 0x0024 (SP)
 .endarea
 
 ; mario.c
+.org 0x8025267C
+JAL     triple_jump_set_mario_y_vel_based_on_fspeed
+.org 0x802527B8
+JAL     sideflip_set_mario_y_vel_based_on_fspeed
+
 .org 0x80252CF4
 .area 0x80252E5C-0x80252CF4
 .importobj "AI/trolls/set_mario_action.o"
@@ -251,6 +260,20 @@ SW      V0, 0x0024 (SP)
 .area 0x80266038-0x80265df8
 .importobj "AI/trolls/push_or_sidle_wall.o"
 .endarea
+
+.org 0x8026b17c
+.area 0x8026b444-0x8026b17c
+.importobj "Trolls/Mario/update_flying.o"
+.endarea
+
+
+.org 0x80261DB4
+J       troll_act_crouching
+NOP
+
+.org 0x80268168
+J       troll_act_crouch_slide
+NOP
 
 ; mario_misc.c
 .org 0x802766B4

@@ -503,155 +503,195 @@ void trollWarps() {
 }
 
 void addMoreObjects() {
-	register s32 i, totali;
-	register f32 prevLevelScaleH, prevLevelScaleV;
-	register s32 object_count_goal = (s32)((sqrtf(TRACKER_difficulty_modifier) - 1.0f) * 10.0f);
-	f32 distGoomba, distBobomb;
+	register s32 i;
 	register struct Object *obj;
-	struct SpawnInfo spawnInfo;
-	struct Surface *floor = NULL;
-	register u32 *spawnBhv;
-	u8 spawnModel;
-	u8 water;
-
-	u16 oldSeed = gRandomSeed16;
-	gRandomSeed16 = personalizationRandSeed;
-
-	update_rtc_and_level_info();
-
-	prevLevelScaleH = levelScaleH;
-	prevLevelScaleV = levelScaleV;
-	levelScaleH = 1.0f;
-	levelScaleV = 1.0f;
-
-	if (gMarioObject != NULL) {
-		if (TRACKER_difficulty_modifier > 1.0f) {
-			// spawn some more enemies in :trol:
-			
-			// i will be increased only if an object was successfully spawned
-			// totali is used to limit the amount of iterations to avoid a long loading screen / potentially infinite loop
-			for (i = 0, totali = 0; i < object_count_goal && totali < object_count_goal * object_count_goal; totali++) {
-				spawnInfo.startPos[0] = (random_u16() - 32768) / 32768.0f * 8192.0f;
-				spawnInfo.startPos[2] = (random_u16() - 32768) / 32768.0f * 8192.0f;
-				spawnInfo.startPos[1] = find_floor(spawnInfo.startPos[0], 3313.0f, spawnInfo.startPos[2], &floor);
-				// use as a temp variable
-				distGoomba = find_water_level(spawnInfo.startPos[0], spawnInfo.startPos[2]);
-				water = FALSE;
-				
-				if (distGoomba > spawnInfo.startPos[1] + 100.0f) {
-					water = TRUE;
-					spawnInfo.startPos[1] = distGoomba;
-				}
-
-				spawnBhv = NULL;
-
-				if (floor != NULL && spawnInfo.startPos[1] > FLOOR_LOWER_LIMIT) {
-					if (water || floor->type == SURFACE_BURNING) {
-						// prefer to spawn objects on land
-						if (random_u16() < 3313) {
-							if (levelType == 6 || !lava_skeeter) {
-								spawnBhv = segmented_to_virtual(bhvSkeeter);
-								spawnModel = MODEL_SKEETER;
-							}
-						}
-					}
-					else {
-						// decide to spawn goombas or bobombs
-						_find_nearest_object_with_behavior(spawnInfo.startPos[0], spawnInfo.startPos[2], segmented_to_virtual(bhvGoomba), &distGoomba);
-						// use distbobomb temporarily
-						_find_nearest_object_with_behavior(spawnInfo.startPos[0], spawnInfo.startPos[2], segmented_to_virtual(bhvGoombaTripletSpawner), &distBobomb);
-						if (distGoomba > distBobomb)
-							distGoomba = distBobomb;
-						
-						// use distbobomb correctly now
-						_find_nearest_object_with_behavior(spawnInfo.startPos[0], spawnInfo.startPos[2], segmented_to_virtual(bhvBobomb), &distBobomb);
-						
-						if (distGoomba < distBobomb || (distGoomba == distBobomb && (random_u16() & 1))) {
-							spawnBhv = segmented_to_virtual(bhvGoomba);
-							spawnModel = MODEL_GOOMBA;
-						}
-						else {
-							spawnBhv = segmented_to_virtual(bhvBobomb);
-							spawnModel = MODEL_BLACK_BOBOMB;
-						}
-					}
-
-					// try not to spawn on ledges challenge
-					if (floor->normal.y < 0.9f) {
-						spawnBhv = NULL;
-					}
-				}
-				
-				if (spawnBhv != NULL && get_model_loaded(spawnModel)) {
-					// spawn skeet
-					obj = create_object(spawnBhv);
-
-					// Behavior parameters are often treated as four separate bytes, but
-					// are stored as an s32.
-					obj->oBehParams = 0x00000000;
-					// The second byte of the behavior parameters is copied over to a special field
-					// as it is the most frequently used by objects.
-					obj->oBehParams2ndByte = ((obj->oBehParams) >> 16) & 0xFF;
-
-					obj->behavior = spawnBhv;
-					obj->unused1 = 0;
-
-					// Record death/collection in the SpawnInfo
-					obj->respawnInfoType = RESPAWN_INFO_TYPE_32;
-					obj->respawnInfo = &obj->oBehParams;
-
-					spawnInfo.startAngle[0] = 0.0f;
-					spawnInfo.startAngle[1] = 0.0f;
-					spawnInfo.startAngle[2] = 0.0f;
-
-					spawnInfo.areaIndex = gCurrentArea->index;
-					spawnInfo.activeAreaIndex = gCurrentArea->index;
-					spawnInfo.model = gLoadedGraphNodes[spawnModel];
-
-					geo_obj_init_spawninfo(&obj->header.gfx, &spawnInfo);
-
-					obj->oPosX = spawnInfo.startPos[0];
-					obj->oPosY = spawnInfo.startPos[1];
-					obj->oPosZ = spawnInfo.startPos[2];
-
-					i++;
-				}
-			}
-		}
-		else if (TRACKER_difficulty_modifier < 1.0f) {
-			// delete some enemies
-			// use the now useless object_count_goal for the RNG ceiling
-			object_count_goal = 65536 * (sqrtf(TRACKER_difficulty_modifier) / 2.0f + 0.5f);
-			
-			obj = &gObjectPool[0];
-			for (i = 0; i < 240; i++) {
-				if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && (u32)obj->behavior >= 0x80000000) {
-					// use totali, also unused
-					totali = get_object_list_from_behavior(obj->behavior);
-					if (obj->oInteractType == INTERACT_DAMAGE || totali == OBJ_LIST_DESTRUCTIVE || totali == OBJ_LIST_PUSHABLE) {
-						// despawn time
-						if (random_u16() > object_count_goal) {
-							obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
+	
+	switch (get_red_star_count(gCurrSaveFileNum - 1)) {
+		case 0:
+			// Change all warps in CG to bowser
+			if (gCurrLevelNum == 0x10) {
+				obj = &gObjectPool[0];
+				for (i = 0; i < 240; i++) {
+					if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual((void*)0x13000780)) {
+						// set the warp to go to bowser
+						struct ObjectWarpNode *warpNode = area_get_warp_node(obj->oBehParams2ndByte);
+						if (warpNode != NULL) {
+							warpNode->node.destLevel = 0x1E;
+							warpNode->node.destArea = 1;
+							warpNode->node.destNode = 10;
 						}
 					}
 					
-					if (nightMode && (obj->behavior == segmented_to_virtual(bhvBobombBuddy) || obj->behavior == segmented_to_virtual(bhvToadMessage))) {
-						// despawn random NPCs at night
-						if (random_u16() > 33130) {
-							obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
+					obj++;
+				}
+			}
+			break;
+		case 1:
+			break;
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 8:
+		case 9:
+		case 10:
+		case 11:
+		case 12:
+		case 13:
+		{
+			register s32 totali;
+			register f32 prevLevelScaleH, prevLevelScaleV;
+			register s32 object_count_goal = (s32)((sqrtf(TRACKER_difficulty_modifier) - 1.0f) * 10.0f);
+			f32 distGoomba, distBobomb;
+			struct SpawnInfo spawnInfo;
+			struct Surface *floor = NULL;
+			register u32 *spawnBhv;
+			u8 spawnModel;
+			u8 water;
+
+			u16 oldSeed = gRandomSeed16;
+			gRandomSeed16 = personalizationRandSeed;
+
+			update_rtc_and_level_info();
+
+			prevLevelScaleH = levelScaleH;
+			prevLevelScaleV = levelScaleV;
+			levelScaleH = 1.0f;
+			levelScaleV = 1.0f;
+
+			if (gMarioObject != NULL) {
+				if (TRACKER_difficulty_modifier > 1.0f) {
+					// spawn some more enemies in :trol:
+					
+					// i will be increased only if an object was successfully spawned
+					// totali is used to limit the amount of iterations to avoid a long loading screen / potentially infinite loop
+					for (i = 0, totali = 0; i < object_count_goal && totali < object_count_goal * object_count_goal; totali++) {
+						spawnInfo.startPos[0] = (random_u16() - 32768) / 32768.0f * 8192.0f;
+						spawnInfo.startPos[2] = (random_u16() - 32768) / 32768.0f * 8192.0f;
+						spawnInfo.startPos[1] = find_floor(spawnInfo.startPos[0], 3313.0f, spawnInfo.startPos[2], &floor);
+						// use as a temp variable
+						distGoomba = find_water_level(spawnInfo.startPos[0], spawnInfo.startPos[2]);
+						water = FALSE;
+						
+						if (distGoomba > spawnInfo.startPos[1] + 100.0f) {
+							water = TRUE;
+							spawnInfo.startPos[1] = distGoomba;
+						}
+
+						spawnBhv = NULL;
+
+						if (floor != NULL && spawnInfo.startPos[1] > FLOOR_LOWER_LIMIT) {
+							if (water || floor->type == SURFACE_BURNING) {
+								// prefer to spawn objects on land
+								if (random_u16() < 3313) {
+									if (levelType == 6 || !lava_skeeter) {
+										spawnBhv = segmented_to_virtual(bhvSkeeter);
+										spawnModel = MODEL_SKEETER;
+									}
+								}
+							}
+							else {
+								// decide to spawn goombas or bobombs
+								_find_nearest_object_with_behavior(spawnInfo.startPos[0], spawnInfo.startPos[2], segmented_to_virtual(bhvGoomba), &distGoomba);
+								// use distbobomb temporarily
+								_find_nearest_object_with_behavior(spawnInfo.startPos[0], spawnInfo.startPos[2], segmented_to_virtual(bhvGoombaTripletSpawner), &distBobomb);
+								if (distGoomba > distBobomb)
+									distGoomba = distBobomb;
+								
+								// use distbobomb correctly now
+								_find_nearest_object_with_behavior(spawnInfo.startPos[0], spawnInfo.startPos[2], segmented_to_virtual(bhvBobomb), &distBobomb);
+								
+								if (distGoomba < distBobomb || (distGoomba == distBobomb && (random_u16() & 1))) {
+									spawnBhv = segmented_to_virtual(bhvGoomba);
+									spawnModel = MODEL_GOOMBA;
+								}
+								else {
+									spawnBhv = segmented_to_virtual(bhvBobomb);
+									spawnModel = MODEL_BLACK_BOBOMB;
+								}
+							}
+
+							// try not to spawn on ledges challenge
+							if (floor->normal.y < 0.9f) {
+								spawnBhv = NULL;
+							}
+						}
+						
+						if (spawnBhv != NULL && get_model_loaded(spawnModel)) {
+							// spawn skeet
+							obj = create_object(spawnBhv);
+
+							// Behavior parameters are often treated as four separate bytes, but
+							// are stored as an s32.
+							obj->oBehParams = 0x00000000;
+							// The second byte of the behavior parameters is copied over to a special field
+							// as it is the most frequently used by objects.
+							obj->oBehParams2ndByte = ((obj->oBehParams) >> 16) & 0xFF;
+
+							obj->behavior = spawnBhv;
+							obj->unused1 = 0;
+
+							// Record death/collection in the SpawnInfo
+							obj->respawnInfoType = RESPAWN_INFO_TYPE_32;
+							obj->respawnInfo = &obj->oBehParams;
+
+							spawnInfo.startAngle[0] = 0.0f;
+							spawnInfo.startAngle[1] = 0.0f;
+							spawnInfo.startAngle[2] = 0.0f;
+
+							spawnInfo.areaIndex = gCurrentArea->index;
+							spawnInfo.activeAreaIndex = gCurrentArea->index;
+							spawnInfo.model = gLoadedGraphNodes[spawnModel];
+
+							geo_obj_init_spawninfo(&obj->header.gfx, &spawnInfo);
+
+							obj->oPosX = spawnInfo.startPos[0];
+							obj->oPosY = spawnInfo.startPos[1];
+							obj->oPosZ = spawnInfo.startPos[2];
+
+							i++;
 						}
 					}
 				}
-				
-				obj++;
+				else if (TRACKER_difficulty_modifier < 1.0f) {
+					// delete some enemies
+					// use the now useless object_count_goal for the RNG ceiling
+					object_count_goal = 65536 * (sqrtf(TRACKER_difficulty_modifier) / 2.0f + 0.5f);
+					
+					obj = &gObjectPool[0];
+					for (i = 0; i < 240; i++) {
+						if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && (u32)obj->behavior >= 0x80000000) {
+							// use totali, also unused
+							totali = get_object_list_from_behavior(obj->behavior);
+							if (obj->oInteractType == INTERACT_DAMAGE || totali == OBJ_LIST_DESTRUCTIVE || totali == OBJ_LIST_PUSHABLE) {
+								// despawn time
+								if (random_u16() > object_count_goal) {
+									obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
+								}
+							}
+							
+							if (nightMode && (obj->behavior == segmented_to_virtual(bhvBobombBuddy) || obj->behavior == segmented_to_virtual(bhvToadMessage))) {
+								// despawn random NPCs at night
+								if (random_u16() > 33130) {
+									obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
+								}
+							}
+						}
+						
+						obj++;
+					}
+				}
 			}
-		}
-	}
 
-	// restore old state
-	levelScaleH = prevLevelScaleH;
-	levelScaleV = prevLevelScaleV;
-	gRandomSeed16 = oldSeed; // return the seed
+			// restore old state
+			levelScaleH = prevLevelScaleH;
+			levelScaleV = prevLevelScaleV;
+			gRandomSeed16 = oldSeed; // return the seed
+		}
+			break;
+	}
 }
 
 void personalize_stars() {
