@@ -1,4 +1,4 @@
-#include "bhv/bhv_headers.h"
+#include "Trolls/bhv/bhv_headers.h"
 
 void common_anchor_mario_behavior(register f32 sp28, register f32 sp2C, register s32 sp30) {
     sp28 *= TRACKER_difficulty_modifier_sqrt_half;
