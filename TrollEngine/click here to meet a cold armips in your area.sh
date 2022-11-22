@@ -1,0 +1,7 @@
+armips "apply deez balls in your mouth eediot.asm"
+wine n64crc.exe "../Bee/b3313 new.z64"
+cp "../Bee/b3313 silved.config" "../Bee/b3313 new.config"
+rm "../Bee/b3313 silved.z64"
+rm "../Bee/b3313 silved.config"
+mv "../Bee/b3313 new.z64" "../Bee/b3313 silved.z64"
+mv "../Bee/b3313 new.config" "../Bee/b3313 silved.config"
