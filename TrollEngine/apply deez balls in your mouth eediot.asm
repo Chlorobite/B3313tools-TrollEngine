@@ -1,3 +1,5 @@
+.n64
+.open "../Bee/b3313 silved.z64", "../Bee/b3313 new.z64", 0
 .include "trollfinity.asm" ; the asm behind the trolling
 
 ; fixes mario's level entry cutscene crashing on n64
@@ -90,5 +92,6 @@ NOP
 LW      RA, 0x0014 (SP)
 JR      RA
 ADDIU   SP, SP, 0x18
+.close 
 
 
