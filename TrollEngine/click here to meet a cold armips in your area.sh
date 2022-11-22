@@ -1,5 +1,12 @@
 armips "apply deez balls in your mouth eediot.asm"
-wine n64crc.exe "../Bee/b3313 new.z64"
+
+if [ ! -f "../Bee/b3313 new.z64" ]; then
+    echo "No new romge found, do you have armips installed?"
+    exit
+fi
+
+chmod +x ./n64crc
+./n64crc "../Bee/b3313 new.z64"
 cp "../Bee/b3313 silved.config" "../Bee/b3313 new.config"
 rm "../Bee/b3313 silved.z64"
 rm "../Bee/b3313 silved.config"
