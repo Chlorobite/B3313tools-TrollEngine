@@ -264,6 +264,11 @@ NOP
 .importobj "Trolls/bhv/hidden_star.inc.c__bhv_hidden_star_loop.o"
 .endarea
 
+.org 0x802F31BC
+.area 0x802F328C-0x802F31BC
+.importobj "Trolls/bhv/hidden_star.inc.c__bhv_hidden_star_trigger_loop.o"
+.endarea
+
 .org 0x802F328C
 .area 0x802F336C-0x802F328C
 .importobj "Trolls/bhv/hidden_star.inc.c__bhv_bowser_course_red_coin_star_loop.o"
