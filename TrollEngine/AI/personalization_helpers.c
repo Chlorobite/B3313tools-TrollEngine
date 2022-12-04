@@ -1960,3 +1960,17 @@ s32 troll_act_crouching(struct MarioState *m) {
     return FALSE;
 }
 
+
+s32 can_pass_through_walls() {
+    // If an object can pass through a vanish cap wall, pass through.
+    if (gCurrentObject != NULL) {
+        // If an object can pass through a vanish cap wall, pass through.
+        if (gCurrentObject->activeFlags & ACTIVE_FLAG_MOVE_THROUGH_GRATE) return 1;
+
+        // If Mario has a vanish cap, pass through the vanish cap wall.
+        if (gCurrentObject == gMarioObject && (gMarioState->flags & MARIO_VANISH_CAP)) return 1;
+    }
+
+    return 0;
+}
+

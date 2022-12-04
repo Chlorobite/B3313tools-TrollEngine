@@ -5,13 +5,19 @@
 .headersize 0x80283280
 
 ; surface_collision.c
-.org 0x80381038
-.area 0x80381260-0x80381038
-.importobj "O2/surface_collision/scale/find_ceil_from_list.o"
-.endarea
+;.org 0x80381038
+;.area 0x80381260-0x80381038
+;.importobj "O2/surface_collision/scale/find_ceil_from_list.o"
+;.endarea
 
-.org 0x8038156C
-.area 0x80381790-0x8038156C
+;.org 0x8038156C
+;.area 0x80381790-0x8038156C
+;.importobj "O2/surface_collision/scale/find_floor_from_list.o"
+;.endarea
+
+.org 0x80381F08
+.area 0x80382490-0x80381F08
+.importobj "O2/surface_collision/scale/find_ceil_from_list.o"
 .importobj "O2/surface_collision/scale/find_floor_from_list.o"
 .endarea
 

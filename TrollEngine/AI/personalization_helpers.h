@@ -102,4 +102,6 @@ s32 troll_cur_obj_update_dialog(s32 actionArg, s32 dialogFlags, s32 dialogID);
 struct Object *troll_spawn_star(struct Object *sp30, f32 sp34, f32 sp38, f32 sp3C);
 void troll_spawn_bowser_star();
 
+s32 can_pass_through_walls();
+
 #endif
