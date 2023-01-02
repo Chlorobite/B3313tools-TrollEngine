@@ -25,11 +25,6 @@
 .importobj "O2/surface_collision/noscale/find_ceil.o"
 .endarea
 
-.org 0x803814B8
-.area 0x8038156C-0x803814B8
-.importobj "O2/surface_collision/noscale/find_floor_height_and_data.o"
-.endarea
-
 .org 0x80381900
 .area 0x80381BA0-0x80381900
 .importobj "O2/surface_collision/noscale/find_floor.o"

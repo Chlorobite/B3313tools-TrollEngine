@@ -7,6 +7,11 @@
 .importobj "O2/surface_collision/find_wall_collisions_from_list.o"
 .endarea
 
+.org 0x803814B8
+.area 0x8038156C-0x803814B8
+.importobj "O2/surface_collision/find_floor_height_and_data.o"
+.endarea
+
 ; surface_load.c
 .org 0x803825FC
 .area 0x8038283C-0x803825FC
