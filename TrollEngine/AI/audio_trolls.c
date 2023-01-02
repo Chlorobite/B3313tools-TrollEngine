@@ -315,7 +315,8 @@ void troll_sequence_player_process_sequence(register struct SequencePlayer *seqP
         if (seqPlayer->channels[i] != &gSequenceChannelNone) {
             if (seqPlayer == &gSequencePlayers[SEQ_PLAYER_LEVEL]) {
                 seqPlayer->channels[i]->transposition = mus_transposition;
-                seqPlayer->channels[i]->freqScale = mus_pitchmul;
+                if (seqPlayer->channels[i]->freqScale == 1.0f)
+                    seqPlayer->channels[i]->freqScale = mus_pitchmul;
             }
             sequence_channel_process_script(seqPlayer->channels[i]);
         }

@@ -1,6 +1,8 @@
 #include "../surface_collision_headers.h"
 
-f32 find_floor(f32 xPos, f32 yPos, f32 zPos, struct Surface **pfloor) {
+s32 to_cell_pos(s32 pos);
+
+f32 find_floor(register f32 xPos, register f32 yPos, register f32 zPos, struct Surface **pfloor) {
     register s32 cellZ, cellX;
 
     struct Surface *floor, *dynamicFloor;
@@ -8,29 +10,12 @@ f32 find_floor(f32 xPos, f32 yPos, f32 zPos, struct Surface **pfloor) {
 
     f32 height = FLOOR_LOWER_LIMIT;
     f32 dynamicHeight = FLOOR_LOWER_LIMIT;
-	
-	register s32 x, y, z;
-	
-	//xPos /= 1.0f;
-	//zPos /= 1.0f;
-
-    //! (Parallel Universes) Because position is casted to an s16, reaching higher
-    //  float locations can return floors despite them not existing there.
-    //  (Dynamic floors will unload due to the range.)
-    x = (s32) xPos;
-    y = (s32) yPos;
-    z = (s32) zPos;
 
     *pfloor = NULL;
 
-    if (x <= -LEVEL_BOUNDARY_MAX) x = -LEVEL_BOUNDARY_MAX + 1;
-    if (x >= LEVEL_BOUNDARY_MAX) x = LEVEL_BOUNDARY_MAX - 1;
-    if (z <= -LEVEL_BOUNDARY_MAX) z = -LEVEL_BOUNDARY_MAX + 1;
-    if (z >= LEVEL_BOUNDARY_MAX) z = LEVEL_BOUNDARY_MAX - 1;
-
     // Each level is split into cells to limit load, find the appropriate cell.
-    cellX = ((x + LEVEL_BOUNDARY_MAX) / CELL_SIZE) & NUM_CELLS_INDEX;
-    cellZ = ((z + LEVEL_BOUNDARY_MAX) / CELL_SIZE) & NUM_CELLS_INDEX;
+    cellX = to_cell_pos((s32) xPos);
+    cellZ = to_cell_pos((s32) zPos);
 
     // Check for surfaces belonging to objects.
     surfaceList = gDynamicSurfacePartition[cellZ][cellX][SPATIAL_PARTITION_FLOORS].next;
@@ -49,7 +34,7 @@ f32 find_floor(f32 xPos, f32 yPos, f32 zPos, struct Surface **pfloor) {
         //  (happens when there is no floor under the SURFACE_INTANGIBLE floor) but returns the height
         //  of the SURFACE_INTANGIBLE floor instead of the typical -11000 returned for a NULL floor.
         if (floor != NULL && floor->type == SURFACE_INTANGIBLE) {
-            floor = find_floor_from_list(surfaceList, x, (s32)(height - 200.0f), z, &height);
+            floor = find_floor_from_list(surfaceList, xPos, (s32)(height - 200.0f), zPos, &height);
         }
     } else {
         // To prevent accidentally leaving the floor tangible, stop checking for it.

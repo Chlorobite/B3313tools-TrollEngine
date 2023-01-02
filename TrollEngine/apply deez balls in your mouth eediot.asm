@@ -15,6 +15,7 @@
 .include "Trolls/global_star_ids/global stars.asm"
 .include "Trolls/bhv/bhv.asm"
 
+.include "Objects/blaarg/blarg.asm"
 .include "Objects/gombatower/gomba tower.asm"
 .include "Objects/mirror/mirror_mario.asm"
 .include "Objects/motos/motos.asm"
@@ -30,7 +31,12 @@
 
 ; more audio size
 .orga 0xF0000
-.word 0x00004000
+.word 0x4000
+
+; sound pools
+.orga 0xEE2AC
+.word 0x5800
+.word 0x8800
 
 
 

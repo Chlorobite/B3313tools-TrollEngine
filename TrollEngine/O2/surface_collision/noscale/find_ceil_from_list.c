@@ -2,7 +2,8 @@
 
 struct Surface *find_ceil_from_list(struct SurfaceNode *surfaceNode, s32 x, s32 y, s32 z, f32 *pheight) {
     register struct Surface *surf;
-    register s16 x1, z1, x2, z2, x3, z3;
+    register s32 x1, z1, x2, z2, x3, z3;
+    register s32 gost = can_pass_through_walls();
     register f32 height;
     register f32 x_f = x;
     register f32 y_f = y;
@@ -38,6 +39,9 @@ struct Surface *find_ceil_from_list(struct SurfaceNode *surfaceNode, s32 x, s32 
         if (!gCheckingSurfaceCollisionsForCamera) {
             // If we are not checking for the camera, ignore camera only floors.
             if (surf->type == SURFACE_CAMERA_BOUNDARY) continue;
+            
+            // If an object can pass through a vanish cap wall, pass through.
+            if (surf->type == SURFACE_VANISH_CAP_WALLS && gost) continue;
         }
         else if (surf->flags & SURFACE_FLAG_NO_CAM_COLLISION) continue;
 
@@ -45,11 +49,11 @@ struct Surface *find_ceil_from_list(struct SurfaceNode *surfaceNode, s32 x, s32 
 		//! (Exposed Ceilings) Because any point above a ceiling counts
 		//  as interacting with a ceiling, ceilings far below can cause
 		// "invisible walls" that are really just exposed ceilings.
-		if (y - height > 78.0f) continue;
+		if (y_f - height > 78.0f) continue;
+        if (height > *pheight) continue;
 
 		*pheight = height;
 		ceil = surf;
-		break;
     }
 
     //! (Surface Cucking) Since only the first ceil is returned and not the lowest,

@@ -3,6 +3,7 @@
 struct Surface *find_floor_from_list(struct SurfaceNode *surfaceNode, s32 x, s32 y, s32 z, f32 *pheight) {
     register struct Surface *surf;
     register s32 x1, z1, x2, z2, x3, z3;
+    register s32 gost = can_pass_through_walls();
     register f32 height;
     register f32 x_f = x;
     register f32 y_f = y;
@@ -38,6 +39,9 @@ struct Surface *find_floor_from_list(struct SurfaceNode *surfaceNode, s32 x, s32
         if (!gCheckingSurfaceCollisionsForCamera) {
             // If we are not checking for the camera, ignore camera only floors.
             if (surf->type == SURFACE_CAMERA_BOUNDARY) continue;
+            
+            // If an object can pass through a vanish cap wall, pass through.
+            if (surf->type == SURFACE_VANISH_CAP_WALLS && gost) continue;
         }
         else if (surf->flags & SURFACE_FLAG_NO_CAM_COLLISION) continue;
         
