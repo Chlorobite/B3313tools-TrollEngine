@@ -1,7 +1,7 @@
 ; part 1 (0x80367460-0x80378800)
 .headersize 0x80367460-0x10C280
 .orga 0x10C280 ; rip blue gomba texture
-.area 0x113A0
+.area 0x113A0,0x01
 
 ; absf and roundf
 .definelabel absf, 0x80367460
@@ -22,7 +22,7 @@ CVT.S.W    F0, F0
 ; part 2 (0x807E0000-0x807F0000)
 .headersize 0x007E0000-0x188440
 .orga 0x188440
-.area 0x10000
+.area 0x10000,0x01
 
 .definelabel topbhv_funcs_start, 0x807E0000
 .include "Objects/topbhv/funcs.asm"
@@ -33,7 +33,7 @@ CVT.S.W    F0, F0
 ; part 3 (0x807F0000-0x807F7800)
 .headersize 0x807F0000-0x198440
 .orga 0x198440
-.area 0x7800
+.area 0x7800,0x01
 
 .importobj "AI/stats_tracking.o"
 .importobj "AI/stats_tracking_debug.o"

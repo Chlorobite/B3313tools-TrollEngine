@@ -9,40 +9,40 @@
 .definelabel tex_stars_start, hud_crosses_start-(2*32*32*8*2)
 
 .orga tex_stars_start
-.area (2*32*32*8*2)
+.area (2*32*32*8*2),0x00
 .incbin "AI/powermeter/star/star_yellow.bin"
 .incbin "AI/powermeter/star/star_red.bin"
 .endarea
 .orga hud_crosses_start
-.area (3*16*16*2)
+.area (3*16*16*2),0x00
 .incbin "AI/powermeter/hud/brollcross.bin"
 .incbin "AI/powermeter/hud/sonkcross.bin"
 .incbin "AI/powermeter/hud/vanillacross.bin"
 .endarea
 .orga hud_stars_start
-.area (2*16*16*2)
+.area (2*16*16*2),0x00
 .incbin "AI/powermeter/hud/brollstar.bin"
 .incbin "AI/powermeter/hud/sonkstar.bin"
 .endarea
 .orga hud_numbers_start
-.area (2*10*16*16*2)
+.area (2*10*16*16*2),0x00
 .incbin "AI/powermeter/hud/betanum.bin"
 .incbin "AI/powermeter/hud/vanillanum.bin"
 .endarea
 .orga vanilla_start
-.area (8*32*32*2)
+.area (8*32*32*2),0x00
 .importobj "AI/powermeter/vanilla/vanilla.o"
 .endarea
 .orga broll1_start
-.area (9*64*64*2)
+.area (9*64*64*2),0x00
 .importobj "AI/powermeter/broll/broll.o"
 .endarea
 .orga broll2_start
-.area (9*64*64*2)
+.area (9*64*64*2),0x00
 .importobj "AI/powermeter/broll2/broll2.o"
 .endarea
 .orga sonk_start
-.area (9*64*64*2)
+.area (9*64*64*2),0x00
 .importobj "AI/powermeter/sonk/sonk.o"
 .endarea
 
