@@ -131,12 +131,12 @@ s16 camera_course_processing(register struct Camera *c) {
             // Check only the current area's triggers
             if (sCameraTriggers[level][b].area == area) {
                 // Copy the bounding box into center and bounds
-                vec3f_set(center, sCameraTriggers[level][b].centerX * levelScaleH,
-                                  sCameraTriggers[level][b].centerY * levelScaleV,
-                                  sCameraTriggers[level][b].centerZ * levelScaleH);
-                vec3f_set(bounds, sCameraTriggers[level][b].boundsX * levelScaleH,
-                                  sCameraTriggers[level][b].boundsY * levelScaleV,
-                                  sCameraTriggers[level][b].boundsZ * levelScaleH);
+                vec3f_scaled_set(center, sCameraTriggers[level][b].centerX,
+                                  sCameraTriggers[level][b].centerY,
+                                  sCameraTriggers[level][b].centerZ);
+                vec3f_scaled_set(bounds, sCameraTriggers[level][b].boundsX,
+                                  sCameraTriggers[level][b].boundsY,
+                                  sCameraTriggers[level][b].boundsZ);
 
                 // Check if Mario is inside the bounds
                 if (is_pos_in_bounds(sMarioCamState->pos, center, bounds,
