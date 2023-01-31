@@ -70,7 +70,9 @@ u32 take_damage_and_knock_back(register struct MarioState *m, register struct Ob
         }
 
         update_mario_sound_and_camera(m);
+		// EDIT: not enough space, offload lava bob-ombs lava boost check to AI/personalization_helpers.c
 		return troll_knockback(m, o, damage);
+		// END EDIT
     }
 
     return FALSE;

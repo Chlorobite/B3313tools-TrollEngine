@@ -38,5 +38,6 @@ enum ToadMessageStates {
 
 
 void toad_message_talking() {
+	// new function too big for our changes; implementation in AI/personalization_helpers.c
     troll_toad_message_talking();
 }

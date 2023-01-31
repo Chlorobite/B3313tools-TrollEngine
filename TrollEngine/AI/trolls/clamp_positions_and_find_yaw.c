@@ -34,10 +34,12 @@ extern struct Camera *gCamera;
 s32 clamp_positions_and_find_yaw(Vec3f pos, Vec3f origin, register f32 xMax, register f32 xMin, register f32 zMax, register f32 zMin) {
     s16 yaw = gCamera->nextYaw;
 
+	// ADD: level scale messes with hardcoded positions, so scale the bounds
     xMax *= levelScaleH;
     xMin *= levelScaleH;
     zMax *= levelScaleH;
     zMin *= levelScaleH;
+	// END ADD
     if (pos[0] >= xMax) {
         pos[0] = xMax;
     }

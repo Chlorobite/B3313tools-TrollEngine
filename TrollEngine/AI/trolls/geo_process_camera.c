@@ -103,13 +103,17 @@ void geo_process_camera(struct GraphNodeCamera *node) {
     gMatStackIndex++;
     mtxf_to_mtx(mtx, gMatStack[gMatStackIndex]);
     gMatStackFixed[gMatStackIndex] = mtx;
+	// ADD: level scale, set renderingLevel flag for level scale
     renderingLevel = TRUE;
+	// END ADD
     if (node->fnNode.node.children != 0) {
         gCurGraphNodeCamera = node;
         node->matrixPtr = &gMatStack[gMatStackIndex];
         geo_process_node_and_siblings(node->fnNode.node.children);
         gCurGraphNodeCamera = NULL;
     }
+	// ADD: level scale, unset renderingLevel flag; don't apply level scale
     renderingLevel = FALSE;
+	// END ADD
     gMatStackIndex--;
 }

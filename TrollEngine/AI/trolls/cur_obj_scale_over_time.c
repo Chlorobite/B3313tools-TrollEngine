@@ -38,7 +38,11 @@ void cur_obj_scale_over_time(s32 a0, s32 a1, register f32 from, register f32 to)
     register f32 lerp = (f32)o->oTimer / a1;
     register f32 scale = lerp * diff + from;
 
+	// EDIT: level scale, since this function is used by level scaled objects (cap and purple switches),
+	// scale the output of cur_obj_scale_over_time as well
+	// (POSSIBLE BUG: this makes the assumption that the object is supposed to be affected by the level scale!)
     if (a0 & 0x01) o->header.gfx.scale[0] = levelScaleH * scale;
     if (a0 & 0x02) o->header.gfx.scale[1] = levelScaleV * scale;
     if (a0 & 0x04) o->header.gfx.scale[2] = levelScaleH * scale;
+	// END EDIT
 }

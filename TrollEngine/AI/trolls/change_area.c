@@ -27,5 +27,6 @@
 
 
 void change_area(s32 index) {
+	// new function too big for our changes; implementation in AI/personalization_helpers.c
     troll_change_area(index);
 }

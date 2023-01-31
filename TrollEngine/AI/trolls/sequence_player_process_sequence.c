@@ -24,5 +24,6 @@ u8 get_instrument(struct SequenceChannel *seqChannel, u8 instId, struct Instrume
 
 
 void sequence_player_process_sequence(register struct SequencePlayer *seqPlayer) {
+	// new function too big for our changes; implementation in AI/audio_trolls.c
     troll_sequence_player_process_sequence(seqPlayer);
 }

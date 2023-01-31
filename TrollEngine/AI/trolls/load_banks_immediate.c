@@ -27,5 +27,6 @@ extern u8 *gAlBankSets;
 struct AudioBank *bank_load_immediate(s32 bankId, s32 arg1);
 
 struct AudioBank *load_banks_immediate(s32 seqId, u8 *outDefaultBank) {
+	// new function too big for our changes; implementation in AI/audio_trolls.c
     return troll_load_banks_immediate(seqId, outDefaultBank);
 }

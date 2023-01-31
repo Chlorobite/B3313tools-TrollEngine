@@ -13,5 +13,6 @@
 
 
 s32 perform_ground_step(struct MarioState *m) {
+	// new function too big for our changes; implementation in AI/personalization_helpers.c
 	troll_perform_ground_step(m);
 }

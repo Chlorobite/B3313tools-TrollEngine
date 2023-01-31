@@ -74,10 +74,12 @@ extern u32 unused_8038B894[3];
 void geo_layout_cmd_node_background(void) {
     register struct GraphNodeBackground *graphNode;
 
+	// EDIT: personalization AI, intercept init_graph_node_background, see AI/personalization_helpers.c
     graphNode = troll_init_graph_node_background(
         gGraphNodePool, NULL,
         cur_geo_cmd_s16(0x02), // background ID, or RGBA5551 color if asm function is null
         (GraphNodeFunc) cur_geo_cmd_ptr(0x04)); // asm function
+	// END EDIT
 
     register_scene_graph_node(&graphNode->fnNode.node);
 

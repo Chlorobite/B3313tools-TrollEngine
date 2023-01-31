@@ -19,7 +19,7 @@ extern u16 sTransitionTextureFadeCount[2];
 extern s32 render_frame_count;
 
 s32 set_and_reset_transition_fade_timer(register s8 fadeTimer, register u8 transTime) {
-    sTransitionColorFadeCount[fadeTimer] += render_frame_count;
+    sTransitionColorFadeCount[fadeTimer] += render_frame_count; // EDIT: frameskip engine
 
     if (sTransitionColorFadeCount[fadeTimer] >= transTime) {
         sTransitionColorFadeCount[fadeTimer] = 0;

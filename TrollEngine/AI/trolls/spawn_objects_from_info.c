@@ -82,5 +82,7 @@ void spawn_objects_from_info(UNUSED s32 unused, register struct SpawnInfo *spawn
         spawnInfo = spawnInfo->next;
     }
     
+	// ADD: personalization AI, see AI/post_object_load_pass.c
     addMoreObjects();
+	// END ADD
 }

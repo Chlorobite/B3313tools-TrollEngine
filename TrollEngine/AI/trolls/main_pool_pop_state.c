@@ -58,7 +58,7 @@ u32 main_pool_pop_state(void) {
     sPoolListHeadR = gMainPoolState->listHeadR;
     gMainPoolState = gMainPoolState->prev;
     
-    clear_model_loaded();
+    clear_model_loaded(); // AI/personalization_helpers.c
     
     return sPoolFreeSpace;
 }

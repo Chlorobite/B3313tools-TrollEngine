@@ -56,7 +56,7 @@ void interceptSegLoad(u8 segId, u8 **segStart, u8 **segEnd);
 s32 coin_troll_hitbox(struct Object *o);
 void personalize_coin(struct Object *o, u8 type);
 void personalized_interact_coin(struct MarioState *m, struct Object *o);
-u32 funny_burn_mario(register struct Object *_o, register struct MarioState *m);
+u32 lava_goomba_funny_burn_mario(register struct Object *_o, register struct MarioState *m);
 extern u8 sGoombaImmuneAttackHandlers[6];
 void obj_scale_personalized(struct Object *obj);
 

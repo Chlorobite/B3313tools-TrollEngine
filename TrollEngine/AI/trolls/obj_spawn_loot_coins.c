@@ -40,6 +40,9 @@ void obj_spawn_loot_coins(register struct Object *obj, s32 numCoins, f32 sp30,
     register s32 i;
     register struct Object *coin;
 
+	// REMOVE: coin spawn height override
+	// (they snapped to the ground if the coins spawned less than 100 units above, kinda useless)
+
     spawningLootCoins = TRUE;
     for (i = 0; i < numCoins; i++) {
         if (obj->oNumLootCoins <= 0) {
@@ -53,7 +56,8 @@ void obj_spawn_loot_coins(register struct Object *obj, s32 numCoins, f32 sp30,
         coin->oCoinUnk110 = sp30;
     }
     
-    // increase murder count
+    // ADD: personalization AI, increase murder count
     if (numCoins != 0 && get_object_list_from_behavior(obj->behavior) != OBJ_LIST_SURFACE)
         TRACKER_accum_murder += 0.1f;
+	// END ADD
 }

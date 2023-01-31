@@ -37,8 +37,11 @@ extern struct PlayerCameraState *sMarioCamState;
 f32 absf(f32 val);
 
 s32 is_within_100_units_of_mario(register f32 posX, register f32 posY, register f32 posZ) {
+	// EDIT: level scale messes with hardcoded positions, so scale the position tested
+	// also optimize a bit
     register Vec3f pos;
 
     vec3f_scaled_set(pos, posX, posY, posZ);
-    return calc_abs_dist(sMarioCamState->pos, pos) < 100.f;
+    return calc_abs_dist(sMarioCamState->pos, pos) < 100.f; // should we scale the 100 unit margin too, just to be safe?
+	// END EDIT
 }

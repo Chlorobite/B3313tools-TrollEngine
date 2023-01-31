@@ -35,6 +35,9 @@ enum ToadMessageStates {
 
 
 void bhv_toad_message_init(void) {
+	// EDIT: See object docs channel; Toads, instead of being hardcoded to check stars for 3 different dialog options,
+	// can now check any star ID and set any dialog ID if the star is collected.
+	// Also removed the star count check; Toads are always available now
     register s32 dialogId = (gCurrentObject->oBehParams >> 24) & 0xFF;
     register s32 dialogIdPostStar = (gCurrentObject->oBehParams >> 16) & 0xFF;
     register s32 starId = (gCurrentObject->oBehParams & 0x1FF);
@@ -53,4 +56,5 @@ void bhv_toad_message_init(void) {
 	gCurrentObject->oToadMessageRecentlyTalked = FALSE;
 	gCurrentObject->oToadMessageState = TOAD_MESSAGE_FADED;
 	gCurrentObject->oOpacity = 81;
+	// END EDIT
 }

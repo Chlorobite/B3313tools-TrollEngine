@@ -40,9 +40,11 @@ void create_camera(register struct GraphNodeCamera *gc, struct AllocOnlyPool *po
     c->defMode = mode;
     c->cutscene = 0;
     c->doorStatus = DOOR_DEFAULT;
+	// EDIT: level scale messes with hardcoded positions, so scale the 'area center' position
     c->areaCenX = gc->focus[0] * levelScaleH;
     c->areaCenY = gc->focus[1] * levelScaleV;
     c->areaCenZ = gc->focus[2] * levelScaleH;
+	// END EDIT
     c->yaw = 0;
     vec3f_copy(c->pos, gc->pos);
     vec3f_copy(c->focus, gc->focus);

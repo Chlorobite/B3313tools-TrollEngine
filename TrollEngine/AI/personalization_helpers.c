@@ -791,7 +791,7 @@ void personalized_interact_coin(struct MarioState *m, struct Object *o) {
 
 
 extern s16 sInvulnerable;
-u32 funny_burn_mario(register struct Object *_o, register struct MarioState *m) {
+u32 lava_goomba_funny_burn_mario(register struct Object *_o, register struct MarioState *m) {
     u32 burningAction = ACT_BURNING_JUMP;
     
     if (_o->oDistanceToMario > 200.0f) {
@@ -1089,7 +1089,8 @@ struct GraphNodeBackground *troll_init_graph_node_background(struct AllocOnlyPoo
 }
 
 u32 troll_knockback(register struct MarioState *m, register struct Object *o, register u32 damage) {
-    if (levelType == 6 && o->behavior == segmented_to_virtual(bhvExplosion)) {
+    // Lava bob-ombs cause lava boost instead of knockback
+	if (levelType == 6 && o->behavior == segmented_to_virtual(bhvExplosion)) {
         return drop_and_set_mario_action(m, ACT_LAVA_BOOST, 1);
     }
     return drop_and_set_mario_action(m, determine_knockback_action(m, o->oDamageOrCoinValue), damage);
@@ -1245,12 +1246,13 @@ s32 troll_bowser_nyoom(register struct Object *_o) {
 void troll_mark_goomba_as_dead() {
     register struct Object *_o = gCurrentObject;
     register struct Object *_o_parentObj = _o->parentObj;
-    // prevent remote kills from burning mario
-    funny_burn_mario(_o, gMarioState);
+
+	// direct contact with lava goomba burns mario after killing
+    lava_goomba_funny_burn_mario(_o, gMarioState);
 
     if (_o_parentObj != _o) {
         register s32 trol = (_o->oBehParams2ndByte & GOOMBA_BP_TRIPLET_FLAG_MASK);
-        
+
         set_object_respawn_info_bits(_o_parentObj, trol >> 2);
 
         _o_parentObj->oBehParams |= trol << 6;
@@ -1382,8 +1384,10 @@ void troll_change_area(register s32 index) {
         gCurrentArea->flags = areaFlags;
         gMarioObject->oActiveParticleFlags = 0;
         
+		// ADD: (change_area) on instant warp, reset BGM and play painting sound
         set_background_music(gCurrentArea->musicParam, gCurrentArea->musicParam2, 0);
         play_sound(SOUND_GENERAL_PAINTING_EJECT, gGlobalSoundSource);
+		// END ADD
     }
 
     if (areaFlags & 0x01) {
@@ -1599,6 +1603,7 @@ s32 troll_cur_obj_update_dialog(s32 actionArg, s32 dialogFlags, s32 dialogID) {
     s32 doneTurning = TRUE;
 
     switch (o->oDialogState) {
+		// EDIT: restore JP behavior (beta)
         case DIALOG_STATUS_ENABLE_TIME_STOP:
             //! We enable time stop even if Mario is not ready to speak. This
             //  allows us to move during time stop as long as Mario never enters
@@ -1609,16 +1614,20 @@ s32 troll_cur_obj_update_dialog(s32 actionArg, s32 dialogFlags, s32 dialogID) {
                 o->oDialogState++;
             }
             break;
+		// END EDIT
 
         case DIALOG_STATUS_INTERRUPT:
-            // Additional flag that makes the NPC rotate towards to Mario
+            // ADD: Handle flag that makes the NPC rotate towards to Mario
             if (dialogFlags & DIALOG_FLAG_TURN_TO_MARIO) {
                 doneTurning = cur_obj_rotate_yaw_toward(obj_angle_to_object(o, gMarioObject), 0x800);
                 // Failsafe just in case it takes more than 33 frames somehow
+				// IT'S B33 AGAIN THEY LITERALLY JUST MADE IT AGAIN
                 if (o->oDialogResponse >= 33) {
                     doneTurning = TRUE;
                 }
             }
+			// END ADD
+			
             // Interrupt status until Mario is actually speaking with the NPC and if the
             // object is done turning to Mario
             if (set_mario_npc_dialog(actionArg) == MARIO_DIALOG_STATUS_SPEAK && doneTurning) {

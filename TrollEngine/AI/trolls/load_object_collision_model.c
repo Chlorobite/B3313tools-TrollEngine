@@ -35,7 +35,9 @@ void load_object_collision_model(void) {
         gCurrentObject->oDrawingDistance = gCurrentObject->oCollisionDistance;
     }
     
+	// ADD: scale distance by object scale (not doing this was causing issues mainly with level scale)
     tangibleDist *= (gCurrentObject->header.gfx.scale[0] + gCurrentObject->header.gfx.scale[1] + gCurrentObject->header.gfx.scale[2]) / 3.0f;
+	// END ADD
 
     // Update if no Time Stop, in range, and in the current room.
     if (!(gTimeStopState & TIME_STOP_ACTIVE) && marioDist < tangibleDist

@@ -32,6 +32,7 @@
 
 
 s32 bhv_cmd_begin(void) {
+	// EDIT: reduce code size of haunted chair and mad piano check
 	register u32 *bhv = virtual_to_segmented(0x13, gCurrentObject->behavior);
     // These objects were likely very early objects, which is why this code is here
     // instead of in the respective behavior scripts.
@@ -40,14 +41,18 @@ s32 bhv_cmd_begin(void) {
     if (bhv == bhvHauntedChair || bhv == bhvMadPiano) {
         bhv_init_room();
     }
-    // Set collision distance if the object is a message panel.
+	// END EDIT: reduce code size of haunted chair and mad piano check
+    // REMOVE: Set collision distance if the object is a message panel. (message panels are unused; area overflow otherwise)
     /*if (bhv == bhvMessagePanel) {
         gCurrentObject->oCollisionDistance = 150.0f;
     }*/
+	// END REMOVE
     
+	// ADD: level scale, scale surface type objects when they load
     if (BHV_CMD_GET_2ND_U8(0) == OBJ_LIST_SURFACE) {
         obj_scale_personalized(gCurrentObject);
     }
+	// END ADD
     gCurBhvCommand++;
     return BHV_PROC_CONTINUE;
 }

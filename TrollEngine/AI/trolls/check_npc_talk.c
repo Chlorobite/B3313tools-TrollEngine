@@ -63,7 +63,9 @@ u32 check_npc_talk(register struct MarioState *m, register struct Object *o) {
 
             m->interactObj = m->usedObj = o;
 
+			// ADD: personalization AI, record data, see AI/stats_tracking.c
             TRACKER_on_npc_talk(o);
+			// END ADD
             ret = set_mario_action(m, ACT_WAITING_FOR_DIALOG, 0);
         }
     }

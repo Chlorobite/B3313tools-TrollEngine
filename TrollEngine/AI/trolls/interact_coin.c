@@ -51,6 +51,7 @@ extern s16 sInvulnerable;
 
 
 u32 interact_coin(register struct MarioState *m, UNUSED u32 interactType, register struct Object *o) {
+	// new function too big for our changes; implementation in AI/personalization_helpers.c
     personalized_interact_coin(m, o);
     o->oInteractStatus = INT_STATUS_INTERACTED;
     return FALSE;

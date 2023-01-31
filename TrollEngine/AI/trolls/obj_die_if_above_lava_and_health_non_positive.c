@@ -74,10 +74,12 @@ s32 obj_die_if_above_lava_and_health_non_positive(void) {
         return FALSE;
     }
 
+	// ADD: new object flag made for lava skeeters (0x8000)
     if (!(o->oFlags & OBJ_FLAG_RESIST_LAVA)) {
         obj_die_if_health_non_positive();
         return TRUE;
     }
+	// END ADD
     
     return FALSE;
 }

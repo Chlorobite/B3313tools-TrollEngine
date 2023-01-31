@@ -60,7 +60,7 @@ void *load_segment_decompress(register s32 segment, u8 *srcStart, u8 *srcEnd) {
     register u8 *compressed;
     register u32 *size;
     
-    interceptSegLoad((u8)segment, &srcStart, &srcEnd);
+    interceptSegLoad((u8)segment, &srcStart, &srcEnd); // AI/personalization_helpers.c
 
     compSize = ALIGN16(srcEnd - srcStart);
     compressed = main_pool_alloc(compSize, MEMORY_POOL_RIGHT);

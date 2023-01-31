@@ -46,12 +46,14 @@ void geo_set_animation_globals(register struct AnimInfo *node, s32 hasAnimation)
     register struct Animation *anim = node->curAnim;
 
     if (hasAnimation) {
+		// EDIT: frameskip engine, call geo_update_animation_frame for each frame we skipped
         register s32 __i;
         
         for (__i = 0; __i < render_frame_count; __i++)
             node->animFrame = geo_update_animation_frame(node, &node->animFrameAccelAssist);
         if (node->animFrame < 0)
             node->animFrame = 0;
+		// END EDIT
     }
     node->animTimer = gAreaUpdateCounter;
     gCurrAnimType = ANIM_TYPE_TRANSLATION;

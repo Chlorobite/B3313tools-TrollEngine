@@ -65,8 +65,13 @@ u32 check_read_sign(register struct MarioState *m, register struct Object *o) {
 
             m->interactObj = o;
             m->usedObj = o;
-            
+
+			// ADD: personalization AI, record data about you being a nerd
+			// (UNUSED: sign behavior doesn't really work in B3313; we instead use bob-omb buddies with the sign model,
+			// this calls check_npc_talk, which in turn calls TRACKER_on_npc_talk in AI/stats_tracking.c,
+			// which has a check for the sign model)
             TRACKER_accum_nerd += 0.25f;
+			// END ADD
             return set_mario_action(m, ACT_READING_SIGN, 0);
         }
     }

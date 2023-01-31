@@ -51,38 +51,47 @@ void update_hud_values(void) {
     if (gCurrCreditsEntry == NULL) {
         s16 numHealthWedges = gMarioState->health > 0 ? gMarioState->health >> 8 : 0;
 
+		// EDIT: always display coin count
         gHudDisplay.flags |= HUD_DISPLAY_FLAG_COIN_COUNT;
+		// END EDIT
 
         if (gHudDisplay.coins < gMarioState->numCoins) {
             if (gGlobalTimer & 1) {
+				// REMOVE: separate water coin sound
                 gHudDisplay.coins++;
                 play_sound(0x50218081, gMarioState->marioObj->header.gfx.cameraToObject);
+				// END REMOVE
             }
         }
 
+		// ADD: handle losing coins (purple coins)
         if (gHudDisplay.coins > gMarioState->numCoins) {
             if (gGlobalTimer & 1) {
                 gHudDisplay.coins--;
                 play_sound(SOUND_OBJ_BOO_LAUGH_SHORT, gMarioState->marioObj->header.gfx.cameraToObject);
             }
         }
+		// END ADD
 
         if (gMarioState->numLives > 100) {
             gMarioState->numLives = 100;
         }
 
+		// EDIT: real beta, instead of capping at 999, add 1ups at 100 coins
         if (gHudDisplay.coins >= 100) {
             gHudDisplay.coins -= 100;
             gMarioState->numCoins -= 100;
             gMarioState->numLives++;
             play_sound(SOUND_GENERAL_COLLECT_1UP, gMarioState->marioObj->header.gfx.cameraToObject);
         }
+		// also handle going into the negatives
         else if (gHudDisplay.coins < 0) {
             gHudDisplay.coins += 100;
             gMarioState->numCoins += 100;
             gMarioState->numLives--;
             play_sound(0x701FFF81, gMarioState->marioObj->header.gfx.cameraToObject);
         }
+		// END EDIT
 
         gHudDisplay.stars = gMarioState->numStars;
         gHudDisplay.lives = gMarioState->numLives;

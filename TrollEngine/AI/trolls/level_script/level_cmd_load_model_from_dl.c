@@ -8,7 +8,7 @@ void level_cmd_load_model_from_dl(void) {
     if (val1 < 256) {
         gLoadedGraphNodes[val1] =
             (struct GraphNode *) init_graph_node_display_list(sLevelPool, 0, val2, val3);
-        set_model_loaded(val1, TRUE);
+        set_model_loaded(val1, TRUE); // AI/personalization_helpers.c
     }
 
     sCurrentCmd = CMD_NEXT;

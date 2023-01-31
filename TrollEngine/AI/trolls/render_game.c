@@ -99,7 +99,7 @@ void render_game(void) {
                     }
                 }
             } else {
-                gWarpTransDelay -= render_frame_count;
+                gWarpTransDelay -= render_frame_count; // EDIT: frameskip engine
             }
         }
     } else {

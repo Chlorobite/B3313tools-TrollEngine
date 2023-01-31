@@ -38,6 +38,7 @@ extern s32 gCurrLevelArea;
 extern u32 gPrevLevel;
 
 
+// BAD NAME, rename to get_cutscene_from_mario_status, and remove from trollfinity.asm if it conflicts
 u8 troll_get_cutscene_from_mario_status(struct Camera *c) {
     u8 cutscene = c->cutscene;
 
@@ -47,16 +48,7 @@ u8 troll_get_cutscene_from_mario_status(struct Camera *c) {
         sObjectCutscene = 0;
         if (sMarioCamState->cameraEvent == CAM_EVENT_DOOR) {
             switch (gCurrLevelArea) {
-                case AREA_CASTLE_LOBBY:
-                    //! doorStatus is never DOOR_ENTER_LOBBY when cameraEvent == 6, because
-                    //! doorStatus is only used for the star door in the lobby, which uses
-                    //! ACT_ENTERING_STAR_DOOR
-                    if (c->doorStatus == DOOR_LEAVING_SPECIAL) {
-                        cutscene = open_door_cutscene(CUTSCENE_DOOR_PULL_MODE, CUTSCENE_DOOR_PUSH_MODE);
-                    } else {
-                        cutscene = open_door_cutscene(CUTSCENE_DOOR_PULL, CUTSCENE_DOOR_PUSH);
-                    }
-                    break;
+				// REMOVE: case AREA_CASTLE_LOBBY, handled by default case now
                 case AREA_BBH:
                     //! Castle Lobby uses 0 to mean 'no special modes', but BBH uses 1...
                     if (c->doorStatus == DOOR_LEAVING_SPECIAL) {
@@ -66,12 +58,13 @@ u8 troll_get_cutscene_from_mario_status(struct Camera *c) {
                     }
                     break;
                 default:
+					// EDIT: make doors check for camera triggers in areas that were set up for real camera
                     if (c->doorStatus == DOOR_LEAVING_SPECIAL) {
                         cutscene = open_door_cutscene(CUTSCENE_DOOR_PULL_MODE, CUTSCENE_DOOR_PUSH_MODE);
                     } else {
                         cutscene = open_door_cutscene(CUTSCENE_DOOR_PULL, CUTSCENE_DOOR_PUSH);
                     }
-//                    cutscene = open_door_cutscene(CUTSCENE_DOOR_PULL, CUTSCENE_DOOR_PUSH);
+					// END EDIT
                     break;
             }
         }
@@ -81,7 +74,9 @@ u8 troll_get_cutscene_from_mario_status(struct Camera *c) {
         if (sMarioCamState->cameraEvent == CAM_EVENT_CANNON) {
             cutscene = CUTSCENE_ENTER_CANNON;
         }
+		// REMOVE: real beta, removed CUTSCENE_ENTER_PAINTING
         switch (sMarioCamState->action) {
+			// EDIT: real beta, add actionTimer checks to fix the cutscenes running twice on exiting a painting
             case ACT_DEATH_EXIT:
 				if (gMarioState->actionTimer < 10) {
 					cutscene = CUTSCENE_DEATH_EXIT;
@@ -92,6 +87,7 @@ u8 troll_get_cutscene_from_mario_status(struct Camera *c) {
 					cutscene = CUTSCENE_EXIT_PAINTING_SUCC;
 				}
 				break;
+			// END EDIT
             case ACT_SPECIAL_EXIT_AIRBORNE:
                 if (gPrevLevel == LEVEL_BOWSER_1 || gPrevLevel == LEVEL_BOWSER_2
                     || gPrevLevel == LEVEL_BOWSER_3) {
@@ -139,11 +135,13 @@ u8 troll_get_cutscene_from_mario_status(struct Camera *c) {
             case ACT_ELECTROCUTION:
                 cutscene = CUTSCENE_STANDING_DEATH;
                 break;
+			// EDIT: real beta, normal star dances just always use CUTSCENE_DANCE_DEFAULT
             case ACT_STAR_DANCE_EXIT:
             case ACT_STAR_DANCE_WATER:
             case ACT_STAR_DANCE_NO_EXIT:
                 cutscene = CUTSCENE_DANCE_DEFAULT;
                 break;
+			// END EDIT
         }
         switch (sMarioCamState->cameraEvent) {
             case CAM_EVENT_START_INTRO:

@@ -54,7 +54,9 @@ extern u8 sDisplayingDoorText;
 
 u32 interact_door(register struct MarioState *m, UNUSED u32 interactType, register struct Object *o) {
     register s16 requiredNumStars = o->oBehParams >> 24;
+	// EDIT: check red stars if the required number of stars is 13 every time
     register s16 numStars = requiredNumStars == 13 ? get_red_star_count(gCurrSaveFileNum - 1) : save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1);
+	// END EDIT
 
     if (m->action == ACT_WALKING || m->action == ACT_DECELERATING) {
         if (numStars >= requiredNumStars) {
@@ -100,7 +102,7 @@ u32 interact_door(register struct MarioState *m, UNUSED u32 interactType, regist
                 case 50:
                     text = DIALOG_028 << 16;
                     break;
-                case 13:
+                case 13: // EDIT: 70 star doors are unused, so replace with 13
                     text = DIALOG_029 << 16;
                     break;
             }
@@ -111,6 +113,7 @@ u32 interact_door(register struct MarioState *m, UNUSED u32 interactType, regist
             return set_mario_action(m, ACT_READING_AUTOMATIC_DIALOG, text);
         }
     }
+	// REMOVE: special case where the 70 star door lets you in anyway, as they are unused
 
     return FALSE;
 }

@@ -6,6 +6,7 @@ void level_cmd_begin_area(void) {
 
     area_geo_load_intercept(areaIndex, (u32*)geoLayoutAddr);
 
+	// REMOVE: area ID check (pointless)
     {
         struct GraphNodeRoot *screenArea =
             (struct GraphNodeRoot *) process_geo_layout(sLevelPool, geoLayoutAddr);

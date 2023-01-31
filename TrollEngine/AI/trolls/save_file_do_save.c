@@ -54,6 +54,9 @@ void save_file_do_save(s32 fileIndex) {
         gSaveFileModified = FALSE;
     }
 
+	// ADD: avoid overriding the main menu data...?
+	// seems like it prevents AI stuff from actually being saved, probably remove this lol
     gMainMenuDataModified = TRUE;
+	// END ADD
     save_main_menu_data();
 }

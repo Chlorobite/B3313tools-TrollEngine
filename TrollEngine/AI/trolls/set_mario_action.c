@@ -71,7 +71,9 @@ u32 set_mario_action(struct MarioState *m, u32 action, u32 actionArg) {
     m->actionState = 0;
     m->actionTimer = 0;
 
+	// ADD: personalization AI, see AI/stats_tracking.c
     TRACKER_handle_mario_state_change(m);
+	// END ADD
 
     return TRUE;
 }

@@ -48,22 +48,10 @@ void save_file_load_all(void) {
     bzero(&gSaveBuffer, sizeof(gSaveBuffer));
     read_eeprom_data(&gSaveBuffer, sizeof(gSaveBuffer));
 
-    // Load the personalization data
+    // ADD: Load the personalization data
     TRACKER_read_save((u16*)&gSaveBuffer.menuData[0]);
-    // Verify the main menu data and create a backup copy if only one of the slots is valid.
-    /*validSlots = verify_save_block_signature(&gSaveBuffer.menuData[0], sizeof(gSaveBuffer.menuData[0]), MENU_DATA_MAGIC);
-    validSlots |= verify_save_block_signature(&gSaveBuffer.menuData[1], sizeof(gSaveBuffer.menuData[1]),MENU_DATA_MAGIC) << 1;
-    switch (validSlots) {
-        case 0: // Neither copy is correct
-            wipe_main_menu_data();
-            break;
-        case 1: // Slot 0 is correct and slot 1 is incorrect
-            restore_main_menu_data(0);
-            break;
-        case 2: // Slot 1 is correct and slot 0 is incorrect
-            restore_main_menu_data(1);
-            break;
-    }*/
+	// END ADD
+    // REMOVE: Verification of the main menu data, as the backup data is unusable, occupied by the AI instead. Pray it doesn't explode.
 
     for (file = 0; file < NUM_SAVE_FILES; file++) {
         // Verify the save file and create a backup copy if only one of the slots is valid.

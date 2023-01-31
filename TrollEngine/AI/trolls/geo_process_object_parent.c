@@ -87,7 +87,9 @@ extern struct GraphNodeHeldObject *gCurGraphNodeHeldObject;
 extern u16 gAreaUpdateCounter;
 
 void geo_process_object_parent(register struct GraphNodeObjectParent *node) {
+	// ADD: level scale, unset renderingLevel flag for object drawing
     renderingLevel = FALSE;
+	// END ADD
     if (node->sharedChild != NULL) {
         node->sharedChild->parent = (struct GraphNode *) node;
         geo_process_node_and_siblings(node->sharedChild);
@@ -96,5 +98,7 @@ void geo_process_object_parent(register struct GraphNodeObjectParent *node) {
     if (node->node.children != NULL) {
         geo_process_node_and_siblings(node->node.children);
     }
+	// ADD: level scale, we're done drawing objects, set renderingLevel flag again
     renderingLevel = TRUE;
+	// END ADD
 }

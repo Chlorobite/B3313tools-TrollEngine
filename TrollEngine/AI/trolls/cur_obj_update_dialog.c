@@ -32,5 +32,6 @@
 
 
 s32 cur_obj_update_dialog(s32 actionArg, s32 dialogFlags, s32 dialogID, UNUSED s32 unused) {
+	// new function too big for our changes; implementation in AI/personalization_helpers.c
 	troll_cur_obj_update_dialog(actionArg, dialogFlags, dialogID);
 }

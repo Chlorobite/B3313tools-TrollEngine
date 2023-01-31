@@ -57,7 +57,7 @@ void *dynamic_dma_read(u8 *srcStart, u8 *srcEnd, u32 side);
 void *load_segment(register s32 segment, u8 *srcStart, u8 *srcEnd, register u32 side) {
     register void *addr;
     
-    interceptSegLoad((u8)segment, &srcStart, &srcEnd);
+    interceptSegLoad((u8)segment, &srcStart, &srcEnd); // AI/personalization_helpers.c
 
     return troll_dynamic_dma_read_and_set_segment(srcStart, srcEnd, side, segment);
 }

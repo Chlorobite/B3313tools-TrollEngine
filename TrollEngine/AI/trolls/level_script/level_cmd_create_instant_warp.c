@@ -23,7 +23,9 @@ void level_cmd_create_instant_warp(void) {
         warp->displacement[1] = CMD_GET(s16, 6);
         warp->displacement[2] = CMD_GET(s16, 8);
         
+		// ADD: level scale
         scale_instant_warp(warp);
+		// END ADD
     }
 
     sCurrentCmd = CMD_NEXT;

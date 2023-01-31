@@ -109,7 +109,9 @@ s32 execute_mario_action(UNUSED struct Object *o) {
         play_infinite_stairs_music();
         gMarioState->marioObj->oInteractStatus = 0;
 
+		// ADD: personalization AI, while Mario is being updated, record data about him (see AI/stats_tracking.c)
         TRACKER_record_mario_state(gMarioState);
+		// END ADD
 
         return gMarioState->particleFlags;
     }

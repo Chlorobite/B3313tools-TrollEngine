@@ -59,6 +59,7 @@ s32 cur_obj_follow_path(UNUSED s32 unusedArg) {
 
     o->oPathedPrevWaypointFlags = lastWaypoint->flags | WAYPOINT_FLAGS_INITIALIZED;
 
+	// EDIT: level scale messes with hardcoded positions, so scale the path positions
     prevToNextX = (targetWaypoint->pos[0] - lastWaypoint->pos[0]) * levelScaleH;
     prevToNextY = (targetWaypoint->pos[1] - lastWaypoint->pos[1]) * levelScaleV;
     prevToNextZ = (targetWaypoint->pos[2] - lastWaypoint->pos[2]) * levelScaleH;
@@ -66,6 +67,7 @@ s32 cur_obj_follow_path(UNUSED s32 unusedArg) {
     objToNextX = targetWaypoint->pos[0] * levelScaleH - o->oPosX;
     objToNextY = targetWaypoint->pos[1] * levelScaleV - o->oPosY;
     objToNextZ = targetWaypoint->pos[2] * levelScaleH - o->oPosZ;
+	// END EDIT
     objToNextXZ = sqrtf(sqr(objToNextX) + sqr(objToNextZ));
 
     o->oPathedTargetYaw = atan2s(objToNextZ, objToNextX);

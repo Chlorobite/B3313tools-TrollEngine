@@ -1,8 +1,10 @@
 #include "Trolls/bhv/bhv_headers.h"
 
 void common_anchor_mario_behavior(register f32 sp28, register f32 sp2C, register s32 sp30) {
+	// ADD: personalization AI, scale throw force (chuckya, king bom) by difficulty modifier
     sp28 *= TRACKER_difficulty_modifier_sqrt_half;
     sp2C *= TRACKER_difficulty_modifier_sqrt_half;
+	// END ADD
     
     switch (o->parentObj->oChuckyaUnk88) {
         case 1:

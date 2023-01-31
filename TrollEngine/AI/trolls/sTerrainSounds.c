@@ -1,5 +1,6 @@
 #include "sm64.h"
 
+// screw doing this in binary lol
 s8 sTerrainSounds[7][6] = {
     // default,              hard,                 slippery,
     // very slippery,        noisy default,        noisy slippery

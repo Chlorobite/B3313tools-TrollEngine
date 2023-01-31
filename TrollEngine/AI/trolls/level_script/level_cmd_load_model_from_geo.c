@@ -6,7 +6,7 @@ void level_cmd_load_model_from_geo(void) {
 
     if (arg0 < 256) {
         gLoadedGraphNodes[arg0] = process_geo_layout(sLevelPool, arg1);
-        set_model_loaded(arg0, TRUE);
+        set_model_loaded(arg0, TRUE); // AI/personalization_helpers.c
     }
 
     sCurrentCmd = CMD_NEXT;

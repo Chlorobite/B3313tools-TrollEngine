@@ -116,7 +116,9 @@ void movtex_make_quad_vertex(Vtx *verts, s32 index, s16 x, s16 y, s16 z, s16 rot
                              f32 scale, u8 alpha) {
     register s16 s = 32.f * (32.f * scale - 1.f) * sins(rot + rotOffset);
     register s16 t = 32.f * (32.f * scale - 1.f) * coss(rot + rotOffset);
+	// EDIT: darken moving textures at night
     register s8 maxColor = (nightMode ? 191 : 255);
+	// END EDIT
 
     if (gMovtexVtxColor == MOVTEX_VTX_COLOR_YELLOW) {
         make_vertex(verts, index, x, y, z, s, t, maxColor, maxColor, 0, alpha);

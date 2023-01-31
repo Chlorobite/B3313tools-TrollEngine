@@ -23,6 +23,8 @@ void push_or_sidle_wall(register struct MarioState *m, Vec3f startPos) {
     //! (Speed Crash) If a wall is after moving 16384 distance, this crashes.
     s32 val04 = (s32)(movedDistance * 2.0f * 0x10000);
 
+	// REMOVE: real beta, adding the wall bug, don't set mario's forward velocity here
+	// instead, it is capped during ground step (troll_perform_ground_step in AI/personalization_helpers.c)
     //if (m->forwardVel > 6.0f) {
     //    mario_set_forward_vel(m, 6.0f);
     //}
