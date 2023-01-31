@@ -1,5 +1,8 @@
 ; The purpose of bhv trolls is to edit existing objects' behavior
 
+; Objects edited for difficulty scaling: bosses, Koopa the Quick
+; Objects edited for discoloration: coin, amp, bob-omb, goomba
+
 ; Game segment
 .headersize 0x80245000
 

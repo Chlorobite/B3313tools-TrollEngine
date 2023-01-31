@@ -2,19 +2,25 @@
 .open "../Bee/b3313 silved.z64", "../Bee/b3313 new.z64", 0
 .include "trollfinity.asm" ; the asm behind the trolling
 
-; fixes mario's level entry cutscene crashing on n64
+; fixes mario's level entry cutscene crashing on n64 due to float operation in delay slot?
 .orga 0x146C0
-.word 0x00000000
-.word 0x46105481
-.word 0x4612303C
+NOP
+SUB.S   F18, F10, F16
+C.LT.S  F6, F18
 
-.include "AI/ai.asm"
+.include "AI/ai.asm" ; no way there is a personaliatoin real ai ai chatgpt real stable diffusion
 
+; expand area IDs from 8 to 33
 .include "Trolls/areatroll/areatroll.asm"
+; focus object behavior (0x1F000500), and beta lobby stuff
 .include "Trolls/cameratroll/focus_object.asm"
+; global star IDs: any star ID >=16 will directly correspond to a specific star ID in the save file,
+; as opposed to referencing the current level's stars
 .include "Trolls/global_star_ids/global stars.asm"
+; a big fat list of behavior functions
 .include "Trolls/bhv/bhv.asm"
 
+; See object docs
 .include "Objects/blaarg/blarg.asm"
 .include "Objects/gombatower/gomba tower.asm"
 .include "Objects/mirror/mirror_mario.asm"
@@ -25,18 +31,35 @@
 
 .include "Objects/GhostPeach.asm"
 
+; "O2" is a project to optimize some hot game functions (mainly collision) so it doesn't lagma like shit
+; then level scale was involved, so it was split into 2
+; no level scale mode probably doesn't work so don't bother, unless level scale is to be removed for any reason
+; (e.g. another minihack)
 ;.include "O2/o2_nolevelscale.asm"
 .include "O2/o2_levelscale.asm"
 
 
-; more audio size
-.orga 0xF0000
-.word 0x4000
+.orga 0xEFFFC
+; total audio heap size (there is unused stack space after)
+.word 0x80200600-0x801ce000
+; init pool size
+.word 0x3800
+
+; sound_init_main_pools
+; do not allocate space in audio pools, instead, allocate 807F4000-807F7800
+.orga 0xD2138 ;80317138
+LUI     A1, 0x807F
+ORI     A1, A1, 0x4000
+; remove ADDU and SUBU since pointless now
+.orga 0xD2168 ;80317168
+OR      A1, T6, R0
+JAL     0x803170B4
+OR      A2, T7, R0
 
 ; sound pools
 .orga 0xEE2AC
-.word 0x5800
-.word 0x8800
+.word 0x8000 ; permanent note partition
+.word 0xB330 ; temporary note partition
 
 
 

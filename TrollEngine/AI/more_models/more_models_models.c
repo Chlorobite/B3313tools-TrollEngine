@@ -42,6 +42,9 @@ static const Vtx vtx_star[] = {
 /********************************************************************************/
 /*	Texture data of star coin.													*/
 /********************************************************************************/
+// where's the source material for the white stars?
+// uhh idk nintendo forced us to delete them lol hf
+// (protip: they're literally just the white stars from the title screen)
 static const u8 star_coin1_txt[] = {
 #include "white_star_0.rgba16.inc.c"
 };

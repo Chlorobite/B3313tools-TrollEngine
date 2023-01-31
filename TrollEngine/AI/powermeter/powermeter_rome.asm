@@ -46,9 +46,10 @@
 .importobj "AI/powermeter/sonk/sonk.o"
 .endarea
 
+; restore vanilla power meter left/right textures
 .orga 0xAB2450+0x233E0
 .importobj "AI/powermeter/vanilla/vanilla_sides.o"
 
-; undo vanilla transparency
+; undo the vanilla power meter's transparency, as we use realbeta for broll and sonk now
 .orga 0xADB8E0
 .word 0xFCFFFFFF, 0xFFFCF279, 0xB900031D, 0x0F0A7008

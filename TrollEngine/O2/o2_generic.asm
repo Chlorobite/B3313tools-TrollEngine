@@ -1,3 +1,5 @@
+; The purpose of O2 
+
 ; Engine segment
 .headersize 0x80283280
 
@@ -134,7 +136,6 @@
 
 .org 0x802CF34C
 .area 0x802CF5B0-0x802CF34C
-;.definelabel create_shadow_below_xyz, 0x802CF34C
 .importobj "O2/shadow/create_shadow_below_xyz.o"
 .endarea
 ; make_shadow_vertex: this calculation is redundant now, and breaks bowser's shadow. skip it

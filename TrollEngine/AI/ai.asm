@@ -14,12 +14,17 @@
 .importobj "AI/yellow_coin_geolayout.o"
 
 ; skeeter moment
-.orga 0x31EB13C
-.word 0x1101A049
+; HOLY FUCKING SHIT
+; WE WERE PLACING THESE BYTES THIS WHOLE TIME
+; FUCKFUCKFUCKFUCK
+; do not uncomment, unless you want to absolutely make sure the skeeter has the lava immunity flag (it should already have it),
+; even then, please find segment 13 and fix the rom address
+;.orga 0x31EB13C
+;.word 0x1101A049 ; set lava immunity flag
 
-; dudaw troll
+; dudaw troll (allows adding condition to beta heal)
 .orga 0x120F764
-JAL     troll_betaheal
+JAL     troll_betaheal ; AI/personalization_helpers.c
 NOP
 NOP
 NOP
@@ -31,7 +36,7 @@ NOP
 .org 0x802523DC
 JAL     troll_get_additive_y_vel_for_jumps
 
-; mario cough trolled
+; mario cough trolled (do not play sound)
 .org 0x80261934+0xC
 NOP
 ;LUI     A0, 0x242E
@@ -72,7 +77,7 @@ BNE     T5, R0, 0x802DCC20
 .org 0x802DB120
 JAL     troll_print_generic_string
 
-; beta didn't have music fade out before bowser
+; real beta: disable music fade out on warp
 .org 0x8024AEAC
 NOP
 
@@ -85,7 +90,7 @@ JAL     0x8028EEB0
 J       troll_lvl_init_or_update
 NOP
 
-; unfuck my shit code
+; unfuck my shit code (mario luigi swap), so that it can be called by the troll double doors
 .org 0x8029AD90
 ; first check the L
 LUI     A0, 0x8033
@@ -353,15 +358,6 @@ NOP
 .importobj "AI/trolls/geo_process_object_parent.o"
 .endarea
 
-; load_area
-.org 0x8027AE58
-BNE     T6, R0, 0x8027AF38
-.org 0x8027AE7C
-BEQ     T9, R0, 0x8027AF38
-.org 0x8027AF30
-JAL     postObjectLoadPass
-NOP
-
 ; render_game
 .org 0x8027B3B4
 .area 0x8027B6C0-0x8027B3B4
@@ -402,6 +398,7 @@ NOP
 
 ; skybox.c
 ; create_skybox_facing_camera
+; instead of the JRB star check, the skybox darkens at night mode, if the background wasn't swapped for another
 .org 0x802CFF48
 LUI     AT, ((nightMode + 0x8000) >> 16)
 LBU     T7, (nightMode & 0xFFFF) (AT)

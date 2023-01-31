@@ -1,3 +1,4 @@
+; level_main_scripts_entry
 .orga 0x2ABCE0
 .word 0x22080001,0x040010D4 ; MODEL_MARIO
 .word 0x22080002,0x04047FD4 ; MODEL_LUIGI
@@ -45,4 +46,5 @@
 .word 0x220800DB,0x16000E14 ; MODEL_NUMBER
 .word 0x220800E0,0x16000020 ; MODEL_WHITE_PUFF
 .word 0x220800FF,0x007F8000 ;  CUSTOM_BETA_STAR_PUFF
+; ran out of space here; the rest of the objects are defined in more_models_levelscript.c
 .word 0x06080000,more_models_levelscript

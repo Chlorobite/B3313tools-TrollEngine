@@ -22,29 +22,33 @@ CVT.S.W    F0, F0
 ; part 2 (0x807E0000-0x807F0000)
 .headersize 0x007E0000-0x188440
 .orga 0x188440
-.area 0x10000,0x01
+; we change headersize in the middle from 00 to 80 to accommodate yellow_coin_geo.o
+; on second thought, probably a better idea to just partition part 2 and part 3 better lol
+.area 0x10000+0x80000000,0x01
 
 .definelabel topbhv_funcs_start, 0x807E0000
 .include "Objects/topbhv/funcs.asm"
 .importobj "AI/more_models/more_models_levelscript.o"
 .importobj "AI/more_models/more_models_geo.o"
 .importobj "AI/more_models/more_models_models.o"
+.headersize 0x807E0000-0x188440
+.importobj "AI/yellow_coin_geo.o"
 .endarea
-; part 3 (0x807F0000-0x807F7800)
+; part 3 (0x807F0000-0x807F4000)
 .headersize 0x807F0000-0x198440
 .orga 0x198440
-.area 0x7800,0x01
+.area 0x4000,0x01
 
 .importobj "AI/stats_tracking.o"
 .importobj "AI/stats_tracking_debug.o"
-.importobj "AI/yellow_coin_geo.o"
 .importobj "AI/audio_trolls.o"
 .importobj "AI/frameskip_engine.o"
 .importobj "AI/troll_hud.o"
 .endarea
 
 
-; Fix objects' collision
+; Fix objects' collision and stuff
+; FIND SEGMENT 13 AND SET THE ROM ADDRESS IN THE FILE BEFORE INCLUDING! OTHERWISE SHIT JUST FUCKING BREAKS
 ;.include "AI/ai objectsfix.asm"
 
 
@@ -135,9 +139,9 @@ LUI     A0, 0x807E
 LUI     A1, ((0x00188440) >> 16)
 ORI     A1, A1, ((0x00188440) & 0xFFFF)
 ; ROM end
-LUI     A2, ((0x00188440+0x177FF) >> 16)
+LUI     A2, ((0x00188440+0x13FFF) >> 16)
 JAL     0x80278504
-ORI     A2, A2, ((0x00188440+0x177FF) & 0xFFFF)
+ORI     A2, A2, ((0x00188440+0x13FFF) & 0xFFFF)
 JAL     troll_setup
 NOP
 NOP
