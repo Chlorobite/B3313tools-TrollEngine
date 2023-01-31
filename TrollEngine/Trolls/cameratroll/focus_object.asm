@@ -28,11 +28,11 @@ LWC1  F4, 0x000C (T0) ; camera position z or smth
 C.LT.S F4, F6 ; position < 5120 ?
 NOP
 BC1F  @ddd_pos_check_endif
-ORI   T9, R0, 0x0004 ; >=5120: camera mode 4
-ORI   T9, R0, 0x0001 ; < 5120: camera mode 1
+ORI   T9, R0, 0x0004 ; >=5120 (cave) : CAMERA_MODE_CLOSE...
+ORI   T9, R0, 0x0001 ; < 5120 (spawn): CAMERA_MODE_RADIAL...
 @ddd_pos_check_endif:
 LUI   AT, 0x8034
-SB    T9, 0xC6D5 (AT)
+SB    T9, 0xC6D5 (AT) ; ...to current camera mode
 @endif1:
 ; inside castle mode?
 ORI   T9, R0, 0x0002
@@ -52,10 +52,10 @@ BC1F  @endif2
 MTC1  AT, F16
 LWC1  F4, 0x0044 (T8) ; posZ
 C.LT.S F4, F16        ; posZ < -480 ?
-ORI   T9, R0, 0x0010 ; load mode 0x10
+ORI   T9, R0, 0x0010 ; load mode CAMERA_MODE_FREE_ROAM
 BC1T  @endif2
 ;NOP
-; set mode to 0x0D if 0x10
+; set mode to CAMERA_MODE_FIXED if CAMERA_MODE_FREE_ROAM
 LUI   AT, 0x8034
 LBU   T8, 0xC6D4 (AT)
 BNE   T8, T9, @endif2
@@ -72,14 +72,6 @@ SW    T9, 0xDF74 (AT) ; ...to sFixedModeBasePosition[2]
 @endif2:
 JR    RA
 NOP
-
-; beta lobby camera triggers
-; imported in ai segment
-;.headersize 0x80410000-0x3FF0000
-;.orga 0x3FFFEC0
-;.area 0x140
-;.importobj "cameratroll/sCamBeyta.o"
-;.endarea
 
 ; sCameraTriggers
 .orga 0xE9CB0
@@ -99,8 +91,9 @@ NOP
 ADD.S   F8, F16, F4
 NOP
 
+; update_fixed_camera
 .org 0x80282520
-.word 0x11C00008
+.word 0x11C00008 ; restores a branch that was presumably missing
 
 ; beta 60 fov in inside castle
 .org 0x8029A910

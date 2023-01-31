@@ -9,7 +9,7 @@ void clear_area_graph_nodes(void) {
         gWarpTransition.isActive = FALSE;
     }
 
-    for (i = 0; i < 34; i++) {
+    for (i = 0; i < AREA_COUNT; i++) {
         if (gAreaDataNew[i].unk04 != NULL) {
             geo_call_global_function_nodes(&gAreaDataNew[i].unk04->node, GEO_CONTEXT_AREA_INIT);
             gAreaDataNew[i].unk04 = NULL;

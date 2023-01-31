@@ -1,3 +1,8 @@
+; Global star IDs: any star ID >=16 will directly correspond to a specific star ID in the save file,
+; as opposed to referencing the current level's stars
+; Some of the implementation (calls to blue_star_check) are bhv trolled (in Trolls/bhv),
+; it's correct in both locations, but could possibly be moved here for clarity?
+
 .headersize 0x80245000
 
 .org 0x80279c44

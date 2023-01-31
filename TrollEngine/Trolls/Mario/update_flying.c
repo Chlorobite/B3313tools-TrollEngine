@@ -27,10 +27,14 @@ void update_flying(struct MarioState *m) {
         m->forwardVel = 0.0f;
     }
 
+	// ADD: mario "p-wing"
+	// in beta, Mario could fly simply by shooting out of a cannon
+	// this gives the wing cap an actual use
     if (m->flags & MARIO_WING_CAP) {
         m->particleFlags |= PARTICLE_SPARKLES;
         LERP(m->forwardVel, 48.0f, 0.05f);
     }
+	// END ADD
 
     if (m->forwardVel > 16.0f) {
         m->faceAngle[0] += (m->forwardVel - 32.0f) * 6.0f;

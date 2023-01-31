@@ -23,4 +23,6 @@
 #include "level_table.h"
 #include "dialog_ids.h"
 
-extern struct Area gAreaDataNew[];
+extern struct Area gAreaDataNew[]; // defined in AI/personalization_helpers.c
+
+#define AREA_COUNT 34

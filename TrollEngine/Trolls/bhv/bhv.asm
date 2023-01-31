@@ -1,3 +1,5 @@
+; The purpose of bhv trolls is to edit existing objects' behavior
+
 ; Game segment
 .headersize 0x80245000
 
@@ -21,6 +23,7 @@
 .importobj "Trolls/bhv/amp.inc.c__circling_amp_idle_loop.o"
 .endarea
 
+; Yes Christopher Brutal Agresion, beta trampoline is implemented here!
 .org 0x802B2494
 .area 0x802B25AC-0x802B2494
 .importobj "Trolls/bhv/beta_trampoline.inc.c__bhv_beta_trampoline_spring_loop.o"
@@ -32,9 +35,11 @@
 .endarea
 
 ; blue fish fix
+; (loading) remove gMarioCurrentRoom check
 .orga 0x747E4
 NOP
 NOP
+; (unloading) skip gMarioCurrentRoom check (so they never unload)
 .orga 0x7487C
 j 0x802B98C0
 NOP
@@ -155,7 +160,7 @@ NOP
 .endarea
 
 .org 0x802C60AC
-J       toyal_bhv_castle_floor_trap_init
+J       toyal_bhv_castle_floor_trap_init ; not enough space; implemented in AI/personalization_helpers.c
 NOP
 
 .org 0x802ECFAC
@@ -163,8 +168,10 @@ NOP
 .importobj "Trolls/bhv/celebration_star.c__bhv_celebration_star_init.o"
 .endarea
 ; also troll star dance handler
+; !! This is related to the above, yes,
+; but this is a Mario troll (general_star_dance_handler is in mario_actions_cutscene.c), so it should be moved!
 .org 0x80258184
-J       troll_general_star_dance_handler
+J       troll_general_star_dance_handler ; not enough space; implemented in AI/personalization_helpers.c
 NOP
 
 .org 0x802AB5C8
@@ -195,7 +202,7 @@ NOP
 
 ; door_animation_and_reset
 .org 0x802AC910
-J       troll_door_animation_and_reset
+J       troll_door_animation_and_reset ; not enough space; implemented in AI/personalization_helpers.c
 NOP
 
 .org 0x802ACAC8
@@ -228,7 +235,7 @@ NOP
 .importobj "Trolls/bhv/eyerok.inc.c__eyerok_boss_act_die.o"
 .endarea
 
-; EYEROKS ARE ALREADY GLOBAL
+; some romanger tweak shuffled the eyerok code around, so return to vanilla
 .org 0x8030ECF0
 .area 0x8030F590-0x8030ECF0
 .incbin "Trolls/bhv/eyerokdeeznuts.bin"
@@ -324,7 +331,7 @@ NOP
 .importobj "Trolls/bhv/spawn_star.inc.c__spawn_star.o"
 .endarea
 
-; spawn_red_coin_cutscene_star
+; spawn_red_coin_cutscene_star, set collect personalization AI flag for the star
 .org 0x802F2C0C
 LHU     T6, 0x01B0 (T7)
 ORI     T6, T6, 0x0002

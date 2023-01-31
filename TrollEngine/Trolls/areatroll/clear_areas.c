@@ -8,7 +8,7 @@ void clear_areas(void) {
     gWarpTransition.pauseRendering = FALSE;
     gMarioSpawnInfo->areaIndex = -1;
 
-    for (i = 0; i < 34; i++) {
+    for (i = 0; i < AREA_COUNT; i++) {
         gAreaDataNew[i].index = i;
         gAreaDataNew[i].flags = 0;
         gAreaDataNew[i].terrainType = 0;
