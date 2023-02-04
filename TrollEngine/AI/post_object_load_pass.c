@@ -957,13 +957,12 @@ void postObjectLoadPass() {
 			}
 		}
 		
-		// reload motomotos
-		// the 2 rom segments differ only in textures
+		// reload motomotos model data
 		if (levelType == 2) {
-			dma_read(0x80410000, 0x03FE0000, 0x03FEFFFF);
+			dma_read(0x80411000, 0x03FE1000, 0x03FEFFFF);
 		}
 		else {
-			dma_read(0x80410000, 0x03FF0000, 0x03FFFFFF);
+			dma_read(0x80411000, 0x03FF1000, 0x03FFFFFF);
 		}
 	}
 	

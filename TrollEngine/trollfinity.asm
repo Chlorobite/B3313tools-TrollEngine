@@ -1380,6 +1380,7 @@
 .definelabel cur_obj_clear_interact_status_flag, 0x802A0514
 .definelabel set_door_camera_event, 0x802AC958
 .definelabel cur_obj_change_action, 0x8029FDB4
+.definelabel obj_spit_fire, 0x8030CD30
 .definelabel door_animation_and_reset, 0x802AC910
 .definelabel play_door_open_noise, 0x802AC9D0
 .definelabel play_warp_door_open_noise, 0x802ACA6C

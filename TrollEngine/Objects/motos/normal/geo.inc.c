@@ -168,11 +168,11 @@ Hierarchy RCP_HmsEnemymotos_basedata_A[] = {
             hmsJoint(RM_SURF,NULL,0,0,0)  /* jnt41_1(19) */
             hmsBegin()
                hmsJoint(RM_SURF,RCP_motos_head,0,0,0)  /* sphere3(10) */
-            hmsEnd()
+/*            hmsEnd()
          hmsEnd()
       hmsEnd()
    hmsEnd()
   hmsEnd()
- hmsEnd()
+ hmsEnd()*/
  hmsExit()
 };
