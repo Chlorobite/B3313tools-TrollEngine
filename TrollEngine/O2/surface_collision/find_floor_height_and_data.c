@@ -1,4 +1,4 @@
-#include "../surface_collision_headers.h"
+#include "surface_collision_headers.h"
 
 extern struct FloorGeometry sFloorGeo;
 
