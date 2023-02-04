@@ -4,7 +4,5 @@
 
 #include "make_const_nonconst.h"
 
-#include "anim.inc.c"
-
 #include "model.inc.c"
 #include "geo.inc.c"

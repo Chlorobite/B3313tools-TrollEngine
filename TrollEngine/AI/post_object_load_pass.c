@@ -959,10 +959,10 @@ void postObjectLoadPass() {
 		
 		// reload motomotos model data
 		if (levelType == 2) {
-			dma_read(0x80411000, 0x03FE1000, 0x03FEFFFF);
+			dma_read(0x80415000, 0x03FE5000, 0x03FEFFFF);
 		}
 		else {
-			dma_read(0x80411000, 0x03FF1000, 0x03FFFFFF);
+			dma_read(0x80415000, 0x03FF5000, 0x03FFFFFF);
 		}
 	}
 	

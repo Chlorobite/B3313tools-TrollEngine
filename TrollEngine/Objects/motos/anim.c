@@ -1,3 +1,9 @@
+#include <ultra64.h>
+#include "sm64.h"
+#include "geo_commands.h"
+
+#include "make_const_nonconst.h"
+
 /**************************************************************/
 /*	shape data motos_basedata_A (skeleton & animation) 		  */
 /**************************************************************/
