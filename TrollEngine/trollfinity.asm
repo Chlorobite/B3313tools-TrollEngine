@@ -1396,6 +1396,14 @@
 .definelabel update_flying_yaw, 0x8026ae5c                
 .definelabel update_flying_pitch, 0x8026b004  
 
+.definelabel osinvaldcache, 0x803243b0
+.definelabel gdmaiomesg, 0x8033af48
+.definelabel gmainreceivedmesg, 0x8033af5c
+.definelabel gdmamesgqueue, 0x8033af60
+.definelabel __ospidevmgr, 0x803358f0
+.definelabel ospigetcmdqueue, 0x80329120
+.definelabel osjammesg, 0x80328fd0
+
 .definelabel sPowerMeterHUD, 0x803325f0
 .definelabel guTranslate, 0x80325688
 .definelabel dl_power_meter_base, 0x03029480
