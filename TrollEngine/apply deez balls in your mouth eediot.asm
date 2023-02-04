@@ -65,6 +65,11 @@ OR      A2, T7, R0
 
 .headersize 0x80245000
 
+; WHAT THE FUCK IS THIS SCUTTLEBUG DOING IN BEEIE GET THE FUCK OUT
+.org 0x80294FFC
+LW      T6, 0xDF60 (T6)
+LUI     T7, 0x8034
+
 ; browser level fix
 .org 0x8028752C
 ; Instead of demo, check for browser's existence, and skip the entire thing if no browser
