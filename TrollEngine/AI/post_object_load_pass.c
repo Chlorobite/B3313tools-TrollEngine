@@ -33,6 +33,9 @@ extern struct AllocOnlyPool *sLevelPool;
 extern u16 gRandomSeed16;
 extern struct Painting *paintings[];
 extern u8 *tex_stars_start;
+extern u8 *moto_bhv_start;
+extern u8 *moto_model_normal_start;
+extern u8 *moto_model_ice_start;
 
 static void crawlVertices(u8 *ptr, u16 count) {
 	register s32 i;
@@ -957,12 +960,15 @@ void postObjectLoadPass() {
 			}
 		}
 		
-		// reload motomotos model data
+		// load motos behavior data
+		// TODO: move to memory setup, replacing the current DMA, but too lazy rn lol!
+		dma_read(0x80410000, &moto_bhv_start, &moto_bhv_start+0x5000/4);
+		// load motos model data
 		if (levelType == 2) {
-			dma_read(0x80415000, 0x03FE5000, 0x03FEFFFF);
+			dma_read(0x80415000, &moto_model_ice_start, &moto_model_ice_start+0x8000/4);
 		}
 		else {
-			dma_read(0x80415000, 0x03FF5000, 0x03FFFFFF);
+			dma_read(0x80415000, &moto_model_normal_start, &moto_model_normal_start+0x8000/4);
 		}
 	}
 	

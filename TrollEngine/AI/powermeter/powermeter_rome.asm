@@ -1,5 +1,8 @@
-.definelabel miyamoto, 0x3FE0000
-.definelabel sonk_start, miyamoto-(9*64*64*2)
+; shiftma moves everything by 0x10 bytes
+; a rom larger than 64 mb doesn't seem to work on n64 however
+; so simply subtract 0x10 bytes to get real rom end
+.definelabel rom_end, 0x4000000-0x10
+.definelabel sonk_start, rom_end-(9*64*64*2)
 .definelabel broll2_start, sonk_start-(9*64*64*2)
 .definelabel broll1_start, broll2_start-(9*64*64*2)
 .definelabel vanilla_start, broll1_start-(8*32*32*2)
