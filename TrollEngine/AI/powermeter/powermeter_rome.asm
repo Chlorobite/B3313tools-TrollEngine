@@ -1,15 +1,12 @@
-; shiftma moves everything by 0x10 bytes
-; a rom larger than 64 mb doesn't seem to work on n64 however
-; so simply subtract 0x10 bytes to get real rom end
-.definelabel rom_end, 0x4000000-0x10
-.definelabel sonk_start, rom_end-(9*64*64*2)
-.definelabel broll2_start, sonk_start-(9*64*64*2)
-.definelabel broll1_start, broll2_start-(9*64*64*2)
-.definelabel vanilla_start, broll1_start-(8*32*32*2)
-.definelabel hud_numbers_start, vanilla_start-(2*10*16*16*2)
-.definelabel hud_stars_start, hud_numbers_start-(2*16*16*2)
-.definelabel hud_crosses_start, hud_stars_start-(3*16*16*2)
-.definelabel tex_stars_start, hud_crosses_start-(2*32*32*8*2)
+; random free spaces in rom, hopefully nothing breaks
+.definelabel sonk_start, 0x1C4300 ; size: (9*64*64*2)
+.definelabel broll2_start, 0x201410 ; size: (9*64*64*2)
+.definelabel broll1_start, 0x16D900 ; size: (9*64*64*2)
+.definelabel vanilla_start, 0x145F00 ; size: (8*32*32*2)
+.definelabel hud_numbers_start, vanilla_start+(8*32*32*2) ; size: (2*10*16*16*2)
+.definelabel hud_stars_start, 0x13BA00 ; size: (2*16*16*2)
+.definelabel hud_crosses_start, hud_stars_start+(2*16*16*2) ; size: (3*16*16*2)
+.definelabel tex_stars_start, hud_crosses_start+(3*16*16*2) ; size: (2*32*32*8)
 
 .orga tex_stars_start
 .area (2*32*32*8*2),0x00

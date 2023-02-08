@@ -284,16 +284,17 @@ void vanilla_render_power_meter_health_segment(s16 numHealthWedges) {
 }
 
 void beta_render_power_meter_health_segment(s16 numHealthWedges) {
+	u32 base = (u32)&broll1_start;
 	switch (hudType) {
 		case 0:
 			if (personalizationRandSeed & 0x8000)
-				numHealthWedges += 1 * 9;
+				base = (u32)&broll2_start;
 			break;
 		case 1:
-			numHealthWedges += 2 * 9;
+			base = (u32)&sonk_start;
 			break;
 	}
-    dma_read_wrapper_powermeter(segmented_to_virtual((void*)0x030273E0), &broll1_start + numHealthWedges * (64*64*2) / 4, &broll1_start + (numHealthWedges + 1) * (64*64*2) / 4 - 1);
+    dma_read_wrapper_powermeter(segmented_to_virtual((void*)0x030273E0), (void*)(base + numHealthWedges * (64*64*2)), (void*)(base + (numHealthWedges + 1) * (64*64*2) - 1));
 	
 	gDPPipeSync(gDisplayListHead++);
 	gSPDisplayList(gDisplayListHead++, &RCP_damegemeter_txt);
