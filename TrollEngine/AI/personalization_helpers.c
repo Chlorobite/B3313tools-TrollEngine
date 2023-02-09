@@ -510,7 +510,7 @@ s32 __osPackEepGetTime() {
     }
     D_80365E3C = 1;
     sp8.unk00 = 2;
-    sp8.unk01 = 8;
+    sp8.unk01 = 9;
     sp8.unk02 = 7;
     sp8.unk03 = 2;
     for (sp4 = 0; sp4 < 8; sp4++) {
