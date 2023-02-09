@@ -273,6 +273,14 @@ JAL     sideflip_set_mario_y_vel_based_on_fspeed
 J       troll_act_crouching
 NOP
 
+.org 0x80262530
+J       troll_act_start_crouching
+NOP
+
+.org 0x80262650
+J       troll_act_stop_crouching
+NOP
+
 .org 0x80268168
 J       troll_act_crouch_slide
 NOP
@@ -357,6 +365,11 @@ NOP
 .area 0x8027DA84-0x8027DA10
 .importobj "AI/trolls/geo_process_object_parent.o"
 .endarea
+
+; load_area
+.org 0x8027AF30
+JAL     postObjectLoadPass
+NOP
 
 ; render_game
 .org 0x8027B3B4

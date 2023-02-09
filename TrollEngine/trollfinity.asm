@@ -1362,6 +1362,7 @@
 .definelabel play_course_clear, 0x80322078
 .definelabel level_trigger_warp, 0x8024A9CC
 .definelabel is_anim_at_end, 0x80250940
+.definelabel is_anim_past_end, 0x8025097C
 .definelabel enable_background_sound, 0x80248DC0
 .definelabel gPitchBendFrequencyScale, 0x80333598                
 

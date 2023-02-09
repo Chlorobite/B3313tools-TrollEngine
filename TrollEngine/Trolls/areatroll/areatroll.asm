@@ -24,6 +24,7 @@ LUI     T9, (gAreaDataNew >> 16)
 ORI     T9, T9, (gAreaDataNew & 0xFFFF)
 .org 0x8027AE78
 LW      T9, 0x0004 (T9)
+BEQ     T9, R0, 0x8027AF38
 .org 0x8027AE84
 JAL     0x80403700 ; moved the load here so it only loads when new area
 NOP

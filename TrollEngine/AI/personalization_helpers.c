@@ -1897,7 +1897,7 @@ s32 troll_act_crouch_slide(struct MarioState *m) {
         return set_mario_action(m, ACT_BUTT_SLIDE, 0);
     }
 
-    if (get_red_star_count(gCurrSaveFileNum - 1) >= 2) {
+    if (get_red_star_count(gCurrSaveFileNum - 1) >= 1) {
         if (m->actionTimer < 30) {
             m->actionTimer++;
             if (m->input & INPUT_A_PRESSED) {
@@ -1907,11 +1907,13 @@ s32 troll_act_crouch_slide(struct MarioState *m) {
             }
         }
 
-        if (m->input & INPUT_B_PRESSED) {
-            if (m->forwardVel >= 10.0f) {
-                return set_mario_action(m, ACT_SLIDE_KICK, 0);
-            } else {
-                return set_mario_action(m, ACT_MOVE_PUNCHING, 0x0009);
+        if (get_red_star_count(gCurrSaveFileNum - 1) >= 2) {
+            if (m->input & INPUT_B_PRESSED) {
+                if (m->forwardVel >= 10.0f) {
+                    return set_mario_action(m, ACT_SLIDE_KICK, 0);
+                } else {
+                    return set_mario_action(m, ACT_MOVE_PUNCHING, 0x0009);
+                }
             }
         }
     }
@@ -1966,6 +1968,56 @@ s32 troll_act_crouching(struct MarioState *m) {
 
     stationary_ground_step(m);
     set_mario_animation(m, MARIO_ANIM_CROUCHING);
+    return FALSE;
+}
+
+s32 troll_act_start_crouching(struct MarioState *m) {
+    if (m->input & INPUT_STOMPED) {
+        return set_mario_action(m, ACT_SHOCKWAVE_BOUNCE, 0);
+    }
+
+    if (m->input & INPUT_OFF_FLOOR) {
+        return set_mario_action(m, ACT_FREEFALL, 0);
+    }
+
+    if (m->input & INPUT_A_PRESSED) {
+        return set_jumping_action(m, get_red_star_count(gCurrSaveFileNum - 1) >= 2 ? ACT_BACKFLIP : ACT_JUMP, 0);
+    }
+
+    if (m->input & INPUT_ABOVE_SLIDE) {
+        return set_mario_action(m, ACT_BEGIN_SLIDING, 0);
+    }
+
+    stationary_ground_step(m);
+    set_mario_animation(m, MARIO_ANIM_START_CROUCHING);
+    if (is_anim_past_end(m)) {
+        set_mario_action(m, ACT_CROUCHING, 0);
+    }
+    return FALSE;
+}
+
+s32 troll_act_stop_crouching(struct MarioState *m) {
+    if (m->input & INPUT_STOMPED) {
+        return set_mario_action(m, ACT_SHOCKWAVE_BOUNCE, 0);
+    }
+
+    if (m->input & INPUT_OFF_FLOOR) {
+        return set_mario_action(m, ACT_FREEFALL, 0);
+    }
+
+    if (m->input & INPUT_A_PRESSED) {
+        return set_jumping_action(m, get_red_star_count(gCurrSaveFileNum - 1) >= 2 ? ACT_BACKFLIP : ACT_JUMP, 0);
+    }
+
+    if (m->input & INPUT_ABOVE_SLIDE) {
+        return set_mario_action(m, ACT_BEGIN_SLIDING, 0);
+    }
+
+    stationary_ground_step(m);
+    set_mario_animation(m, MARIO_ANIM_STOP_CROUCHING);
+    if (is_anim_past_end(m)) {
+        set_mario_action(m, ACT_IDLE, 0);
+    }
     return FALSE;
 }
 
