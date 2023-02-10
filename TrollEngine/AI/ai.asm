@@ -477,6 +477,12 @@ NOP
 .importobj "AI/trolls/sequence_player_process_sequence.o"
 .endarea
 
+; external.c
+.org 0x80322230
+.area 0x8032231C-0x80322230
+.importobj "AI/trolls/sound_reset.o"
+.endarea
+
 ; sound_init.c
 .org 0x80249178
 .area 0x8024922C-0x80249178

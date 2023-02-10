@@ -1249,7 +1249,7 @@
 .definelabel gRipplingPainting, 0x80361318 
 
 .definelabel gResetTimer, 0x8032d584
-.definelabel sound_reset, 0x80322230
+;.definelabel sound_reset, 0x80322230
 .definelabel sCurrentMusic, 0x8032d608
 
 .definelabel play_sound_if_no_flag, 0x80251120
@@ -1404,6 +1404,13 @@
 .definelabel __ospidevmgr, 0x803358f0
 .definelabel ospigetcmdqueue, 0x80329120
 .definelabel osjammesg, 0x80328fd0
+
+.definelabel sGameLoopTicked, 0x80332e54
+.definelabel disable_all_sequence_players, 0x803217A8
+.definelabel sound_init, 0x8032112C
+.definelabel seq_player_play_sequence, 0x80320544
+.definelabel D_80332108, 0x80333218
+.definelabel sHasStartedFadeOut, 0x8033321c
 
 .definelabel sPowerMeterHUD, 0x803325f0
 .definelabel guTranslate, 0x80325688
