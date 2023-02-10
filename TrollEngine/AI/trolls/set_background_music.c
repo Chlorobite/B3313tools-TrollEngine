@@ -21,10 +21,7 @@
 extern u16 sCurrentMusic;
 
 void set_background_music(u16 a, u16 seqArgs, s16 fadeTimer) {
-	// REMOVE: check for the same bgm to not restart it
-	// since we could still have e.g. NLST changes that wouldn't be applied immediately
-    if (gResetTimer == 0) {
-	// END REMOVE
+    if (gResetTimer == 0 && seqArgs != sCurrentMusic) {
         if (gCurrCreditsEntry != NULL) {
             sound_reset(7);
         } else {
