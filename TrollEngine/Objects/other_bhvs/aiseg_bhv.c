@@ -216,6 +216,7 @@ static struct ObjectHitbox sSilverStarHitbox = {
 };
 
 extern const BehaviorScript bhvHiddenSilverStarStar[];
+extern s32 isSilverStar;
 
 void bhv_silver_star_init(void) {
     o->oFaceAngleYaw = 0;
@@ -258,6 +259,7 @@ void bhv_silver_star_loop(void) {
     }
 
     if (o->oInteractStatus & INT_STATUS_INTERACTED) {
+        isSilverStar = TRUE;
         mark_obj_for_deletion(o);
         o->oInteractStatus = 0;
     }

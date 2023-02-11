@@ -1746,9 +1746,10 @@ void troll_spawn_bowser_star() {
 extern const BehaviorScript bhvSilverStar[];
 extern const BehaviorScript bhvHiddenSilverStarStar[];
 struct Object *silverStarCeleb = NULL;
+s32 isSilverStar = FALSE;
 void troll_general_star_dance_handler(struct MarioState *m, s32 isInWater) {
     register s32 dialogID;
-    register s32 isSilverStar = m->interactObj->behavior == segmented_to_virtual(bhvSilverStar) || (m->actionArg & 2);
+    isSilverStar |= m->interactObj->behavior == segmented_to_virtual(bhvSilverStar);
     
     if (m->actionState == 0) {
         switch (++m->actionTimer) {
@@ -1806,7 +1807,7 @@ void troll_general_star_dance_handler(struct MarioState *m, s32 isInWater) {
             play_sound(SOUND_MENU_STAR_SOUND, m->marioObj->header.gfx.cameraToObject);
             silverStarCeleb->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
             
-            // Enumerate the objects to find out what trollage we can do
+            // Find silver star spawner
             if ((u32)listHead >= 0x80000000) {
                 obj = (struct Object *) listHead->next;
                 
@@ -1821,6 +1822,8 @@ void troll_general_star_dance_handler(struct MarioState *m, s32 isInWater) {
                     obj = (struct Object *) obj->header.next;
                 }
             }
+            
+            isSilverStar = FALSE;
         }
     }
 }
