@@ -239,7 +239,7 @@ void bhv_silver_star_loop(void) {
         cur_obj_move_standard(78);
         
         if (o->oMoveFlags & (0x00000003 | OBJ_MOVE_AT_WATER_SURFACE)) {
-            cur_obj_play_sound_2(SOUND_GENERAL_SHORT_STAR);
+            cur_obj_play_sound_2(SOUND_GENERAL_SHORT_STAR & ~SOUND_LOWER_BACKGROUND_MUSIC);
             o->oVelY = 20.f;
             o->oForwardVel = 20.f;
             
