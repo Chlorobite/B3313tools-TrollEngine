@@ -223,6 +223,7 @@ void bhv_silver_star_init(void) {
     o->oInteractionSubtype |= INT_SUBTYPE_NO_EXIT | 0x8000;
     o->oBuoyancy = 1200;
     obj_set_hitbox(o, &sSilverStarHitbox);
+    o->oWallHitboxRadius = 80;
 }
 
 void bhv_silver_star_loop(void) {
