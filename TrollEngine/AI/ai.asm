@@ -366,6 +366,11 @@ NOP
 .importobj "AI/trolls/geo_process_object_parent.o"
 .endarea
 
+.org 0x8027E130
+.area 0x8027E3E0-0x8027E130
+.importobj "AI/trolls/geo_process_root.o"
+.endarea
+
 ; load_area
 .org 0x8027AF30
 JAL     postObjectLoadPass

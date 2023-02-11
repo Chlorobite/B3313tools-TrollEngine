@@ -1330,7 +1330,7 @@
 .definelabel gFBSetColor, 0x8032dde0                
 .definelabel gWarpTransFBSetColor, 0x8032dde4                
 .definelabel D_8032CF00, 0x8032de60                
-.definelabel geo_process_root, 0x8027E130
+;.definelabel geo_process_root, 0x8027E130
 .definelabel render_hud, 0x802E3D2C
 .definelabel render_text_labels, 0x802D6C88
 .definelabel do_cutscene_handler, 0x802DAB58
@@ -1411,6 +1411,8 @@
 .definelabel seq_player_play_sequence, 0x80320544
 .definelabel D_80332108, 0x80333218
 .definelabel sHasStartedFadeOut, 0x8033321c
+.definelabel main_pool_available, 0x802783C8
+.definelabel alloc_only_pool_init, 0x80278A14
 
 .definelabel sPowerMeterHUD, 0x803325f0
 .definelabel guTranslate, 0x80325688

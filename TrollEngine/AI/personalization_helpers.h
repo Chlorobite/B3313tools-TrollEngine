@@ -104,4 +104,6 @@ void troll_spawn_bowser_star();
 
 s32 can_pass_through_walls();
 
+struct AllocOnlyPool *troll_render_pool_init();
+
 #endif
