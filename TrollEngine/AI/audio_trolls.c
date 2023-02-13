@@ -1,4 +1,5 @@
 #include <PR/ultratypes.h>
+#include <ultra64.h>
 
 #include "audio/data.h"
 #include "audio/effects.h"
@@ -7,6 +8,8 @@
 #include "audio/heap.h"
 #include "audio/load.h"
 #include "audio/seqplayer.h"
+#include "audio/synthesis.h"
+
 
 #include "AI/personalization_helpers.h"
 

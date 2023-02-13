@@ -1438,6 +1438,24 @@
 .definelabel mario_bonk_reflection, 0x802552FC
 .definelabel lava_boost_on_wall, 0x8026A12C
 
+.definelabel osaisetfrequency, 0x80325970
+.definelabel gtatumsperbeat, 0x80334FF4
+.definelabel session_pools_init, 0x80317184
+.definelabel seq_and_bank_pool_init, 0x80317200
+.definelabel persistent_pools_init, 0x8031727C
+.definelabel temporary_pools_init, 0x80317338
+.definelabel reset_bank_and_seq_load_status, 0x80316E80
+.definelabel gaudiocmdbuffers, 0x80226B90
+.definelabel soundalloc, 0x80317040
+.definelabel init_note_free_list, 0x8031A2B4
+.definelabel gsynthesisreverb, 0x80220DB0
+.definelabel gaudioloadlock, 0x80335004
+.definelabel gaudiosessionpresets, 0x803332A0
+.definelabel decrease_reverb_gain, 0x803178EC
+.definelabel wait_for_audio_frames, 0x80317914
+.definelabel gcurraudioframedmacount, 0x80226B84
+.definelabel gaibuffers, 0x80226C40
+
 .definelabel sPowerMeterHUD, 0x803325f0
 .definelabel guTranslate, 0x80325688
 .definelabel dl_power_meter_base, 0x03029480

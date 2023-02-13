@@ -13,6 +13,8 @@
 #include "seq_ids.h"
 #include "dialog_ids.h"
 
+#include "AI/audio_trolls.h"
+
 #if defined(VERSION_EU) || defined(VERSION_SH)
 #define EU_FLOAT(x) x##f
 #else
@@ -39,7 +41,7 @@ void sound_reset(u8 presetId) {
     sGameLoopTicked = 0;
     disable_all_sequence_players();
     sound_init();
-    //audio_reset_session(&gAudioSessionPresets[presetId]);
+    audio_reset_session(&gAudioSessionPresets[presetId]);
     osWritebackDCacheAll();
     if (presetId != 7) {
         preload_sequence(SEQ_EVENT_SOLVE_PUZZLE, PRELOAD_BANKS | PRELOAD_SEQUENCE);
