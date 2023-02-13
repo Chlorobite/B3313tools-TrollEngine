@@ -887,7 +887,7 @@
 
 .definelabel mario_process_interactions, 0x802503f0                
 .definelabel mario_execute_cutscene_action, 0x8025d798                
-.definelabel mario_execute_automatic_action, 0x802605d0                
+;.definelabel mario_execute_automatic_action, 0x802605d0                
 .definelabel mario_execute_stationary_action, 0x80263898                
 .definelabel mario_execute_moving_action, 0x80269954                
 .definelabel mario_execute_airborne_action, 0x8026fb04                
@@ -1413,6 +1413,30 @@
 .definelabel sHasStartedFadeOut, 0x8033321c
 .definelabel main_pool_available, 0x802783C8
 .definelabel alloc_only_pool_init, 0x80278A14
+
+.definelabel mario_set_forward_vel, 0x80251708
+.definelabel perform_air_step, 0x80256B24
+.definelabel check_fall_damage_or_get_stuck, 0x8026A598
+.definelabel check_common_automatic_cancels, 0x80260568
+.definelabel act_holding_pole, 0x8025E21C
+.definelabel act_grab_pole_slow, 0x8025E7A4
+.definelabel act_grab_pole_fast, 0x8025E830
+.definelabel act_climbing_pole, 0x8025E5A8
+.definelabel act_top_of_pole_transition, 0x8025E930
+.definelabel act_top_of_pole, 0x8025EA30
+.definelabel act_start_hanging, 0x8025EF58
+.definelabel act_hanging, 0x8025F0B4
+.definelabel act_hang_moving, 0x8025F1E4
+.definelabel act_ledge_grab, 0x8025F6C0
+.definelabel act_ledge_climb_slow, 0x8025F970
+.definelabel act_ledge_climb_down, 0x8025FA64
+.definelabel act_ledge_climb_fast, 0x8025FAE8
+.definelabel act_grabbed, 0x8025FB90
+.definelabel act_in_cannon, 0x8025FC6C
+.definelabel act_tornado_twirling, 0x80260154
+.definelabel update_air_without_turn, 0x8026AA48
+.definelabel mario_bonk_reflection, 0x802552FC
+.definelabel lava_boost_on_wall, 0x8026A12C
 
 .definelabel sPowerMeterHUD, 0x803325f0
 .definelabel guTranslate, 0x80325688

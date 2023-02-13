@@ -2,6 +2,8 @@ sh build_o2.sh
 
 sh build_ai.sh
 
+sh build_mario.sh
+
 sh build_trolls.sh
 
 sh build_objects.sh

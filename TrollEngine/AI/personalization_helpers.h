@@ -106,4 +106,6 @@ s32 can_pass_through_walls();
 
 struct AllocOnlyPool *troll_render_pool_init();
 
+s32 set_mario_animation_then_check_for_climbable_wall(struct MarioState *m, s32 animation);
+
 #endif

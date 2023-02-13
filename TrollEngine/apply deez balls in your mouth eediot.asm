@@ -10,6 +10,8 @@ C.LT.S  F6, F18
 
 .include "AI/ai.asm" ; no way there is a personaliatoin real ai ai chatgpt real stable diffusion
 
+.include "Mario/mario.asm" ; M is real
+
 ; expand area IDs from 8 to 33
 .include "Trolls/areatroll/areatroll.asm"
 ; focus object behavior (0x1F000500), and beta lobby stuff

@@ -2054,3 +2054,180 @@ struct AllocOnlyPool *troll_render_pool_init() {
     return subPool;
 }
 
+
+// A separate load_patchable_table function to allow more animations to be defined in the Mario directory
+extern u32 mario_patchable_table_TWO[];
+s32 mario_anim_load_patchable_table(struct DmaHandlerList *list, s32 index) {
+    s32 ret = FALSE;
+    struct DmaTable *table = list->dmaTable;
+    u8 *addr;
+    s32 size;
+
+    if ((u32)index < table->count) {
+        addr = table->srcAddr + table->anim[index].offset;
+        size = table->anim[index].size;
+
+        if (list->currentAddr != addr) {
+            dma_read(list->bufTarget, addr, addr + size);
+            list->currentAddr = addr;
+            ret = TRUE;
+        }
+    }
+    else {
+        // Out of bounds, oh no !
+        // We must now use the other array lol
+        index -= table->count;
+
+        addr = (u8*)mario_patchable_table_TWO[index * 2];
+        size = mario_patchable_table_TWO[index * 2 + 1];
+
+        if (size > 0 && list->currentAddr != addr) {
+            dma_read(list->bufTarget, addr, addr + size);
+            list->currentAddr = addr;
+            ret = TRUE;
+        }
+    }
+    return ret;
+}
+
+
+
+
+// Climbma
+// original code by iProgramInCpp (2021)
+// adapted by a benedani for bee (2023)
+// trolls to get this function to be used are in Mario directory
+f32 prevControlStickY = 0;
+s32 act_climbing_wall(struct MarioState *m) {
+	s16 wallDYaw, ang, xm, ym;
+	if (m->input & INPUT_A_PRESSED) {
+		m->vel[1] = 52.0f;
+		m->faceAngle[1] += 0x8000;
+		return set_mario_action(m, ACT_WALL_KICK_AIR, 0);
+	}
+	
+	if (m->wall == NULL || m->wall->type != SURFACE_HANGABLE) {
+        mario_set_forward_vel(m, 0.0f);
+        return set_mario_action(m, ACT_FREEFALL, 0);
+    }
+    
+    m->marioObj->header.gfx.animInfo.animAccel = 0;
+    wallDYaw = atan2s(m->wall->normal.z, m->wall->normal.x);
+    m->faceAngle[1] = 0X8000 + wallDYaw;
+    m->marioObj->header.gfx.angle[1] = 0X8000 + wallDYaw;
+    mario_set_forward_vel(m, 10.0f);
+    
+    if (m->marioObj->header.gfx.animInfo.animID < MARIO_ANIM_CLIMBING ||
+        m->marioObj->header.gfx.animInfo.animID > MARIO_ANIM_CLIMBING_RIGHT) {
+        set_mario_animation(m, MARIO_ANIM_CLIMBING);
+        m->marioObj->header.gfx.animInfo.animAccel = 0;
+        m->marioObj->header.gfx.animInfo.animFrame = 0;
+    }
+    
+    if (m->controller->stickY == 0) {
+        set_mario_animation(m, MARIO_ANIM_CLIMBING_DOWN);
+        //set_mario_anim_with_accel(m, MARIO_ANIM_CLIMBING_DOWN,  0x10000 * m->vel[1] * 12);
+        m->marioObj->header.gfx.animInfo.animFrame = 10;
+    }
+    if (m->input & INPUT_NONZERO_ANALOG) {
+        //stick X - left/right
+        //stick Y - up/down
+        if (m->controller->stickY > 16.f || m->controller->stickY < -16.f) {
+            m->vel[1] = m->controller->stickY * .25f;
+            // set anim speed
+            if (m->controller->stickY > 16.f) {
+                set_mario_animation(m, MARIO_ANIM_CLIMBING);
+                m->vel[1] *= .50f;
+                m->marioObj->header.gfx.animInfo.animAccel = 0x40000;
+            } else {
+                m->vel[1] *= 1.0f;
+                set_mario_animation(m, MARIO_ANIM_CLIMBING_DOWN);
+                m->marioObj->header.gfx.animInfo.animFrame = 0;
+                m->particleFlags |= PARTICLE_DUST;
+                play_sound(SOUND_MOVING_TERRAIN_SLIDE, m->marioObj->header.gfx.cameraToObject);
+                
+            }
+        } else { 
+            m->particleFlags &= ~PARTICLE_DUST;
+            m->vel[1] = 0; 
+            if (m->marioObj->header.gfx.animInfo.animID != MARIO_ANIM_CLIMBING_DOWN) {
+                set_mario_animation(m, MARIO_ANIM_CLIMBING_DOWN);
+                m->marioObj->header.gfx.animInfo.animFrame = 10;
+            }
+        }
+        if (m->controller->stickX > 16.f || m->controller->stickX < -16.f) {
+            //m->vel[1] = m->controller->stickY * .5f;
+            ang = m->faceAngle[1];
+            // Calculate the X and Y would-be movements based on the angle
+            if (m->controller->stickX > 16.f) {
+                // going right
+                ang -= 0x2000;
+                xm = (s16)(8.f * sins(ang));
+                ym = (s16)(8.f * coss(ang));
+                // X and Y movement
+                m->vel[0] = xm;
+                m->vel[2] = ym;
+                
+                set_mario_animation(m, MARIO_ANIM_CLIMBING_RIGHT);
+                m->marioObj->header.gfx.animInfo.animAccel = 0x5000 * 12;
+            } else {
+                // going left
+                ang += 0x2000;
+                xm = (s16)(8.f * sins(ang));
+                ym = (s16)(8.f * coss(ang));
+                // X and Y movement
+                m->vel[0] = xm;
+                m->vel[2] = ym;
+                set_mario_animation(m, MARIO_ANIM_CLIMBING_LEFT);
+                m->marioObj->header.gfx.animInfo.animAccel = 0x5000 * 12;
+            }
+        } else { 
+            if (m->marioObj->header.gfx.animInfo.animID == MARIO_ANIM_CLIMBING) 
+                ;//m->marioObj->header.gfx.animInfo.animAccel = 0x10000;
+            else
+                m->marioObj->header.gfx.animInfo.animAccel = 0;
+            m->vel[0] = 0; 
+            m->vel[2] = 0; 
+        }
+    } else { 
+        m->vel[1] = 0; 
+        m->vel[0] = 0;
+        m->vel[2] = 0;
+    }
+    
+    switch (perform_air_step(m, 0)) {
+        case AIR_STEP_LANDED:
+            mario_set_forward_vel(m, 0.0f);
+            if (!check_fall_damage_or_get_stuck(m, ACT_HARD_BACKWARD_GROUND_KB)) {
+                return set_mario_action(m, ACT_FREEFALL_LAND, 0);
+            }
+            break;
+    }
+    ang = m->faceAngle[1];
+    xm = (s16)(50.f * sins(ang));
+    ym = (s16)(50.f * coss(ang));
+    m->marioObj->header.gfx.pos[0] += xm;
+    m->marioObj->header.gfx.pos[2] += ym;
+	
+	//! this doesn't actually work according to 2021 me
+	if (m->marioObj->header.gfx.animInfo.animFrame < 0) m->marioObj->header.gfx.animInfo.animFrame = 0;
+	
+	prevControlStickY = m->controller->stickY;
+	return FALSE;
+}
+
+// called by common_air_action_step
+s32 set_mario_animation_then_check_for_climbable_wall(struct MarioState *m, s32 animation) {
+    set_mario_animation(m, animation);
+
+    if (m->wall) {
+        if (m->wall->type == SURFACE_HANGABLE) {
+            s16 wallDYaw = atan2s(m->wall->normal.z, m->wall->normal.x);
+            m->faceAngle[1] = wallDYaw;
+            return set_mario_action(m, ACT_CLIMBING_WALL, 0);
+        }
+    }
+    
+    return 0;
+}
+
