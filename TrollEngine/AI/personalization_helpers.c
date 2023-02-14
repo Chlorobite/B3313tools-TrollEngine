@@ -1912,11 +1912,7 @@ s32 troll_act_crouch_slide(struct MarioState *m) {
 
         if (get_red_star_count(gCurrSaveFileNum - 1) >= 2) {
             if (m->input & INPUT_B_PRESSED) {
-                if (m->forwardVel >= 10.0f) {
-                    return set_mario_action(m, ACT_SLIDE_KICK, 0);
-                } else {
-                    return set_mario_action(m, ACT_MOVE_PUNCHING, 0x0009);
-                }
+                return set_mario_action(m, ACT_SQUATKICK, 9);
             }
         }
     }
@@ -1965,7 +1961,7 @@ s32 troll_act_crouching(struct MarioState *m) {
         }
 
         if (m->input & INPUT_B_PRESSED) {
-            return set_mario_action(m, ACT_PUNCHING, 9);
+            return set_mario_action(m, ACT_SQUATKICK, 9);
         }
     }
 
@@ -2247,6 +2243,60 @@ s32 act_electric_idle(struct MarioState *m) {
     }
     stationary_ground_step(m);
     return FALSE;
+}
+
+s32 act_squatkick(struct MarioState *m) {
+	// m->actionState should be zero by default
+	
+	if (m->actionState == 0) 
+	{
+		//mario_set_forward_vel(m, 20.0f);
+		if (m->actionTimer == 0)
+		{
+			m->forwardVel += 25.0f;
+			m->actionTimer = 1;
+		}
+		m->vel[1] += 8.0f;
+		set_mario_animation(m, MARIO_ANIM_SQUATKICKSTART);
+		if (is_anim_past_end(m)) m->actionState++;
+		if (m->marioObj->header.gfx.animInfo.animFrame >= 2)
+			perform_air_step(m, 0);
+		play_mario_sound(m, SOUND_ACTION_TERRAIN_JUMP, 0);
+	}
+	else 
+	{
+		switch (perform_air_step(m, 0))
+		{
+			case AIR_STEP_HIT_LAVA_WALL:
+				lava_boost_on_wall(m);
+			case AIR_STEP_HIT_WALL:
+				//mario_set_forward_vel(m, 0.0f);
+				// we should bonk
+                mario_set_forward_vel(m, -8.0f);
+                return set_mario_action(m, ACT_SOFT_BONK, 0);
+				
+				break;
+				
+			case AIR_STEP_NONE: 
+				if (m->actionState == 1)
+				{
+					set_mario_animation (m, MARIO_ANIM_SQUATKICKING);
+					m->flags |= MARIO_KICKING;
+					update_air_without_turn(m);
+					if (is_anim_past_end(m)) m->actionState++;
+				}
+				else if (m->actionState == 2)
+				{
+					set_mario_animation(m, MARIO_ANIM_SQUATKICKEND);
+					update_air_without_turn(m);
+				}
+				break;
+			case AIR_STEP_LANDED: 
+				set_mario_action(m, ACT_BUTT_SLIDE, 0);
+				play_mario_landing_sound(m, SOUND_ACTION_TERRAIN_LANDING);
+				break;
+		}
+	}
 }
 
 

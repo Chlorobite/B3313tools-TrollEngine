@@ -22,6 +22,21 @@
 .importobj "Mario/Anims/anim_D4_climbing_right.o"
 .definelabel @anim_d4_size, orga()-@anim_d4_start
 
+.headersize 0-orga()
+.definelabel @anim_d5_start, orga()
+.importobj "Mario/Anims/anim_D5_squatkickstart.o"
+.definelabel @anim_d5_size, orga()-@anim_d5_start
+
+.headersize 0-orga()
+.definelabel @anim_d6_start, orga()
+.importobj "Mario/Anims/anim_D6_squatkick.o"
+.definelabel @anim_d6_size, orga()-@anim_d6_start
+
+.headersize 0-orga()
+.definelabel @anim_d7_start, orga()
+.importobj "Mario/Anims/anim_D7_squatkickend.o"
+.definelabel @anim_d7_size, orga()-@anim_d7_start
+
 .endarea
 
 ; Animation patchable table: the continuation
@@ -36,5 +51,8 @@
 .word @anim_d2_start, @anim_d2_size
 .word @anim_d3_start, @anim_d3_size
 .word @anim_d4_start, @anim_d4_size
+.word @anim_d5_start, @anim_d5_size
+.word @anim_d6_start, @anim_d6_size
+.word @anim_d7_start, @anim_d7_size
 
 .endarea

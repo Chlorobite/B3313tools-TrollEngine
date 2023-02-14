@@ -79,6 +79,11 @@ NOP
 .importobj "Mario/Trolls/mario_actions_airborne/common_air_action_step.o"
 .endarea
 
+.org 0x8026FB04
+.area 0x80270110-0x8026FB04
+.importobj "Mario/Trolls/mario_actions_airborne/mario_execute_airborne_action.o"
+.endarea
+
 
 ; mario_actions_automatic.c
 ; for climbma
