@@ -1,18 +1,4 @@
-#include <PR/ultratypes.h>
-
-#include "sm64.h"
-#include "area.h"
-#include "audio/external.h"
-#include "camera.h"
-#include "engine/graph_node.h"
-#include "engine/math_util.h"
-#include "game_init.h"
-#include "interaction.h"
-#include "level_update.h"
-#include "mario.h"
-#include "mario_step.h"
-#include "save_file.h"
-#include "rumble_init.h"
+#include "../mario_headers.h"
 
 #define LERP(a, b, c) a = a + c * (b - a);
 
@@ -29,7 +15,7 @@ void update_flying(struct MarioState *m) {
 
 	// ADD: mario "p-wing"
 	// in beta, Mario could fly simply by shooting out of a cannon
-	// this gives the wing cap an actual use
+	// so let's give the wing cap an actual use
     if (m->flags & MARIO_WING_CAP) {
         m->particleFlags |= PARTICLE_SPARKLES;
         LERP(m->forwardVel, 48.0f, 0.05f);

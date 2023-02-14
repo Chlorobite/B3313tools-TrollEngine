@@ -32,21 +32,6 @@ NOP
 ; Game segment
 .headersize 0x80245000
 
-; mario trolled
-.org 0x802523DC
-JAL     troll_get_additive_y_vel_for_jumps
-
-; mario cough trolled (do not play sound)
-.org 0x80261934+0xC
-NOP
-;LUI     A0, 0x242E
-.org 0x80261968+0xC
-NOP
-;LUI     A0, 0x242E
-.org 0x8026199C+0xC
-NOP
-;LUI     A0, 0x242E
-
 ; elevator data
 .org 0x803302F0
 .halfword -4348, 0, 0
@@ -231,59 +216,6 @@ NOP
 .area 0x80250198-0x80250098
 .importobj "AI/trolls/check_npc_talk.o"
 .endarea
-
-; mario.c
-.org 0x8025267C
-JAL     triple_jump_set_mario_y_vel_based_on_fspeed
-.org 0x802527B8
-JAL     sideflip_set_mario_y_vel_based_on_fspeed
-
-.org 0x80252CF4
-.area 0x80252E5C-0x80252CF4
-.importobj "AI/trolls/set_mario_action.o"
-.endarea
-
-.org 0x80254830
-.area 0x80254B20-0x80254830
-.importobj "AI/trolls/execute_mario_action.o"
-.endarea
-
-.org 0x80254B20
-.area 0x80254F44-0x80254B20
-.importobj "AI/trolls/init_mario.o"
-.endarea
-
-.org 0x80255d88
-.area 0x80255ec4-0x80255d88
-.importobj "AI/trolls/perform_ground_step.o"
-.endarea
-
-.org 0x80265df8
-.area 0x80266038-0x80265df8
-.importobj "AI/trolls/push_or_sidle_wall.o"
-.endarea
-
-.org 0x8026b17c
-.area 0x8026b444-0x8026b17c
-.importobj "Trolls/Mario/update_flying.o"
-.endarea
-
-
-.org 0x80261DB4
-J       troll_act_crouching
-NOP
-
-.org 0x80262530
-J       troll_act_start_crouching
-NOP
-
-.org 0x80262650
-J       troll_act_stop_crouching
-NOP
-
-.org 0x80268168
-J       troll_act_crouch_slide
-NOP
 
 ; mario_misc.c
 .org 0x802766B4

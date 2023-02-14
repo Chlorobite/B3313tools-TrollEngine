@@ -2,11 +2,6 @@
 .open "../Bee/b3313 silved.z64", "../Bee/b3313 new.z64", 0
 .include "trollfinity.asm" ; the asm behind the trolling
 
-; fixes mario's level entry cutscene crashing on n64 due to float operation in delay slot?
-.orga 0x146C0
-NOP
-SUB.S   F18, F10, F16
-C.LT.S  F6, F18
 
 .include "AI/ai.asm" ; no way there is a personaliatoin real ai ai chatgpt real stable diffusion
 

@@ -1,17 +1,4 @@
-#include <PR/ultratypes.h>
-
-#include "sm64.h"
-#include "mario.h"
-#include "audio/external.h"
-#include "engine/math_util.h"
-#include "engine/surface_collision.h"
-#include "mario_step.h"
-#include "area.h"
-#include "interaction.h"
-#include "mario_actions_object.h"
-#include "memory.h"
-#include "behavior_data.h"
-#include "rumble_init.h"
+#include "../mario_headers.h"
 
 
 void push_or_sidle_wall(register struct MarioState *m, Vec3f startPos) {

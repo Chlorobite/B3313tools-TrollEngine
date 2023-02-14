@@ -1,19 +1,4 @@
-#include <PR/ultratypes.h>
-
-#include "sm64.h"
-#include "area.h"
-#include "audio/external.h"
-#include "camera.h"
-#include "engine/graph_node.h"
-#include "engine/math_util.h"
-#include "game_init.h"
-#include "interaction.h"
-#include "level_update.h"
-#include "mario.h"
-#include "mario_step.h"
-#include "save_file.h"
-#include "rumble_init.h"
-
+#include "../mario_headers.h"
 #include "AI/personalization_helpers.h"
 
 

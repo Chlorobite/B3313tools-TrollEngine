@@ -1,4 +1,4 @@
-#include "headers.h"
+#include "../mario_headers.h"
 
 s32 act_holding_bowser(struct MarioState *m) {
     register s16 spin;

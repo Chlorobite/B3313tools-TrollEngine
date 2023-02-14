@@ -58,12 +58,6 @@
 .importobj "O2/interaction/mario_check_object_grab.o"
 .endarea
 
-; mario*.c
-.org 0x80275B34
-.area 0x80275E78-0x80275B34
-.importobj "O2/mario/mario_actions_object/act_holding_bowser.o"
-.endarea
-
 ; camera.c
 .org 0x8027FC18
 .area 0x8027FE20-0x8027FC18

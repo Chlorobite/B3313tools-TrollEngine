@@ -170,12 +170,6 @@ NOP
 .area 0x802ED10C-0x802ECFAC
 .importobj "Trolls/bhv/celebration_star.c__bhv_celebration_star_init.o"
 .endarea
-; also troll star dance handler
-; !! This is related to the above, yes,
-; but this is a Mario troll (general_star_dance_handler is in mario_actions_cutscene.c), so it should be moved!
-.org 0x80258184
-J       troll_general_star_dance_handler ; not enough space; implemented in AI/personalization_helpers.c
-NOP
 
 .org 0x802AB5C8
 .area 0x802AB650-0x802AB5C8
