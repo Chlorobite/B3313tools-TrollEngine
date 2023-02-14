@@ -328,8 +328,10 @@ NOP
 .importobj "Trolls/bhv/spawn_star.inc.c__spawn_star.o"
 .endarea
 
-; spawn_red_coin_cutscene_star, set collect personalization AI flag for the star
-.org 0x802F2C0C
+; spawn_red_coin_cutscene_star
+.org 0x802F2BF4 ; red coins and silvers already have object position, don't fall for magnets
+JAL     troll_spawn_star_bypass_magnets
+.org 0x802F2C0C ; set collect personalization AI flag for the star
 LHU     T6, 0x01B0 (T7)
 ORI     T6, T6, 0x0002
 SH      T6, 0x01B0 (T7)

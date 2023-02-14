@@ -109,4 +109,6 @@ struct AllocOnlyPool *troll_render_pool_init();
 s32 set_mario_animation_then_check_for_climbable_wall(struct MarioState *m, s32 animation);
 s32 act_electric_idle(struct MarioState *m);
 
+struct Object *troll_spawn_star_bypass_magnets(struct Object *sp30, f32 sp34, f32 sp38, f32 sp3C);
+
 #endif
