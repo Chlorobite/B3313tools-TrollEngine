@@ -103,6 +103,10 @@ C.LT.S  F6, F18
 
 
 ; mario_actions_stationary.c
+.org 0x80260CB4
+.area 0x80260F94-0x80260CB4
+.importobj "Mario/Trolls/mario_actions_stationary/act_idle.o"
+.endarea
 
 ; act_coughing (do not play sound)
 .org 0x80261934+0xC
@@ -114,6 +118,16 @@ NOP
 .org 0x8026199C+0xC
 NOP
 ;LUI     A0, 0x242E
+
+.org 0x80261F70
+.area 0x80262080-0x80261F70
+.importobj "Mario/Trolls/mario_actions_stationary/act_panting.o"
+.endarea
+
+.org 0x80263898
+.area 0x80263E60-0x80263898
+.importobj "Mario/Trolls/mario_actions_stationary/mario_execute_stationary_action.o"
+.endarea
 
 
 

@@ -31,6 +31,7 @@
 #define SURFACE_WALL_MISC                    0x0028 // Used for some walls, Cannon to adjust the camera, and some objects like Warp Pipe
 #define SURFACE_NOISE_DEFAULT                0x0029 // Default floor with noise
 #define SURFACE_NOISE_SLIPPERY               0x002A // Slippery floor with noise
+#define SURFACE_ELECTRIC                     0x002B // Electric Floor, shocks the player if standing still for too long (skill issue)
 #define SURFACE_HORIZONTAL_WIND              0x002C // Horizontal wind, has parameters
 #define SURFACE_INSTANT_MOVING_QUICKSAND     0x002D // Quicksand (lethal, flowing)
 #define SURFACE_ICE                          0x002E // Slippery Ice, in snow levels and THI's water floor

@@ -2231,3 +2231,21 @@ s32 set_mario_animation_then_check_for_climbable_wall(struct MarioState *m, s32 
     return 0;
 }
 
+
+s32 act_electric_idle(struct MarioState *m) {
+    play_sound_if_no_flag(m, SOUND_MARIO_ATTACKED, MARIO_ACTION_SOUND_PLAYED);
+    play_sound(SOUND_MOVING_SHOCKED, m->marioObj->header.gfx.cameraToObject);
+    set_camera_shake_from_hit(SHAKE_SHOCK);
+    if (m->actionTimer == 0 || set_mario_animation(m, MARIO_ANIM_SHOCKED) == 0) {
+        m->actionTimer++;
+        m->flags |= MARIO_METAL_SHOCK;
+    }
+
+    if (m->actionTimer >= 4) {
+        m->invincTimer = 30;
+        set_mario_action(m, m->health < 0x0100 ? ACT_ELECTROCUTION : ACT_IDLE, 0);
+    }
+    stationary_ground_step(m);
+    return FALSE;
+}
+
