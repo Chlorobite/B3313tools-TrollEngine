@@ -2259,7 +2259,6 @@ s32 act_squatkick(struct MarioState *m) {
 			m->actionTimer = 1;
 		}
 		m->vel[1] += 8.0f;
-		is_anim_past_end(m); // have to call to prevent issues for some reason
 		if (m->marioObj->header.gfx.animInfo.animFrame >= 2)
 			perform_air_step(m, 0);
 		if (m->marioObj->header.gfx.animInfo.animFrame >= 3)
@@ -2298,6 +2297,7 @@ s32 act_squatkick(struct MarioState *m) {
 				break;
 		}
 	}
+	return 0;
 }
 
 
