@@ -1910,7 +1910,7 @@ s32 troll_act_crouch_slide(struct MarioState *m) {
             }
         }
 
-        if (get_red_star_count(gCurrSaveFileNum - 1) >= 2) {
+        if (get_red_star_count(gCurrSaveFileNum - 1) >= 1) { // really should be 2 for lore reasons
             if (m->input & INPUT_B_PRESSED) {
                 return set_mario_action(m, ACT_SQUATKICK, 9);
             }
@@ -1955,7 +1955,7 @@ s32 troll_act_crouching(struct MarioState *m) {
         return set_mario_action(m, ACT_STOP_CROUCHING, 0);
     }
 
-    if (get_red_star_count(gCurrSaveFileNum - 1) >= 2) {
+    if (get_red_star_count(gCurrSaveFileNum - 1) >= 1) { // really should be 2 for lore reasons
         if (m->input & INPUT_NONZERO_ANALOG) {
             return set_mario_action(m, ACT_START_CRAWLING, 0);
         }
