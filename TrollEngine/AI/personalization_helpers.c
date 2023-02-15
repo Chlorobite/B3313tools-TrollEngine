@@ -2247,7 +2247,9 @@ s32 act_electric_idle(struct MarioState *m) {
 
 s32 act_squatkick(struct MarioState *m) {
 	// m->actionState should be zero by default
-	
+
+	set_mario_animation (m, MARIO_ANIM_SQUATKICKING);
+
 	if (m->actionState == 0) 
 	{
 		//mario_set_forward_vel(m, 20.0f);
@@ -2257,10 +2259,11 @@ s32 act_squatkick(struct MarioState *m) {
 			m->actionTimer = 1;
 		}
 		m->vel[1] += 8.0f;
-		set_mario_animation(m, MARIO_ANIM_SQUATKICKSTART);
-		if (is_anim_past_end(m)) m->actionState++;
+		is_anim_past_end(m); // have to call to prevent issues for some reason
 		if (m->marioObj->header.gfx.animInfo.animFrame >= 2)
 			perform_air_step(m, 0);
+		if (m->marioObj->header.gfx.animInfo.animFrame >= 3)
+            m->actionState++;
 		play_mario_sound(m, SOUND_ACTION_TERRAIN_JUMP, 0);
 	}
 	else 
@@ -2280,14 +2283,12 @@ s32 act_squatkick(struct MarioState *m) {
 			case AIR_STEP_NONE: 
 				if (m->actionState == 1)
 				{
-					set_mario_animation (m, MARIO_ANIM_SQUATKICKING);
 					m->flags |= MARIO_KICKING;
 					update_air_without_turn(m);
 					if (is_anim_past_end(m)) m->actionState++;
 				}
 				else if (m->actionState == 2)
 				{
-					set_mario_animation(m, MARIO_ANIM_SQUATKICKEND);
 					update_air_without_turn(m);
 				}
 				break;

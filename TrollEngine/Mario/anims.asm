@@ -24,18 +24,8 @@
 
 .headersize 0-orga()
 .definelabel @anim_d5_start, orga()
-.importobj "Mario/Anims/anim_D5_squatkickstart.o"
+.importobj "Mario/Anims/anim_D5_squatkick.o"
 .definelabel @anim_d5_size, orga()-@anim_d5_start
-
-.headersize 0-orga()
-.definelabel @anim_d6_start, orga()
-.importobj "Mario/Anims/anim_D6_squatkick.o"
-.definelabel @anim_d6_size, orga()-@anim_d6_start
-
-.headersize 0-orga()
-.definelabel @anim_d7_start, orga()
-.importobj "Mario/Anims/anim_D7_squatkickend.o"
-.definelabel @anim_d7_size, orga()-@anim_d7_start
 
 .endarea
 
@@ -52,7 +42,8 @@
 .word @anim_d3_start, @anim_d3_size
 .word @anim_d4_start, @anim_d4_size
 .word @anim_d5_start, @anim_d5_size
-.word @anim_d6_start, @anim_d6_size
-.word @anim_d7_start, @anim_d7_size
+; wiping old data, nothing to see here
+.word 0, 0
+.word 0, 0
 
 .endarea
