@@ -1569,7 +1569,7 @@ enum ToadMessageStates {
 void troll_toad_message_talking() {
     register s32 savema = gCurrentObject->oBehParams & 0x200;
     register s32 response = cur_obj_update_dialog(MARIO_DIALOG_LOOK_DOWN, 
-            savema ? (DIALOG_FLAG_TURN_TO_MARIO | DIALOG_FLAG_TEXT_RESPONSE) : DIALOG_FLAG_TURN_TO_MARIO,
+            savema ? (DIALOG_FLAG_TURN_TO_MARIO | DIALOG_FLAG_TEXT_RESPONSE) : (DIALOG_FLAG_TURN_TO_MARIO | DIALOG_FLAG_TEXT_DEFAULT),
             gCurrentObject->oToadMessageDialogId, 0);
 
     if (response) {
