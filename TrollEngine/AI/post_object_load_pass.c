@@ -36,6 +36,7 @@ extern u8 *tex_stars_start;
 extern u8 *moto_bhv_start;
 extern u8 *moto_model_normal_start;
 extern u8 *moto_model_ice_start;
+extern const BehaviorScript bhvHiddenSilverStarStar[];
 
 static void crawlVertices(u8 *ptr, u16 count) {
 	register s32 i;
@@ -713,6 +714,13 @@ void addMoreObjects() {
 	}
 }
 
+s32 is_star(struct Object *obj) {
+	return obj->behavior == segmented_to_virtual(bhvStar) ||
+		obj->behavior == segmented_to_virtual(bhvHiddenRedCoinStar) ||
+		obj->behavior == segmented_to_virtual(bhvHiddenStar) || // secret
+		obj->behavior == segmented_to_virtual(bhvHiddenSilverStarStar);
+}
+
 void personalize_stars() {
 	register s32 act;
 	register s32 i;
@@ -728,7 +736,7 @@ void personalize_stars() {
 		// first we find the most favorable star's value
 		obj = &gObjectPool[0];
 		for (i = 0; i < 240; i++) {
-			if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual(bhvStar) && (obj->oBehParams >> 24) == act) {
+			if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && is_star(obj) && (obj->oBehParams >> 24) == act) {
 				currentStarValue = AI_star_get_preference_by_bparams(obj);
 				
 				if (currentStarValue > starMax) {
@@ -744,7 +752,7 @@ void personalize_stars() {
 		obj = &gObjectPool[0];
 		for (i = 0; i < 240; i++) {
 			if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED)) {
-				if (obj->behavior == segmented_to_virtual(bhvStar) && (obj->oBehParams >> 24) == act) {
+				if (is_star(obj) && (obj->oBehParams >> 24) == act) {
 					delete = FALSE;
 					
 					if (obj->oPosX == 0.0f && obj->oPosY == -3313.0f && obj->oPosZ == 0.0f) {
