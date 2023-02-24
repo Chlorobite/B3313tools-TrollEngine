@@ -16,6 +16,7 @@ CVT.S.W    F0, F0
 .importobj "AI/personalization_helpers.o"
 .importobj "AI/post_object_load_pass.o"
 .importobj "Objects/other_bhvs/aiseg_bhv.o"
+.include "Objects/other_bhvs/aiseg_bhv_asm.asm"
 .importobj "Trolls/cameratroll/sCamBeyta.o"
 .endarea
 
