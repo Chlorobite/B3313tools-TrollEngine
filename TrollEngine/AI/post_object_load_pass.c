@@ -509,22 +509,6 @@ void trollWarps() {
 void addMoreObjects() {
 	register s32 i;
 	register struct Object *obj;
-	
-	// check for personalization flag 0x02 (PERSONALIZATION_FLAG_DISABLE_OBJECTS)
-	{
-		obj = &gObjectPool[0];
-		for (i = 0; i < 240; i++) {
-			if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
-				if (obj->oBehParams & 0x02)
-				{
-					// yeah we do not add objects here
-					return;
-				}
-			}
-
-			obj++;
-		}
-	}
 
 	switch (get_red_star_count(gCurrSaveFileNum - 1)) {
 		case 0:
@@ -560,6 +544,21 @@ void addMoreObjects() {
 		case 11:
 		case 12:
 		case 13:
+		// check for personalization flag 0x02 (PERSONALIZATION_FLAG_DISABLE_OBJECTS)
+		{
+			obj = &gObjectPool[0];
+			for (i = 0; i < 240; i++) {
+				if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
+					if (obj->oBehParams & 0x02)
+					{
+						// yeah we do not add objects here
+						return;
+					}
+				}
+
+				obj++;
+			}
+		}
 		{
 			register s32 totali;
 			register f32 prevLevelScaleH, prevLevelScaleV;
