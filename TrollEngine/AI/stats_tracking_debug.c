@@ -17,6 +17,10 @@
 #define HUD_LEFT_X 20
 
 s32 dynamicSurfaceTris = 0;
+struct Object *debugCurrObject = NULL;
+u8 *watchDMADest = 0;
+u8 *watchDMASrcStart = 0;
+u32 watchDMASize = 0;
 
 char *hudTypes[] = {
 	"NO OBJ", "NORMAL", "B ROLL", "SHOSHINKAI", "E3", "DECEMBER"
@@ -321,20 +325,66 @@ void print_prefs() {
 
 void print_mods() {
 	char float_buffer[10];
-	
+
 	print_text(HUD_LEFT_X, HUD_TOP_Y, "MODIFIERS");
-	
+
 	print_text(HUD_LEFT_X, HUD_TOP_Y - 16, "HARD");
 	sprintf(float_buffer, "%.3f", TRACKER_difficulty_modifier);
 	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 16, float_buffer);
-	
+
 	print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "SCALEH");
 	sprintf(float_buffer, "%.3f", TRACKER_level_scale_modifier_h);
 	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 32, float_buffer);
-	
+
 	print_text(HUD_LEFT_X, HUD_TOP_Y - 48, "SCALEY");
 	sprintf(float_buffer, "%.3f", TRACKER_level_scale_modifier_v);
 	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 48, float_buffer);
+}
+
+void print_obj_debug() {
+	char float_buffer[10];
+
+	if (debugCurrObject == NULL) {
+		print_text(HUD_LEFT_X, HUD_TOP_Y, "NO OBJ FOUND");
+		return;
+	}
+
+	print_text(HUD_LEFT_X, HUD_TOP_Y, "OBJ DEBUG");
+
+	{
+		s32 modelId = 0;
+		for (; modelId <= 255; modelId++) {
+			if (debugCurrObject->header.gfx.sharedChild == gLoadedGraphNodes[modelId]) break;
+		}
+
+		print_text(HUD_LEFT_X, HUD_TOP_Y - 16, "MODEL");
+		sprintf(float_buffer, "%d", modelId);
+		print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 16, float_buffer);
+
+		print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "BHV");
+		sprintf(float_buffer, "%x", debugCurrObject->curBhvCommand);
+		print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 32, float_buffer);
+
+		print_text(HUD_LEFT_X, HUD_TOP_Y - 48, "*BHV");
+		sprintf(float_buffer, "%x", *debugCurrObject->curBhvCommand);
+		print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 48, float_buffer);
+
+		print_text(HUD_LEFT_X, HUD_TOP_Y - 64, "DMA");
+		sprintf(float_buffer, "%x", watchDMADest);
+		print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 64, float_buffer);
+		sprintf(float_buffer, "%x", watchDMASrcStart);
+		print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 80, float_buffer);
+		sprintf(float_buffer, "%x", watchDMASize);
+		print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 96, float_buffer);
+	}
+
+	/*print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "SCALEH");
+	sprintf(float_buffer, "%.3f", TRACKER_level_scale_modifier_h);
+	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 32, float_buffer);
+
+	print_text(HUD_LEFT_X, HUD_TOP_Y - 48, "SCALEY");
+	sprintf(float_buffer, "%.3f", TRACKER_level_scale_modifier_v);
+	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 48, float_buffer);*/
 }
 
 int musSelection = 0;
@@ -493,6 +543,9 @@ void stats_tracking_debug_display() {
 				case 9:
 					print_mods();
 					break;
+				case 10:
+					print_obj_debug();
+					break;
 			}
 			break;
 		case 1:
@@ -511,7 +564,7 @@ void stats_tracking_debug_display() {
 		else {
 			switch (tab2) {
 				case 0:
-					tab = (tab + 1) % 10;
+					tab = (tab + 1) % 11;
 					break;
 				case 1:
 					// playma music
@@ -525,6 +578,25 @@ void stats_tracking_debug_display() {
 					break;
 			}
 		}
+	}
+}
+
+
+void set_cur_obj_debug_information() {
+	if (gCurrentObject->header.gfx.sharedChild == gLoadedGraphNodes[MODEL_MARIO])
+		debugCurrObject = gCurrentObject;
+}
+
+#define ALIGN16(val) (((val) + 0xF) & ~0xF)
+void intercept_dma(u8 *dest, u8 *srcStart, u8 *srcEnd) {
+    register u32 size = ALIGN16(srcEnd - srcStart);
+	register u32 checkPtr = 0x8011A3A0;
+	register u32 startPtr = (u32)dest;
+
+	if (startPtr <= checkPtr && checkPtr < (startPtr + size)) {
+		watchDMADest = dest;
+		watchDMASrcStart = srcStart;
+		watchDMASize = size;
 	}
 }
 

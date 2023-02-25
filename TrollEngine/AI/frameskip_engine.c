@@ -97,5 +97,7 @@ s32 troll_lvl_init_or_update(s16 initOrUpdate) {
         }
     }
 
+    stats_tracking_debug_display();
+
     return result;
 }

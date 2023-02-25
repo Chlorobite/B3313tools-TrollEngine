@@ -233,7 +233,7 @@ void TRACKER_record_mario_state(struct MarioState *m) {
 	int i;
 	
 	// display the stats lol
-	stats_tracking_debug_display();
+	//stats_tracking_debug_display();
 	
 	if (get_red_star_count(gCurrSaveFileNum - 1) >= 1) {
 		register s32 unlockDynamicDifficulty = get_red_star_count(gCurrSaveFileNum - 1) >= 2;

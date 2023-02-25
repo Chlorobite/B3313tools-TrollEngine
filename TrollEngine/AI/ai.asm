@@ -181,6 +181,11 @@ SW      V0, 0x0024 (SP)
 .importobj "AI/trolls/load_segment_decompress.o"
 .endarea
 
+.org 0x80278504
+.area 0x80278610-0x80278504
+.importobj "AI/trolls/dma_read.o"
+.endarea
+
 ; level_update.c
 .org 0x8024A374
 J       troll_check_instant_warp
@@ -441,6 +446,28 @@ NOP
 .area 0x8038556C-0x803854CC
 .importobj "AI/trolls/bhv_cmd_begin.o"
 .endarea
+
+; debug object
+.org 0x80385CD8
+JAL     set_cur_obj_debug_information
+NOP
+LUI     AT, 0x8036
+LW      T2, 0x1160 (AT)
+LW      T3, 0x01CC (T2)
+SW      T3, 0x1164 (AT)
+LUI     T4, 0x8036
+LW      T4, 0x1164 (T4)
+LUI     T8, 0x8039
+LW      T5, 0x0000 (T4)
+SRL     T6, T5, 24
+SLL     T7, T6, 2
+ADDU    T8, T8, T7
+LW      T8, 0xB9B0 (T8)
+SW      T8, 0x0020 (SP)
+JALR    T8, RA
+NOP
+.org 0x80385D24
+BEQ     T1, R0, 0x80385CF0
 
 ; geo_layout.c
 .org 0x8037DE94

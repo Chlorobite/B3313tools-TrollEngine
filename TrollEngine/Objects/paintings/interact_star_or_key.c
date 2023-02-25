@@ -69,7 +69,7 @@ u32 interact_star_or_key(register struct MarioState *m, UNUSED u32 interactType,
                 m->capTimer = 1;
             }
             
-            if (((o->oBehParams >> 16) & 0xFF) == 0x00) {
+            if (((o->oBehParams >> 16) & 0xFF) != 13) {
 				gTrollWarpDestination = 2; // star exit
 			}
 			

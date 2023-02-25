@@ -19,6 +19,7 @@
 .definelabel osStartThread, 0x80322df0
 .definelabel osContStartReadData, 0x80323a60
 .definelabel osContGetReadData, 0x80323b24
+.definelabel osPiStartDma, 0x80324460
 
 .definelabel gFramebuffers, 0x8038f800
 .definelabel sRenderedFramebuffer, 0x8032d5d8
@@ -851,7 +852,7 @@
 
 .definelabel update_mario_sound_and_camera, 0x802521a0                
 .definelabel drop_and_set_mario_action, 0x80253178                
-.definelabel dma_read, 0x80278504                
+;.definelabel dma_read, 0x80278504
 ;.definelabel save_file_get_total_star_count, 0x8027a010                
 .definelabel get_object_list_from_behavior, 0x8029f914                
 .definelabel create_object, 0x802c9f04                
