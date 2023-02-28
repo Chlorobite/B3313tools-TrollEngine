@@ -4,6 +4,7 @@
 #include "stats_tracking_debug.h"
 #include "personalization_helpers.h"
 #include "game/object_list_processor.h"
+#include "game/spawn_object.h"
 #include "behavior_data.h"
 
 #include "game/print.h"
@@ -494,6 +495,44 @@ void haks() {
 	print_text(HUD_LEFT_X, HUD_TOP_Y - 16, "LEFT   DEBUG MOVE");
 	if (gPlayer1Controller->buttonPressed & L_JPAD) {
 		set_mario_action(gMarioState, gMarioState->action == ACT_DEBUG_FREE_MOVE ? ACT_IDLE : ACT_DEBUG_FREE_MOVE, 0);
+	}
+
+	print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "RIGHT  FUNY SPAWN");
+	if (gPlayer1Controller->buttonPressed & R_JPAD) {
+		// spawn object
+		u8 spawnModel = 0;
+		u32 *spawnBhv = (u32*)segmented_to_virtual((void*)0x1F001508);
+
+		struct Object *obj = create_object(spawnBhv);
+		struct SpawnInfo spawnInfo;
+
+		// Behavior parameters are often treated as four separate bytes, but
+		// are stored as an s32.
+		obj->oBehParams = 0x00000000;
+		// The second byte of the behavior parameters is copied over to a special field
+		// as it is the most frequently used by objects.
+		obj->oBehParams2ndByte = ((obj->oBehParams) >> 16) & 0xFF;
+
+		obj->behavior = spawnBhv;
+		obj->unused1 = 0;
+
+		// Record death/collection in the SpawnInfo
+		obj->respawnInfoType = RESPAWN_INFO_TYPE_32;
+		obj->respawnInfo = &obj->oBehParams;
+
+		spawnInfo.startAngle[0] = 0.0f;
+		spawnInfo.startAngle[1] = 0.0f;
+		spawnInfo.startAngle[2] = 0.0f;
+
+		spawnInfo.areaIndex = gCurrentArea->index;
+		spawnInfo.activeAreaIndex = gCurrentArea->index;
+		spawnInfo.model = gLoadedGraphNodes[spawnModel];
+
+		geo_obj_init_spawninfo(&obj->header.gfx, &spawnInfo);
+
+		obj->oPosX = gMarioObject->oPosX;
+		obj->oPosY = gMarioObject->oPosY;
+		obj->oPosZ = gMarioObject->oPosZ;
 	}
 	//print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "RIGHT  DEBUG MOVE");
 	
