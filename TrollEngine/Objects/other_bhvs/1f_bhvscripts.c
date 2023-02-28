@@ -30,6 +30,7 @@ void bhv_silver_star_loop();
 void bhv_hidden_silver_star_star_init();
 void bhv_hidden_silver_star_star_loop();
 void bhv_jumpscare_object_loop();
+void bhv_star_magnet_two();
 
 
 const BehaviorScript bhvPlaymaSoundLoop[] = {
@@ -118,5 +119,13 @@ const BehaviorScript bhvJumpscareObject[] = {
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_jumpscare_object_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvStarMagnet2[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_star_magnet_two),
     END_LOOP(),
 };

@@ -218,7 +218,7 @@ static struct ObjectHitbox sSilverStarHitbox = {
 extern const BehaviorScript bhvHiddenSilverStarStar[];
 extern s32 isSilverStar;
 
-void bhv_silver_star_init(void) {
+void bhv_silver_star_init() {
     o->oFaceAngleYaw = 0;
     o->oAction = 1;
     o->oInteractionSubtype |= INT_SUBTYPE_NO_EXIT | 0x8000;
@@ -227,7 +227,7 @@ void bhv_silver_star_init(void) {
     o->oWallHitboxRadius = 80;
 }
 
-void bhv_silver_star_loop(void) {
+void bhv_silver_star_loop() {
     o->oFaceAngleYaw += 0x800;
     if (o->oFaceAngleYaw & 0x800) {
         o->oAnimState++;
@@ -266,7 +266,7 @@ void bhv_silver_star_loop(void) {
 }
 
 
-void bhv_hidden_silver_star_star_init(void) {
+void bhv_hidden_silver_star_star_init() {
     spawn_object(o, MODEL_TRANSPARENT_STAR, bhvRedCoinStarMarker);
 
     o->oHiddenStarTriggerCounter = 0;
@@ -274,7 +274,7 @@ void bhv_hidden_silver_star_star_init(void) {
 
 void spawn_red_coin_cutscene_star(f32 x, f32 y, f32 z);
 
-void bhv_hidden_silver_star_star_loop(void) {
+void bhv_hidden_silver_star_star_loop() {
     switch (o->oAction) {
         case 0:
             if (o->oHiddenStarTriggerCounter == 5) {
@@ -289,4 +289,36 @@ void bhv_hidden_silver_star_star_loop(void) {
             }
             break;
     }
+}
+
+void bhv_star_magnet_two() {
+    register f32 starMagnetDist = 33130.f;
+	register s32 i;
+	register struct Object *obj;
+	register struct Object *closestObject = NULL;
+
+    // Find closest hidden star spawner, if any.
+	obj = &gObjectPool[0];
+	for (i = 0; i < 240; i++) {
+		if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && (obj->behavior == segmented_to_virtual(bhvHiddenRedCoinStar) ||
+		obj->behavior == segmented_to_virtual(bhvHiddenStar) || // secret
+		obj->behavior == segmented_to_virtual(bhvHiddenSilverStarStar))) {
+			register f32 dist = dist_between_objects(o, obj);
+
+            if (dist < starMagnetDist) {
+                starMagnetDist = dist;
+                closestObject = obj;
+            }
+		}
+
+		obj++;
+	}
+
+    if (closestObject != NULL) {
+        closestObject->oPosX = o->oPosX;
+        closestObject->oPosY = o->oPosY;
+        closestObject->oPosZ = o->oPosZ;
+    }
+
+    o->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // troll complete, unload
 }
