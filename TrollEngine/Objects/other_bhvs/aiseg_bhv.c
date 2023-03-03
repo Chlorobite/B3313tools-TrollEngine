@@ -320,7 +320,7 @@ void bhv_star_magnet_two() {
 
         obj = &gObjectPool[0];
         for (i = 0; i < 240; i++) {
-            if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->parentObj == closestObject) {
+            if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj != closestObject && obj->parentObj == closestObject) {
                 obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
                 spawnMarker = TRUE;
             }
@@ -334,10 +334,12 @@ void bhv_star_magnet_two() {
         closestObject->oBehParams = o->oBehParams;
         closestObject->oBehParams2ndByte = o->oBehParams2ndByte;
 
-        obj = o;
-        o = closestObject; // just in case
-        spawn_object(closestObject, MODEL_TRANSPARENT_STAR, bhvRedCoinStarMarker);
-        o = obj;
+        if (spawnMarker) {
+            obj = o;
+            o = closestObject; // just in case
+            spawn_object(closestObject, MODEL_TRANSPARENT_STAR, bhvRedCoinStarMarker);
+            o = obj;
+        }
     }
 
     o->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // troll complete, unload
