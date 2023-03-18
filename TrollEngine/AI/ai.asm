@@ -207,6 +207,11 @@ NOP
 .importobj "AI/trolls/interact_coin.o"
 .endarea
 
+.org 0x8024E0C4
+.area 0x8024E2FC-0x8024E0C4
+.importobj "AI/trolls/interact_warp_door.o"
+.endarea
+
 .org 0x8024E420
 .area 0x8024E6EC-0x8024E420
 .importobj "AI/trolls/interact_door.o"

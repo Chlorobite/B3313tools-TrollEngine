@@ -512,11 +512,11 @@ void addMoreObjects() {
 
 	switch (get_red_star_count(gCurrSaveFileNum - 1)) {
 		case 0:
-			// Change all warps in CG to bowser
-			if (gCurrLevelNum == 0x10) {
-				obj = &gObjectPool[0];
-				for (i = 0; i < 240; i++) {
-					if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual((void*)0x13000780)) {
+			// All warp holes in castle turn to bowser, otherwise despawn
+			obj = &gObjectPool[0];
+			for (i = 0; i < 240; i++) {
+				if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual((void*)0x13000780)) {
+					if (gCurrLevelNum == 0x10) { // Castle Grounds
 						// set the warp to go to bowser
 						struct ObjectWarpNode *warpNode = area_get_warp_node(obj->oBehParams2ndByte);
 						if (warpNode != NULL) {
@@ -525,9 +525,12 @@ void addMoreObjects() {
 							warpNode->node.destNode = 10;
 						}
 					}
-					
-					obj++;
+					else {
+						obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
+					}
 				}
+
+				obj++;
 			}
 			break;
 		case 1:
