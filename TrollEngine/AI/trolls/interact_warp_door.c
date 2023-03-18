@@ -66,6 +66,7 @@ u32 interact_warp_door(struct MarioState *m, UNUSED u32 interactType, struct Obj
                                     (saveFlags & SAVE_FLAG_HAVE_KEY_1) ? DIALOG_023 : DIALOG_022);
             }
             sDisplayingDoorText = TRUE;
+            return FALSE;
         }
 
         if (m->action == ACT_WALKING || m->action == ACT_DECELERATING) {

@@ -893,17 +893,17 @@ void postObjectLoadPass() {
 			}
 			else {
 				// other levels
-				if (TRACKER_accum_murder > 1.0f + sqrtf(goombaCount)) {
+				if (TRACKER_difficulty_modifier < 0.5f) {
+					// yellow goombas (easier)
+					goombaType = 4;
+				}
+				else if (TRACKER_accum_murder > 1.0f + sqrtf(goombaCount) * TRACKER_difficulty_modifier) {
 					// the player doing a little too much killing
 					goombaType = 5; // FUCKFUCK RUN
 				}
 				else if (TRACKER_difficulty_modifier > 1.5f) {
 					// red goombas (harder)
 					goombaType = 2;
-				}
-				else if (TRACKER_difficulty_modifier < 0.5f) {
-					// yellow goombas (easier)
-					goombaType = 4;
 				}
 			}
 			
