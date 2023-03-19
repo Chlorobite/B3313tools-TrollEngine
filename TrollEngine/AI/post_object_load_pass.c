@@ -227,7 +227,7 @@ void troll_geo_layout(u32 *areaGeoLayout) {
 		}
 	}
 	
-	nightModeSetting = 5;
+	nightModeSetting = 0;
 	obj = &gObjectPool[0];
 	for (i = 0; i < 240; i++) {
 		if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED)) {
@@ -244,7 +244,7 @@ void troll_geo_layout(u32 *areaGeoLayout) {
 			}
 			else if (obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
 				// personalizator object, get night mode here
-				nightModeSetting = 5;//(u8)(obj->oBehParams >> 8);
+				nightModeSetting = (u8)(obj->oBehParams >> 8);
 				personalizationFlags = (u8)(obj->oBehParams & 0xFF);
 			}
 		}
