@@ -227,24 +227,24 @@ void troll_geo_layout(u32 *areaGeoLayout) {
 		}
 	}
 	
-	nightModeSetting = 0;
+	nightModeSetting = 5;
 	obj = &gObjectPool[0];
 	for (i = 0; i < 240; i++) {
 		if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED)) {
 			if (obj->behavior == segmented_to_virtual(bhvTroll)) {
 				// painting data, add the texture sample to protect it from being overwritten
 				for (j = 0; j < 256; j++) {
-					if (foundTextures[i] == NULL) {
+					if (foundTextures[j] == NULL) {
 						u32 *trollptr = (u32*)paintings[obj->oBehParams >> 24];
-						foundTextures[i] = trollptr;
-						foundTextureSamples[i] = *trollptr;
+						foundTextures[j] = trollptr;
+						foundTextureSamples[j] = *trollptr;
 						break;
 					}
 				}
 			}
 			else if (obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
 				// personalizator object, get night mode here
-				nightModeSetting = (u8)(obj->oBehParams >> 8);
+				nightModeSetting = 5;//(u8)(obj->oBehParams >> 8);
 				personalizationFlags = (u8)(obj->oBehParams & 0xFF);
 			}
 		}
