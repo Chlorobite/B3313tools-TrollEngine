@@ -1,6 +1,7 @@
 .n64
 .open "../Bee/b3313 silved.z64", "../Bee/b3313 new.z64", 0
 .include "trollfinity.asm" ; the asm behind the trolling
+.definelabel osPiStartDma, 0x80324460
 
 
 .include "AI/ai.asm" ; no way there is a personaliatoin real ai ai chatgpt real stable diffusion

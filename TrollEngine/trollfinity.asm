@@ -19,7 +19,6 @@
 .definelabel osStartThread, 0x80322df0
 .definelabel osContStartReadData, 0x80323a60
 .definelabel osContGetReadData, 0x80323b24
-.definelabel osPiStartDma, 0x80324460
 
 .definelabel gFramebuffers, 0x8038f800
 .definelabel sRenderedFramebuffer, 0x8032d5d8
