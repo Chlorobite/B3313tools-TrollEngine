@@ -13,7 +13,7 @@
 .importobj "Objects/paintings/painting_bhv.o"
 .importobj "Objects/paintings/painting_object.o"
 .endarea
-.definelabel paintings, 0x8056FE00
+.definelabel paintings, 0x8056A4FC
 
 ; find_floor nullage fix
 .headersize 0x80245000
