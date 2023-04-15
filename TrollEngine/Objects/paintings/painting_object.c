@@ -163,7 +163,7 @@ Gfx *obj_geo_painting_draw(s32 callContext, struct GraphNode *node, UNUSED void 
 
     if (callContext == GEO_CONTEXT_RENDER) {
 		obj = (struct Object *) gCurGraphNodeObject;
-		painting = paintings[obj->oBehParams >> 24];
+		painting = paintings[(u8)(obj->oBehParams >> 24)];
 		
 		if (obj->oPosX == 0.f && obj->oPosZ == 0.f) {
 			eject = TRUE;

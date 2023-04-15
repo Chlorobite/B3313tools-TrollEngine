@@ -235,7 +235,7 @@ void troll_geo_layout(u32 *areaGeoLayout) {
 				// painting data, add the texture sample to protect it from being overwritten
 				for (j = 0; j < 256; j++) {
 					if (foundTextures[j] == NULL) {
-						u32 *trollptr = (u32*)paintings[obj->oBehParams >> 24];
+						u32 *trollptr = (u32*)paintings[(u8)(obj->oBehParams >> 24)];
 						foundTextures[j] = trollptr;
 						foundTextureSamples[j] = *trollptr;
 						break;
