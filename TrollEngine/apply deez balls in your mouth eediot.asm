@@ -26,8 +26,8 @@
 .include "Objects/paintings/painting_object.asm"
 .include "Objects/other_bhvs/1f_bhvscripts.asm"
 .include "Objects/topbhv/topbhv.asm"
-
 .include "Objects/GhostPeach.asm"
+.include "Objects/custom_purple_switch/bhv.s"
 
 ; "O2" is a project to optimize some hot game functions (mainly collision) so it doesn't lagma like shit
 ; then level scale was involved, so it was split into 2
