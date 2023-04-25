@@ -31,6 +31,7 @@ void bhv_hidden_silver_star_star_init();
 void bhv_hidden_silver_star_star_loop();
 void bhv_jumpscare_object_loop();
 void bhv_star_magnet_two();
+void bhv_custom_purple_switch_loop();
 
 
 const BehaviorScript bhvPlaymaSoundLoop[] = {
@@ -127,5 +128,16 @@ const BehaviorScript bhvStarMagnet2[] = {
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_star_magnet_two),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvPurpleSwitchThatDisappearsShip[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    // Floor switch - common:
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    LOAD_COLLISION_DATA(0x0800C7A8),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_custom_purple_switch_loop),
+        CALL_NATIVE(load_object_collision_model),
     END_LOOP(),
 };
