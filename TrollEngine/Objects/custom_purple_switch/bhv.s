@@ -30,10 +30,10 @@ bhvPurpleSwitchThatDisappearsAShip:
 .word 0x00090000
 .word 0x11010001
 .word 0x2A000000, 0x0800C7A8
-.word 08000000
+.word 0x08000000
 .word 0x0C000000, bhv_custom_purple_switch_loop
 .word 0x0C000000, load_object_collision_model
-.word 09000000
+.word 0x09000000
 
 
 .importobj "Objects/custom_purple_switch/script.o"
