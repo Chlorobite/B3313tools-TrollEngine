@@ -93,7 +93,7 @@ void bhv_custom_purple_switch_loop(void) {
                 mark_obj_for_deletion(badShip);
 
                 goodShip->oPosX = 4812.0f;
-                goodShip->oPosY = -1770.0f;
+                goodShip->oPosY = -1290.0f;
                 goodShip->oPosZ = 1755.0f;
             }
             break;
