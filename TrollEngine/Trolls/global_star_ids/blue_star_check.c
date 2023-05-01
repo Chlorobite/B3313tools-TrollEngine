@@ -40,6 +40,10 @@ u32 blue_star_check(register s32 behParams) {
 	register s32 starId = ((behParams >> 24) & 0xFF) + (behParams & 0x100);
     register s32 courseId = COURSE_NUM_TO_INDEX(gCurrCourseNum);
 
+	if (behParams & 0x8000) {
+		o->oInteractionSubtype |= INT_SUBTYPE_NO_EXIT;
+	}
+
 	if (starId >= 16) {
 		courseId = COURSE_NUM_TO_INDEX(COURSE_MIN) + ((starId - 16) >> 3);
 		starId &= 7;
