@@ -300,10 +300,7 @@ void bhv_star_magnet_two() {
     // Find closest hidden star spawner, if any.
 	obj = &gObjectPool[0];
 	for (i = 0; i < 240; i++) {
-		if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && (obj->behavior == segmented_to_virtual(bhvHiddenRedCoinStar) ||
-        obj->behavior == segmented_to_virtual(bhvBowserCourseRedCoinStar) ||
-		obj->behavior == segmented_to_virtual(bhvHiddenStar) || // secret
-		obj->behavior == segmented_to_virtual(bhvHiddenSilverStarStar))) {
+		if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && is_object_star_spawner(obj)) {
 			register f32 dist = dist_between_objects(o, obj);
 
             if (dist < starMagnetDist) {

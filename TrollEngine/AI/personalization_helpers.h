@@ -111,4 +111,6 @@ s32 act_electric_idle(struct MarioState *m);
 
 struct Object *troll_spawn_star_bypass_magnets(struct Object *sp30, f32 sp34, f32 sp38, f32 sp3C);
 
+s32 is_object_star_spawner(struct Object *obj);
+
 #endif

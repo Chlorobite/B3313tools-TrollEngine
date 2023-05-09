@@ -1687,9 +1687,9 @@ extern const BehaviorScript *bhvStarMagnet;
 struct Object *troll_spawn_star(struct Object *sp30, f32 sp34, f32 sp38, f32 sp3C) {
     register f32 starMagnetDist = 33130.f;
 	register s32 i;
-    register u32 closestBparams = 0;
 	register struct Object *obj;
     register struct Object *o = gCurrentObject;
+    register u32 closestBparams = 0;
     
     sp30 = spawn_object_abs_with_rot(o, 0, MODEL_STAR, bhvStarSpawnCoordinates, o->oPosX, o->oPosY,
                                      o->oPosZ, 0, 0, 0);
@@ -2316,5 +2316,12 @@ struct Object *troll_spawn_star_bypass_magnets(struct Object *sp30, f32 sp34, f3
     sp30->oFaceAnglePitch = 0;
     sp30->oFaceAngleRoll = 0;
     return sp30;
+}
+
+s32 is_object_star_spawner(struct Object *obj) {
+    return (obj->behavior == segmented_to_virtual(bhvHiddenRedCoinStar) ||
+        obj->behavior == segmented_to_virtual(bhvBowserCourseRedCoinStar) ||
+		obj->behavior == segmented_to_virtual(bhvHiddenStar) || // secret
+		obj->behavior == segmented_to_virtual(bhvHiddenSilverStarStar));
 }
 
