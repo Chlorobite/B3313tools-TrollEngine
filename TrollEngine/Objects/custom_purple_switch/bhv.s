@@ -24,7 +24,7 @@ SCALE_AXIS_Z equ 0x04
 oAction equ 0x14C
 
 .headersize 0x8018F240
-.orga 0x3D0DC0+0xC000
+.orga 0x3D0DC0+0xB120
 .area 0x27c
 .importobj "Objects/custom_purple_switch/script.o"
 .endarea

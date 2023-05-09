@@ -30,11 +30,15 @@
 .include "Objects/custom_purple_switch/bhv.s"
 
 ; "O2" is a project to optimize some hot game functions (mainly collision) so it doesn't lagma like shit
-; then level scale was involved, so it was split into 2
+; then level scale happened, so it was split into 2
 ; no level scale mode probably doesn't work so don't bother, unless level scale is to be removed for any reason
 ; (e.g. another minihack)
 ;.include "O2/o2_nolevelscale.asm"
 .include "O2/o2_levelscale.asm"
+
+; 8056C000.. is crash screen code, do not overwrite!!!
+; I don't have the original armips for this :( so the funny binary data from previous rom will have to do
+.include "crashfix.asm"
 
 
 .orga 0xEFFFC
