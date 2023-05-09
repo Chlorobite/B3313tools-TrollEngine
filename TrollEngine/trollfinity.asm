@@ -1215,6 +1215,8 @@
 .definelabel gTrollWarpDestination, 0x807FFFD0
 .definelabel gLastPaintingId, 0x807FFFD1
 .definelabel gLastArea, 0x807FFFD2
+.definelabel gIsLuigi, 0x807FFFED
+
 .definelabel sDelayedWarpOp, 0x8033b252                
 .definelabel sDelayedWarpTimer, 0x8033b254                
 .definelabel reset_dialog_render_state, 0x802d8d90                

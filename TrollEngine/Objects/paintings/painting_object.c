@@ -36,6 +36,7 @@ extern struct MarioState gMarioStates[1];
 extern u8 gLastPaintingId;
 extern u16 gLastArea;
 extern u8 gTrollWarpDestination;
+extern u8 gIsLuigi;
 
 extern u32 gCurrLevelArea;
 
@@ -96,10 +97,17 @@ void painting_collision_test_lmao(register struct Painting *painting) {
 				obj->hitboxDownOffset = 25000.0f;
 				obj->oInteractStatus = 0;
 				obj->oIntangibleTimer = 0;
-				
-				if (!(save_file_get_flags() & 0x00200000)) { // an unused save flag, may be set by swotch
+
+				// 0.7 mode check
+				// this unused save flag may be set by yellow switch
+				if (!(save_file_get_flags() & 0x00200000)) {
 					gLastPaintingId = (u8)painting->id;
 					gLastArea = (u16)gCurrLevelArea;
+				}
+
+				// Luigi painting in internal garden
+				if (painting->id == 126) {
+					gIsLuigi = 1;
 				}
 			}
 		}
