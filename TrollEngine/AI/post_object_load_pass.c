@@ -208,7 +208,7 @@ extern uintptr_t sSegmentTable[32];
 void troll_geo_layout(u32 *areaGeoLayout) {
 	register s32 i, j;
 	register struct Object *obj;
-	s32 starCount = save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1);
+	s32 starCount = (save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1) * get_red_star_count(gCurrSaveFileNum - 1)) / 13;
 	u16 oldSeed;
 	u32 *lavamovtex;
 	
@@ -251,11 +251,11 @@ void troll_geo_layout(u32 *areaGeoLayout) {
 		
 		obj++;
 	}
-	if (random_u16() >= (3313.0f * starCount / 626.0f)) {
+	if (random_u16() >= (3313.0f * starCount / 666.0f)) {
 		lsd_textures = 0;
 	}
-	flip_textures = random_u16() < (3313.0f * starCount / 626.0f);
-	normalize_textures = random_u16() < (3313.0f * starCount / 626.0f);
+	flip_textures = random_u16() < (3313.0f * starCount / 666.0f);
+	normalize_textures = random_u16() < (3313.0f * starCount / 666.0f);
 	
 	updateRTC();
 	switch (nightModeSetting) {
