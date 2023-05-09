@@ -500,15 +500,15 @@ void haks() {
 	print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "RIGHT  FUNY SPAWN");
 	if (gPlayer1Controller->buttonPressed & R_JPAD) {
 		// spawn object
-		u8 spawnModel = 0;
-		u32 *spawnBhv = (u32*)segmented_to_virtual((void*)0x1F001508);
+		u8 spawnModel = 1;
+		u32 *spawnBhv = (u32*)segmented_to_virtual(bhvPoleGrabbing);
 
 		struct Object *obj = create_object(spawnBhv);
 		struct SpawnInfo spawnInfo;
 
 		// Behavior parameters are often treated as four separate bytes, but
 		// are stored as an s32.
-		obj->oBehParams = 0x00000000;
+		obj->oBehParams = (random_u16() & 255) << 16;
 		// The second byte of the behavior parameters is copied over to a special field
 		// as it is the most frequently used by objects.
 		obj->oBehParams2ndByte = ((obj->oBehParams) >> 16) & 0xFF;
@@ -534,16 +534,6 @@ void haks() {
 		obj->oPosY = gMarioObject->oPosY;
 		obj->oPosZ = gMarioObject->oPosZ;
 	}
-	//print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "RIGHT  DEBUG MOVE");
-	
-	/*if (gPlayer1Controller->buttonPressed & L_JPAD) {
-		if (--musSelection < 0) musSelection = 0;
-	}
-	if (gPlayer1Controller->buttonPressed & R_JPAD) {
-		if (++musSelection > 100) musSelection = 100;
-	}
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "L  PLAY");*/
 }
 
 int tab = 0;
