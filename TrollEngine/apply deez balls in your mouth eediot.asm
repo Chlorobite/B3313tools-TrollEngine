@@ -27,9 +27,6 @@
 .include "Objects/other_bhvs/1f_bhvscripts.asm"
 .include "Objects/topbhv/topbhv.asm"
 .include "Objects/GhostPeach.asm"
-.include "Objects/custom_purple_switch/bhv.s"
-.include "Objects/gear_bhv/gear_bhv.asm"
-.include "Objects/star_spin_bhv/bhv.s"
 
 ; "O2" is a project to optimize some hot game functions (mainly collision) so it doesn't lagma like shit
 ; then level scale happened, so it was split into 2

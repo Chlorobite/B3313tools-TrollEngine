@@ -15,9 +15,15 @@ CVT.S.W    F0, F0
 .importobj "AI/objects_collision.o"
 .importobj "AI/personalization_helpers.o"
 .importobj "AI/post_object_load_pass.o"
+.importobj "Trolls/cameratroll/sCamBeyta.o"
+
+; object behaviors
 .importobj "Objects/other_bhvs/aiseg_bhv.o"
 .include "Objects/other_bhvs/aiseg_bhv_asm.asm"
-.importobj "Trolls/cameratroll/sCamBeyta.o"
+
+.importobj "Objects/custom_purple_switch/script.o"
+.importobj "Objects/gear_bhv/gear_bhv.o"
+.importobj "Objects/star_spin_bhv/bhv.o"
 .endarea
 
 ; part 2 (0x807E0000-0x807EC000)

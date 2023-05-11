@@ -32,6 +32,9 @@ void bhv_hidden_silver_star_star_loop();
 void bhv_jumpscare_object_loop();
 void bhv_star_magnet_two();
 void bhv_custom_purple_switch_loop();
+void bhv_gear_loop();
+void bhv_celebration_star_loop();
+void bhv_celebration_star_init_true();
 
 
 const BehaviorScript bhvPlaymaSoundLoop[] = {
@@ -139,5 +142,26 @@ const BehaviorScript bhvPurpleSwitchThatDisappearsShip[] = {
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_custom_purple_switch_loop),
         CALL_NATIVE(load_object_collision_model),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvGear[] = {
+    // Rom Manager i fucking hate you
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    LOAD_COLLISION_DATA(0x09011FA0),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_gear_loop),
+        CALL_NATIVE(load_object_collision_model),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvCelebrationStarNew[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    BILLBOARD(),
+    CALL_NATIVE(bhv_celebration_star_init_true),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_celebration_star_loop),
     END_LOOP(),
 };
