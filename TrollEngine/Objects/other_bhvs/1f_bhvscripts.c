@@ -155,13 +155,3 @@ const BehaviorScript bhvGear[] = {
         CALL_NATIVE(load_object_collision_model),
     END_LOOP(),
 };
-
-const BehaviorScript bhvCelebrationStarNew[] = {
-    BEGIN(OBJ_LIST_LEVEL),
-    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
-    BILLBOARD(),
-    CALL_NATIVE(bhv_celebration_star_init_true),
-    BEGIN_LOOP(),
-        CALL_NATIVE(bhv_celebration_star_loop),
-    END_LOOP(),
-};

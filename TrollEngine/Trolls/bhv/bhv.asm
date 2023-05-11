@@ -171,6 +171,16 @@ NOP
 .importobj "Trolls/bhv/celebration_star.c__bhv_celebration_star_init.o"
 .endarea
 
+.org 0x802ED10C
+.area 0x802ED28C-0x802ED10C
+.importobj "Trolls/bhv/celebration_star.c__celeb_star_act_spin_around_mario.o"
+.endarea
+
+.org 0x802ED28C
+.area 0x802ED39C-0x802ED28C
+.importobj "Trolls/bhv/celebration_star.c__celeb_star_act_face_camera.o"
+.endarea
+
 .org 0x802AB5C8
 .area 0x802AB650-0x802AB5C8
 .importobj "Trolls/bhv/coin.inc.c__bhv_coin_sparkles_init.o"
