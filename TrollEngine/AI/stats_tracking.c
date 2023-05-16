@@ -321,7 +321,6 @@ void TRACKER_record_mario_state(struct MarioState *m) {
 			TRACKER_level_scale_modifier_h = 1.0f;
 			TRACKER_level_scale_modifier_v = 1.0f;
 		}
-		TRACKER_level_scale_modifier_v = 0.5f;
 		
 		if (nightMode) {
 			TRACKER_difficulty_modifier *= 0.9f;
