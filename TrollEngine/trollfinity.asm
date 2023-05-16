@@ -1470,6 +1470,7 @@
 .definelabel act_braking_stop, 0x802621DC
 .definelabel act_butt_slide_stop, 0x802622DC
 .definelabel act_hold_butt_slide_stop, 0x80262398
+.definelabel find_floor_height, 0x80381794
 
 .definelabel check_common_airborne_cancels, 0x8026FA18
 .definelabel play_far_fall_sound, 0x80269FC0
