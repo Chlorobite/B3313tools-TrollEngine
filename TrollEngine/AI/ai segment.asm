@@ -28,7 +28,7 @@ CVT.S.W    F0, F0
 ; part 2 (0x807E0000-0x807EC000)
 .headersize 0x007E0000-0x188440
 .orga 0x188440
-.area 0xC000,0x01
+.area 0xB000,0x01
 
 .definelabel topbhv_funcs_start, 0x807E0000
 .include "Objects/topbhv/funcs.asm"
@@ -38,8 +38,8 @@ CVT.S.W    F0, F0
 .endarea
 ; part 3 (0x807EC000-0x807F4000)
 .headersize 0x807E0000-0x188440
-.orga 0x188440+0xC000
-.area 0x8000,0x01
+.orga 0x188440+0xB000
+.area 0x9000,0x01
 
 .importobj "AI/stats_tracking.o"
 .importobj "AI/stats_tracking_debug.o"
@@ -47,6 +47,7 @@ CVT.S.W    F0, F0
 .importobj "AI/frameskip_engine.o"
 .importobj "AI/troll_hud.o"
 .importobj "AI/yellow_coin_geo.o"
+.importobj "AI/save_file.o"
 .endarea
 
 

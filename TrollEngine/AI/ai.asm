@@ -370,26 +370,108 @@ NOP
 B       0x802CFF78
 NOP
 
-; save_file.c
-.org 0x802794A0
-.area 0x8027951C-0x802794A0
-.importobj "AI/trolls/save_main_menu_data.o"
-.endarea
-
+; save_file.c functions redirect to AI/save_file.c
+.org 0x80279174
+J       read_eeprom_data
+NOP
+.org 0x80279218
+J       write_eeprom_data
+NOP
+.org 0x80279314
+J       verify_save_block_signature
+NOP
+.org 0x8027939C
+J       add_save_block_signature
+NOP
+.org 0x802795A0
+; get_coin_score_age has no implementation, simply return 0
+JR      RA
+OR      V0, R0, R0
+.org 0x802795D4
+; set_coin_score_age has no implementation, simply return 0
+JR      RA
+OR      V0, R0, R0
+.org 0x80279650
+; touch_coin_score_age has no implementation, simply return 0
+JR      RA
+OR      V0, R0, R0
+.org 0x80279700
+; touch_high_score_ages has no implementation, simply return 0
+JR      RA
+OR      V0, R0, R0
+.org 0x80279748
+J       restore_save_file_data
+NOP
 .org 0x80279840
-.area 0x802798FC-0x80279840
-.importobj "AI/trolls/save_file_do_save.o"
-.endarea
-
-.org 0x802799DC
-.area 0x80279BC8-0x802799DC
-.importobj "AI/trolls/save_file_load_all.o"
-.endarea
-
-.org 0x8027A010
-.area 0x8027A0A8-0x8027A010
-.importobj "AI/trolls/save_file_get_total_star_count.o"
-.endarea
+J       save_file_do_save
+NOP
+.org 0x802798fc
+J       save_file_erase
+NOP
+.org 0x80279960
+J       save_file_copy
+NOP
+.org 0x802799dc
+J       save_file_load_all
+NOP
+.org 0x80279bc8
+J       save_file_reload
+NOP
+.org 0x80279c44
+J       save_file_collect_star_or_key
+NOP
+.org 0x80279e44
+J       save_file_exists
+NOP
+.org 0x80279e80
+; save_file_get_max_coin_score has no implementation, simply return 0
+JR      RA
+OR      V0, R0, R0
+.org 0x80279f80
+J       save_file_get_course_star_count
+NOP
+.org 0x8027a010
+J       save_file_get_total_star_count
+NOP
+.org 0x8027a0a8
+J       save_file_set_flags
+NOP
+.org 0x8027a0f4
+J       save_file_clear_flags
+NOP
+.org 0x8027a16c
+J       save_file_get_flags
+NOP
+.org 0x8027a1c8
+J       save_file_get_star_flags
+NOP
+.org 0x8027a23c
+J       save_file_set_star_flags
+NOP
+.org 0x8027a310
+J       save_file_get_course_coin_score
+NOP
+.org 0x8027a340
+J       save_file_is_cannon_unlocked
+NOP
+.org 0x8027a390
+J       save_file_set_cannon_unlocked
+NOP
+.org 0x8027a418
+J       save_file_set_cap_pos
+NOP
+.org 0x8027a4ac
+J       save_file_get_cap_pos
+NOP
+.org 0x8027a564
+J       save_file_set_sound_mode
+NOP
+.org 0x8027a5b4
+J       save_file_get_sound_mode
+NOP
+.org 0x8027a5d4
+J       save_file_move_cap_to_default_location
+NOP
 
 ; mov texture
 .org 0x802D0254

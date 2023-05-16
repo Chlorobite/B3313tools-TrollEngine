@@ -110,7 +110,7 @@ void TRACKER_record_mario_state(struct MarioState *m);
 
 void TRACKER_on_npc_talk(register struct Object *o);
 
-void TRACKER_inject_save(u16 *menuData);
-void TRACKER_read_save(u16 *menuData);
+void TRACKER_inject_save();
+void TRACKER_read_save();
 
 #endif

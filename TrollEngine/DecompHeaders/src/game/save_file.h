@@ -33,6 +33,10 @@ struct SaveFile {
 
     u8 courseCoinScores[COURSE_STAGES_COUNT];
 
+    u8 extraStars[18];
+
+    u16 keyFlags;
+
     struct SaveBlockSignature signature;
 };
 
@@ -44,39 +48,27 @@ enum SaveFileIndex {
 };
 
 struct MainMenuSaveData {
-    // Each save file has a 2 bit "age" for each course. The higher this value,
-    // the older the high score is. This is used for tie-breaking when displaying
-    // on the high score screen.
-    u32 coinScoreAges[NUM_SAVE_FILES];
     u16 soundMode;
 
-#ifdef VERSION_EU
-    u16 language;
-#define SUBTRAHEND 8
-#else
-#define SUBTRAHEND 6
-#endif
-
-    // Pad to match the EEPROM size of 0x200 (10 bytes on JP/US, 8 bytes on EU)
-    u8 filler[EEPROM_SIZE / 2 - SUBTRAHEND - NUM_SAVE_FILES * (4 + sizeof(struct SaveFile))];
+    u8 aiData[50];
 
     struct SaveBlockSignature signature;
 };
 
 struct SaveBuffer {
-    // Each of the four save files has two copies. If one is bad, the other is used as a backup.
-    struct SaveFile files[NUM_SAVE_FILES][2];
-    // The main menu data has two copies. If one is bad, the other is used as a backup.
-    struct MainMenuSaveData menuData[2];
+    struct SaveFile files[NUM_SAVE_FILES];
+    struct SaveFile file_backups[NUM_SAVE_FILES / 2];
+    struct MainMenuSaveData menuData;
 };
 
 extern u8 gLastCompletedCourseNum;
 extern u8 gLastCompletedStarNum;
-extern s8 sUnusedGotGlobalCoinHiScore;
 extern u8 gGotFileCoinHiScore;
 extern u8 gCurrCourseStarFlags;
 extern u8 gSpecialTripleJump;
 extern s8 gLevelToCourseNumTable[];
+
+extern s32 debug_save_file_status;
 
 // game progress flags
 #define SAVE_FLAG_FILE_EXISTS            /* 0x00000001 */ (1 << 0)
@@ -132,15 +124,16 @@ void save_file_load_all(void);
 void save_file_reload(void);
 void save_file_collect_star_or_key(s16 coinScore, s16 starIndex);
 s32 save_file_exists(s32 fileIndex);
-u32 save_file_get_max_coin_score(s32 courseIndex);
 s32 save_file_get_course_star_count(s32 fileIndex, s32 courseIndex);
+s32 save_file_masked_get_course_star_count(register s32 fileIndex, register s32 courseIndex, register u8 mask);
+s32 get_red_star_count(register s32 fileIndex);
+s32 get_green_star_count(register s32 fileIndex);
 s32 save_file_get_total_star_count(s32 fileIndex, s32 minCourse, s32 maxCourse);
 void save_file_set_flags(u32 flags);
 void save_file_clear_flags(u32 flags);
 u32 save_file_get_flags(void);
 u32 save_file_get_star_flags(s32 fileIndex, s32 courseIndex);
 void save_file_set_star_flags(s32 fileIndex, s32 courseIndex, u32 starFlags);
-s32 save_file_get_course_coin_score(s32 fileIndex, s32 courseIndex);
 s32 save_file_is_cannon_unlocked(void);
 void save_file_set_cannon_unlocked(void);
 void save_file_set_cap_pos(s16 x, s16 y, s16 z);
@@ -152,16 +145,5 @@ void save_file_move_cap_to_default_location(void);
 void disable_warp_checkpoint(void);
 void check_if_should_set_warp_checkpoint(struct WarpNode *warpNode);
 s32 check_warp_checkpoint(struct WarpNode *warpNode);
-
-#ifdef VERSION_EU
-enum EuLanguages {
-    LANGUAGE_ENGLISH,
-    LANGUAGE_FRENCH,
-    LANGUAGE_GERMAN
-};
-
-void eu_set_language(u16 language);
-u16 eu_get_language(void);
-#endif
 
 #endif // SAVE_FILE_H

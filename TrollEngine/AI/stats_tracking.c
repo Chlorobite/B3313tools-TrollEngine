@@ -7,9 +7,12 @@
 #include "game/object_helpers.h"
 #include "game/game_init.h"
 #include "game/interaction.h"
+#include "game/save_file.h"
 #include "engine/behavior_script.h"
 #include "behavior_data.h"
 #include "actors/common1.h"
+
+extern struct SaveBuffer gSaveBuffer;
 
 
 f32 __min(f32 a, f32 b) {
@@ -318,6 +321,7 @@ void TRACKER_record_mario_state(struct MarioState *m) {
 			TRACKER_level_scale_modifier_h = 1.0f;
 			TRACKER_level_scale_modifier_v = 1.0f;
 		}
+		TRACKER_level_scale_modifier_v = 0.5f;
 		
 		if (nightMode) {
 			TRACKER_difficulty_modifier *= 0.9f;
@@ -402,14 +406,12 @@ f32 u8_to_f32(u8 in) {
 	return in / 16.0f;
 }
 
-void TRACKER_inject_save(u16 *menuData) {
+void TRACKER_inject_save() {
 	s32 i;
 	f32 *ptr;
+
+	u16 *menuData = (u16*)&gSaveBuffer.menuData.aiData;
 	
-	// the pointer points to 64 bytes of data,
-	// of which we can use 46, as there's some actual data held here
-	menuData += 18/2;
-	// the rest is padding, and a backup copy
 	// the backup system had to be disabled to fit everything into the 512 byte eeprom
 	// hopefully save doesn't get corrupted :( that would be unfortunate
 	
@@ -441,13 +443,11 @@ void TRACKER_inject_save(u16 *menuData) {
 	*(menuData++) = (f32_to_u8(TRACKER_accum_stars_prefer_vanish_cap) << 8);
 }
 
-void TRACKER_read_save(u16 *menuData) {
+void TRACKER_read_save() {
 	s32 i;
 	f32 *ptr;
-	
-	// the pointer points to 64 bytes of data,
-	// of which we use 46, as there's some actual data held here
-	menuData += 18/2;
+
+	u16 *menuData = (u16*)&gSaveBuffer.menuData.aiData;
 	
 	personalizationRandSeed = *(menuData++);
 	if (personalizationRandSeed == 0 || personalizationRandSeed == 0xFFFF) {

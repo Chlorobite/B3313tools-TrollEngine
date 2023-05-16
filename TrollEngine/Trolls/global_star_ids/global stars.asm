@@ -3,13 +3,6 @@
 ; Some of the implementation (calls to blue_star_check) are bhv trolled (in Trolls/bhv),
 ; it's correct in both locations, but could possibly be moved here for clarity?
 
-.headersize 0x80245000
-
-.org 0x80279c44
-.area 0x200
-.importobj "Trolls/global_star_ids/save_file_collect_star_or_key.o"
-.endarea
-
 .headersize 0x8018F240
 .orga 0x3D0DC0+0x780
 

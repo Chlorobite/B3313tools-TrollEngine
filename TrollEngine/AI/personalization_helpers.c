@@ -1300,16 +1300,15 @@ void troll_yellow_switch_or_set_flags(s32 __oBehParams2ndByte) {
     save_file_set_flags(((random_u16() << 16) | random_u16()) ^ (u32)osGetTime());
     
     // fuck the AI too
-    fuck = (u16*)&gSaveBuffer.menuData[0];
-    fuck += 18/2;
+    fuck = (u16*)&gSaveBuffer.menuData.aiData;
     
-    for (i = 18/2; i < 32; i++) {
+    for (i = 0; i < sizeof(gSaveBuffer.menuData.aiData); i += 2) {
         *fuck = random_u16();
         fuck++;
     }
     
     // enjoy this garbage lol
-    TRACKER_read_save((u16*)&gSaveBuffer.menuData[0]);
+    TRACKER_read_save();
     TRACKER_boss_performance = 0; // massive difficulty spikes are caused by this value, so 'fix it'
 }
 
@@ -1528,31 +1527,6 @@ void troll_print_generic_string(s16 x, s16 y, u8 *str) {
         str = pressaaaaaaaaaaaaaaaa;
     }
     print_generic_string(x, y, str);
-}
-
-
-s32 save_file_masked_get_course_star_count(register s32 fileIndex, register s32 courseIndex, register u8 mask) {
-    register s32 count = 0;
-    register u8 starFlags = save_file_get_star_flags(fileIndex, courseIndex) & mask;
-
-    while (starFlags) {
-        if (starFlags & 1) {
-            count++;
-        }
-        starFlags >>= 1;
-    }
-    return count;
-}
-
-s32 get_red_star_count(register s32 fileIndex) {
-    return save_file_masked_get_course_star_count(fileIndex, (COURSE_MAX - 1) + 15 - 1, 0xF8)
-        + save_file_masked_get_course_star_count(fileIndex, (COURSE_MAX - 1) + 15, 0xFF);
-}
-
-s32 get_green_star_count(register s32 fileIndex) {
-    return save_file_masked_get_course_star_count(fileIndex, (COURSE_MAX - 1) + 15 - 3, 0xC0)
-        + save_file_masked_get_course_star_count(fileIndex, (COURSE_MAX - 1) + 15 - 2, 0xFF)
-        + save_file_masked_get_course_star_count(fileIndex, (COURSE_MAX - 1) + 15 - 1, 0x07);
 }
 
 
@@ -2324,4 +2298,6 @@ s32 is_object_star_spawner(struct Object *obj) {
 		obj->behavior == segmented_to_virtual(bhvHiddenStar) || // secret
 		obj->behavior == segmented_to_virtual(bhvHiddenSilverStarStar));
 }
+
+
 

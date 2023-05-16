@@ -170,24 +170,11 @@
 .definelabel sJustTeleported, 0x8032da94
 .definelabel check_kick_or_punch_wall, 0x80250230                
 
-.definelabel gCurrCourseNum, 0x8033bac6                
-.definelabel gCurrSaveFileNum, 0x8032ddf4                
-.definelabel gLoadedGraphNodes, 0x8032ddc4                
-.definelabel bit_shift_left, 0x802a3f24                
-.definelabel gLastCompletedCourseNum, 0x8032dd80                
-.definelabel gLastCompletedStarNum, 0x8032dd84                
-.definelabel sUnusedGotGlobalCoinHiScore, 0x8032dd88                
-.definelabel gGotFileCoinHiScore, 0x8032dd8c                
-.definelabel save_file_get_max_coin_score, 0x80279e80                
-.definelabel save_file_set_flags, 0x8027a0a8                
-.definelabel save_file_clear_flags, 0x8027a0f4                
-.definelabel save_file_get_flags, 0x8027a16c                
-.definelabel save_file_get_star_flags, 0x8027a1c8
-.definelabel save_file_set_star_flags, 0x8027a23c                
-.definelabel save_file_get_course_coin_score, 0x8027a310                
-.definelabel gSaveFileModified, 0x8033b4a6                
-.definelabel gSaveBuffer, 0x80207700                
-.definelabel touch_coin_score_age, 0x80279650
+.definelabel gCurrCourseNum, 0x8033bac6
+.definelabel gCurrSaveFileNum, 0x8032ddf4
+.definelabel gLoadedGraphNodes, 0x8032ddc4
+.definelabel bit_shift_left, 0x802a3f24
+.definelabel gSaveBuffer, 0x80207700
 
 .definelabel gStaticSurfacePartition, 0x8038be98                
 .definelabel gDynamicSurfacePartition, 0x8038d698                
@@ -1073,7 +1060,6 @@
 .definelabel mario_can_talk, 0x8024fe6c                
 .definelabel push_mario_out_of_object, 0x8024d578                
 .definelabel object_facing_mario, 0x8024c0b8                
-.definelabel save_file_get_cap_pos, 0x8027a4ac                
 
 .definelabel sPoolFreeSpace, 0x8033b480                
 .definelabel sPoolListHeadL, 0x8033b48c                
@@ -1096,15 +1082,6 @@
 .definelabel draw_skybox_tile_grid, 0x802cfa2c
 .definelabel create_skybox_ortho_matrix, 0x802cfc68
 .definelabel init_skybox_display_list, 0x802cfd88
-
-.definelabel gMainMenuDataModified, 0x8033b4a5                
-.definelabel read_eeprom_data, 0x80279174                
-.definelabel write_eeprom_data, 0x80279218                
-.definelabel add_save_block_signature, 0x8027939c                
-.definelabel verify_save_block_signature, 0x80279314                
-.definelabel restore_save_file_data, 0x80279748                
-.definelabel save_file_erase, 0x802798fc      
-
 
 .definelabel bobomb_spawn_coin, 0x802E6A8C
 .definelabel create_respawner, 0x802EAF84
@@ -1220,7 +1197,6 @@
 .definelabel sDelayedWarpOp, 0x8033b252                
 .definelabel sDelayedWarpTimer, 0x8033b254                
 .definelabel reset_dialog_render_state, 0x802d8d90                
-.definelabel save_file_reload, 0x80279bc8                
 .definelabel warp_special, 0x8024978c                
 .definelabel sound_banks_disable, 0x8032174c                
 .definelabel sound_banks_enable, 0x8032180c                
@@ -1232,7 +1208,6 @@
 .definelabel sDelayedWarpArg, 0x8033b258
 .definelabel area_get_warp_node, 0x8027a9c8                
 .definelabel sWarpDest, 0x8033b248                
-.definelabel check_if_should_set_warp_checkpoint, 0x8027a6b0                
 .definelabel level_set_transition, 0x8024b798                
 .definelabel gGlobalSoundSource, 0x803331f0                
 .definelabel play_sound, 0x8031eb00                
@@ -1291,7 +1266,6 @@
 .definelabel find_floor_slope, 0x80252000
 .definelabel perform_ground_quarter_step, 0x80255B04
 .definelabel mario_get_terrain_sound_addend, 0x802518A8
-.definelabel save_file_get_course_star_count, 0x80279F80
 .definelabel print_text_fmt_int, 0x802D62D8
 .definelabel gHudFlash, 0x803316d4
 
@@ -1553,3 +1527,10 @@
 .definelabel dl_power_meter_base, 0x03029480
 .definelabel dl_power_meter_health_segments_begin, 0x03029570
 .definelabel dl_power_meter_health_segments_end, 0x030295A0
+
+.definelabel geepromprobe, 0x8033B079
+.definelabel oseepromlongread, 0x80324690
+.definelabel oseepromlongwrite, 0x803247D0
+.definelabel gcurrdemoinput, 0x8032D5F0
+.definelabel set_sound_mode, 0x80248E08
+.definelabel gsavedcoursenum, 0x8033BACC

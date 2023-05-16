@@ -112,8 +112,6 @@ void trolled_initiate_delayed_warp(void) {
 
 					initiate_warp(warpNode->node.destLevel & 0x7F, warpNode->node.destArea,
 								warpNode->node.destNode, sDelayedWarpArg);
-					
-					check_if_should_set_warp_checkpoint(&warpNode->node);
 				}
 
 				if (sWarpDest.type != WARP_TYPE_CHANGE_LEVEL) {

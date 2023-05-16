@@ -313,10 +313,10 @@ NOP
 .importobj "Trolls/bhv/koopa.inc.c__koopa_the_quick_act_race.o"
 .endarea
 
-; pole_init
-.org 0x802A6C30
-SRA     T9, T7, 16 ; the ANDI was removed, without correcting the target register of the shift
-NOP
+.org 0x802A6C20
+.area 0x802A6C74-0x802A6C20
+.include "Trolls/bhv/pole.inc.c__bhv_pole_init.s"
+.endarea
 
 .org 0x80312B80
 .area 0x80312D0C-0x80312B80
