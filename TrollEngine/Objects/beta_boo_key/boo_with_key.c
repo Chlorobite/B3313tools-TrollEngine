@@ -106,6 +106,7 @@ void bhv_boo_with_key_init(void) {
 		modelID = MODEL_CUSTOM_BETA_BOO_KEY_B;
 
     key = spawn_object(o, modelID, bhvBetaBooKey);
+    obj_scale_xyz(key, 0.75f, 0.75f, 0.75f);
     key->oBehParams = o->oBehParams;
 }
 

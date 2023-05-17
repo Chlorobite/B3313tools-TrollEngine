@@ -511,7 +511,7 @@ void haks() {
 
 		// Behavior parameters are often treated as four separate bytes, but
 		// are stored as an s32.
-		obj->oBehParams = (random_u16() & 7) << 24;
+		obj->oBehParams = ((random_u16() & 7) | 8) << 24;
 		// The second byte of the behavior parameters is copied over to a special field
 		// as it is the most frequently used by objects.
 		obj->oBehParams2ndByte = ((obj->oBehParams) >> 16) & 0xFF;
