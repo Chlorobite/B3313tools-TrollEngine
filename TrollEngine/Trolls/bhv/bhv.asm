@@ -82,6 +82,11 @@ NOP
 .importobj "Trolls/bhv/boo.inc.c__bhv_boo_in_castle_loop.o"
 .endarea
 
+.org 0x802C4B9C ; big_boo_spawn_ghost_hunt_star
+; stub to make big boo with key work
+JR      RA
+NOP
+
 .org 0x802B3C2C
 .area 0x802B3CDC-0x802B3C2C
 .importobj "Trolls/bhv/bowser.inc.c__bowser_tail_anchor_act_default.o"

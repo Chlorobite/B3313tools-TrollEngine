@@ -48,3 +48,9 @@
 .word 0x220800FF,0x007F8000 ;  CUSTOM_BETA_STAR_PUFF
 ; ran out of space here; the rest of the objects are defined in more_models_levelscript.c
 .word 0x06080000,more_models_levelscript
+
+
+; script_func_global_10 (boo level)
+.orga 0x2AC4F4
+; Replace the beta boo key load command with another expansion pak
+.word 0x06080000,more_models_levelscript_boo

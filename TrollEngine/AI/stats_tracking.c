@@ -7,6 +7,7 @@
 #include "game/object_helpers.h"
 #include "game/game_init.h"
 #include "game/interaction.h"
+#include "game/level_update.h"
 #include "game/save_file.h"
 #include "engine/behavior_script.h"
 #include "behavior_data.h"
@@ -202,6 +203,10 @@ void object_scan() {
 			else if (obj->oInteractionSubtype & INT_SUBTYPE_SIGN) {
 				hasNerdObject = TRUE;
 			}
+
+			if (obj->behavior == segmented_to_virtual(bhvDoor) && obj->oBehParams & 0x0600) {
+				gHudDisplay.flags |= HUD_DISPLAY_FLAG_KEYS;
+			}
 			
 			if (nightMode) {
 				// disable water bomb cannons
@@ -239,6 +244,9 @@ void TRACKER_record_mario_state(struct MarioState *m) {
 	
 	// display the stats lol
 	//stats_tracking_debug_display();
+
+	gMarioState->numKeys = save_file_get_total_betakey_count(gCurrSaveFileNum - 1);
+	gHudDisplay.flags &= ~HUD_DISPLAY_FLAG_KEYS;
 	
 	if (get_red_star_count(gCurrSaveFileNum - 1) >= 1) {
 		register s32 unlockDynamicDifficulty = get_red_star_count(gCurrSaveFileNum - 1) >= 2;
@@ -249,14 +257,14 @@ void TRACKER_record_mario_state(struct MarioState *m) {
 			afkTimer = 0;
 		}
 		lastStickMag = gPlayer1Controller->stickMag;
+
+		object_scan();
 		
 		// afk for over 5 seconds
 		if (afkTimer > 150) {
 			// can't collect information about an afk player
 			return;
 		}
-		
-		object_scan();
 		
 		// update the stats
 		decay_stats();

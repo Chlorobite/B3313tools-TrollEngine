@@ -2301,3 +2301,83 @@ s32 is_object_star_spawner(struct Object *obj) {
 
 
 
+extern s16 sInvulnerable;
+extern u8 sDisplayingDoorText;
+
+
+
+u32 troll_interact_door(register struct MarioState *m, UNUSED u32 interactType, register struct Object *o) {
+    register s16 requiredNumStars = o->oBehParams >> 24;
+	// EDIT: check red stars if the required number of stars is 13 every time
+    register s16 numStars =
+        (o->oBehParams & 0x0200) ? save_file_get_total_betakey_count(gCurrSaveFileNum - 1) : (
+            requiredNumStars == 13 ? get_red_star_count(gCurrSaveFileNum - 1) :
+            save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1)
+    );
+	// END EDIT
+
+    if (m->action == ACT_WALKING || m->action == ACT_DECELERATING) {
+        register s32 doorOpen = numStars >= requiredNumStars;
+        if (o->oBehParams & 0x0400) {
+            doorOpen = save_file_get_betakey_flags(gCurrSaveFileNum - 1) & (1 << requiredNumStars);
+        }
+
+        if (doorOpen) {
+            u32 actionArg = should_push_or_pull_door(m, o);
+            u32 enterDoorAction;
+            u32 doorSaveFileFlag;
+
+            if (actionArg & 0x00000001) {
+                enterDoorAction = ACT_PULLING_DOOR;
+            } else {
+                enterDoorAction = ACT_PUSHING_DOOR;
+            }
+
+            doorSaveFileFlag = get_door_save_file_flag(o);
+            m->interactObj = o;
+            m->usedObj = o;
+
+            if (o->oInteractionSubtype & INT_SUBTYPE_STAR_DOOR) {
+                enterDoorAction = ACT_ENTERING_STAR_DOOR;
+            }
+
+            return set_mario_action(m, enterDoorAction, actionArg);
+        } else if (!sDisplayingDoorText) {
+            u32 text = DIALOG_022 << 16;
+
+            // TODO: Use other dialog for key doors?
+            if (!(o->oBehParams & 0x0600)) {
+                switch (requiredNumStars) {
+                    case 1:
+                        text = DIALOG_024 << 16;
+                        break;
+                    case 3:
+                        text = DIALOG_025 << 16;
+                        break;
+                    case 8:
+                        text = DIALOG_026 << 16;
+                        break;
+                    case 30:
+                        text = DIALOG_027 << 16;
+                        break;
+                    case 50:
+                        text = DIALOG_028 << 16;
+                        break;
+                    case 13: // EDIT: 70 star doors are unused, so replace with 13
+                        text = DIALOG_029 << 16;
+                        break;
+                }
+            }
+
+            text += requiredNumStars - numStars;
+
+            sDisplayingDoorText = TRUE;
+            return set_mario_action(m, ACT_READING_AUTOMATIC_DIALOG, text);
+        }
+    }
+	// REMOVE: special case where the 70 star door lets you in anyway, as they are unused
+
+    return FALSE;
+}
+
+

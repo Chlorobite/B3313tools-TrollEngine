@@ -41,6 +41,8 @@ extern Gfx custom_door_3_dl_far[];
 extern Gfx custom_door_4_dl_near[];
 extern Gfx custom_door_4_dl_far[];
 
+extern Gfx small_key_seg5_dl_05006A08[];
+
 
 /********************************************************************************/
 /*	Hierarchy data of star coin.												*/
@@ -135,5 +137,14 @@ const GeoLayout custom_door_4_geo[] = {
                GEO_RENDER_RANGE(3500, 32767),
                GEO_OPEN_NODE(),
                   GEO_ANIMATED_PART(LAYER_OPAQUE, 0, 0, 0, custom_door_4_dl_far),
+   GEO_END(),
+};
+
+const GeoLayout small_key_geoB[] = {
+   GEO_SHADOW(SHADOW_CIRCLE_4_VERTS, 0x96, 80),
+   GEO_OPEN_NODE(),
+      GEO_SCALE(0x00, 16384),
+      GEO_OPEN_NODE(),
+         GEO_ROTATE_WITH_DL(LAYER_OPAQUE, 0, 0x4000, 0, 0x05006A08),
    GEO_END(),
 };

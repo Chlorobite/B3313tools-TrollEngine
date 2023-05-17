@@ -533,3 +533,29 @@ void save_file_move_cap_to_default_location(void) {
     return;
 }
 
+
+// Beta key stuff from Gamma64 (iProgramInCpp)
+s32 save_file_get_total_betakey_count(s32 fileIndex)
+{
+	s16 flag = 1, count = 0, i;
+	for (i = 0; i < 8; i++) {
+		if (gSaveBuffer.files[fileIndex].keyFlags & flag)
+			count++;
+		flag <<= 1;
+	}
+	return count;
+}
+
+s32 save_file_get_betakey_flags(s32 fileIndex)
+{
+	return gSaveBuffer.files[fileIndex].keyFlags;
+}
+
+/**
+ * Update the current save file after collecting a Boo key.
+ */
+void save_file_collect_beta_key(s16 keyIndex) {
+    s32 fileIndex = gCurrSaveFileNum - 1;
+	gSaveBuffer.files[fileIndex].keyFlags |= (1 << keyIndex);
+}
+

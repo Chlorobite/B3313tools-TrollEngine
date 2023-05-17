@@ -212,10 +212,9 @@ NOP
 .importobj "AI/trolls/interact_warp_door.o"
 .endarea
 
-.org 0x8024E420
-.area 0x8024E6EC-0x8024E420
-.importobj "AI/trolls/interact_door.o"
-.endarea
+.org 0x8024E420 ; interact_door
+J       troll_interact_door
+NOP
 
 .org 0x8024FF04
 .area 0x80250098-0x8024FF04

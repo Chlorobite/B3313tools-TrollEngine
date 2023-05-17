@@ -17,6 +17,9 @@
 #define HUD_TOP_Y 185
 #define HUD_LEFT_X 20
 
+extern const BehaviorScript bhvBooWithKey[];
+extern const BehaviorScript bhvBigBooWithKey[];
+
 s32 dynamicSurfaceTris = 0;
 struct Object *debugCurrObject = NULL;
 u8 *watchDMADest = 0;
@@ -500,15 +503,15 @@ void haks() {
 	print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "RIGHT  FUNY SPAWN");
 	if (gPlayer1Controller->buttonPressed & R_JPAD) {
 		// spawn object
-		u8 spawnModel = 1;
-		u32 *spawnBhv = (u32*)segmented_to_virtual(bhvPoleGrabbing);
+		u8 spawnModel = MODEL_BOO;
+		u32 *spawnBhv = (u32*)segmented_to_virtual((random_u16() & 1) ? bhvBigBooWithKey : bhvBooWithKey);
 
 		struct Object *obj = create_object(spawnBhv);
 		struct SpawnInfo spawnInfo;
 
 		// Behavior parameters are often treated as four separate bytes, but
 		// are stored as an s32.
-		obj->oBehParams = (random_u16() & 255) << 16;
+		obj->oBehParams = (random_u16() & 7) << 24;
 		// The second byte of the behavior parameters is copied over to a special field
 		// as it is the most frequently used by objects.
 		obj->oBehParams2ndByte = ((obj->oBehParams) >> 16) & 0xFF;

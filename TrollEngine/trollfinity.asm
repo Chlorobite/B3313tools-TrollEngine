@@ -447,7 +447,7 @@
 .definelabel bhvIgloo, 0x130016b8
 .definelabel bhvBowserKey, 0x130016e4
 .definelabel bhvGrandStar, 0x13001714
-.definelabel bhvBetaBooKey, 0x13001744
+;.definelabel bhvBetaBooKey, 0x13001744
 .definelabel bhvAlphaBooKey, 0x13001778
 .definelabel bhvBulletBill, 0x1300179c
 .definelabel bhvWhitePuffSmoke, 0x130017f4
@@ -1542,3 +1542,12 @@
 .definelabel ggoddardvblankcallback, 0x8032D5E0
 .definelabel gd_sfx_to_play, 0x8019C9C8
 .definelabel play_menu_sounds, 0x80248E54
+
+.definelabel boo_should_be_stopped, 0x802C3460
+.definelabel boo_should_be_active, 0x802C3534
+.definelabel boo_approach_target_opacity_and_update_scale, 0x802C3748
+.definelabel boo_update_after_bounced_on, 0x802C3D9C
+.definelabel boo_update_during_death, 0x802C3F8C
+.definelabel boo_get_attack_status, 0x802C4158
+.definelabel boo_chase_mario, 0x802C4210
+.definelabel bhv_big_boo_loop, 0x802C4F30
