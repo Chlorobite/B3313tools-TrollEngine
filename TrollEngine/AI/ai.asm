@@ -228,6 +228,11 @@ NOP
 .endarea
 
 ; mario_misc.c
+.org 0x802764B0
+.area 0x8027657C-0x802764B0
+.importobj "AI/trolls/geo_draw_mario_head_goddard.o"
+.endarea
+
 .org 0x802766B4
 .area 0x802767B8-0x802766B4
 .importobj "AI/trolls/toad_message_talking.o"

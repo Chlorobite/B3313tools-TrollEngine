@@ -1535,3 +1535,10 @@
 .definelabel gcurrdemoinput, 0x8032D5F0
 .definelabel set_sound_mode, 0x80248E08
 .definelabel gsavedcoursenum, 0x8033BACC
+
+.definelabel gd_copy_p1_contpad, 0x8019C930
+.definelabel gdm_gettestdl, 0x8019C9F8
+.definelabel gd_vblank, 0x8019C874
+.definelabel ggoddardvblankcallback, 0x8032D5E0
+.definelabel gd_sfx_to_play, 0x8019C9C8
+.definelabel play_menu_sounds, 0x80248E54
