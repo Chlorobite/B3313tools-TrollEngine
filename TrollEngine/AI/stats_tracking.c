@@ -101,6 +101,8 @@ f32 TRACKER_level_scale_modifier_v = 1.0f;
 f32 TRACKER_difficulty_modifier_half = 1.0f;
 f32 TRACKER_difficulty_modifier_sqrt_half = 1.0f;
 
+u16 TRACKER_flags = 0;
+
 
 u8 hasSocObject = FALSE;
 u8 hasNerdObject = FALSE;
@@ -440,6 +442,7 @@ void TRACKER_inject_save() {
 	
 	*(menuData++) = (f32_to_u8(TRACKER_accum_stars_prefer_wing_cap) << 8) + f32_to_u8(TRACKER_accum_stars_prefer_metal_cap);
 	*(menuData++) = (f32_to_u8(TRACKER_accum_stars_prefer_vanish_cap) << 8);
+	*(menuData++) = TRACKER_flags;
 }
 
 void TRACKER_read_save() {
@@ -497,5 +500,6 @@ void TRACKER_read_save() {
 	menuData++;
 	TRACKER_accum_stars_prefer_vanish_cap = u8_to_f32((*menuData) >> 8);
 	//TRACKER_accum_nerd = u8_to_f32(*menuData);
-	//menuData++;
+	menuData++;
+	TRACKER_flags = *menuData;
 }

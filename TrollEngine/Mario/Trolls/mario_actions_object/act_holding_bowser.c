@@ -1,4 +1,5 @@
 #include "../mario_headers.h"
+#include "AI/stats_tracking.h"
 
 s32 act_holding_bowser(struct MarioState *m) {
     register s16 spin;
@@ -59,11 +60,21 @@ s32 act_holding_bowser(struct MarioState *m) {
     m->faceAngle[1] += m->angleVel[1];
 
     stationary_ground_step(m);
-	/*if (m->angleVel[1] >= 0) {
+
+    if (get_red_star_count(gCurrSaveFileNum - 1) == 0) {
+        if (m->angleVel[1] < 0) {
+            TRACKER_flags &= ~TRACKER_flag_bowser_spin_direction;
+        }
+        else {
+            TRACKER_flags |= TRACKER_flag_bowser_spin_direction;
+        }
+    }
+
+	if (TRACKER_flags & TRACKER_flag_bowser_spin_direction) {
 		m->marioObj->header.gfx.angle[0] = -m->angleVel[1];
-	} else {*/
+	} else {
 		m->marioObj->header.gfx.angle[0] = m->angleVel[1];
-	//}
+	}
 
     return FALSE;
 }

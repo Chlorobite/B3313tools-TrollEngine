@@ -104,6 +104,9 @@ extern f32 TRACKER_level_scale_modifier_v;
 extern f32 TRACKER_difficulty_modifier_half;
 extern f32 TRACKER_difficulty_modifier_sqrt_half;
 
+extern u16 TRACKER_flags;
+#define TRACKER_flag_bowser_spin_direction 0x0001
+
 
 // Should be run once every frame
 void TRACKER_record_mario_state(struct MarioState *m);
