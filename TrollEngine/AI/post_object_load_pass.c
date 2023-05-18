@@ -814,7 +814,7 @@ void postObjectLoadPass() {
 	if (!PERSONALIZATION_FLAG_DISABLE_RETEXTURE) {
 		// Goomba Personalization
 		// check if gomba are loaded, and set gomba type, trolling the texture accordingly
-		
+
 		// TODO: Tweak the pixel check and the hues on B3313
 		vaddr = (void*)segmented_to_virtual((void*)0x08019D30);
 		if (*((u16*)vaddr) == 0xA201) {
@@ -868,7 +868,7 @@ void postObjectLoadPass() {
 		
 		// Bobomb Personalization
 		// check if bom are loaded, and set bom type, trolling the texture accordingly
-		
+
 		// TODO: Tweak the pixel check and the hues on B3313
 		vaddr = (void*)segmented_to_virtual((void*)0x0801DA60);
 		if (*((u16*)vaddr + 331) == 0x0001) {
@@ -902,7 +902,7 @@ void postObjectLoadPass() {
 		
 		// Amp Personalization
 		// check if amp are loaded, and set amp type, trolling the lights (color) accordingly
-		
+
 		// TODO: Tweak the pixel check and the hues on B3313
 		vaddr = (void*)segmented_to_virtual((void*)0x08002320);
 		if (*((u32*)vaddr) == 0x333F0000) {

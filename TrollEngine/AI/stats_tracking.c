@@ -247,6 +247,7 @@ void TRACKER_record_mario_state(struct MarioState *m) {
 
 	gMarioState->numKeys = save_file_get_total_betakey_count(gCurrSaveFileNum - 1);
 	gHudDisplay.flags &= ~HUD_DISPLAY_FLAG_KEYS;
+	object_scan();
 	
 	if (get_red_star_count(gCurrSaveFileNum - 1) >= 1) {
 		register s32 unlockDynamicDifficulty = get_red_star_count(gCurrSaveFileNum - 1) >= 2;
@@ -257,8 +258,6 @@ void TRACKER_record_mario_state(struct MarioState *m) {
 			afkTimer = 0;
 		}
 		lastStickMag = gPlayer1Controller->stickMag;
-
-		object_scan();
 		
 		// afk for over 5 seconds
 		if (afkTimer > 150) {
