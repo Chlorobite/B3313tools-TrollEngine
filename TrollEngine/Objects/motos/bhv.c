@@ -113,7 +113,7 @@ void bhv_motos_wait(void) {
     cur_obj_init_animation_with_sound(MOTOS_ANIM_WAIT);
     
     if (boss) {
-        if (_o->oDistanceToMario < 1500.f && gMarioState->pos[1] == _o->oPosY) {
+        if (_o->oDistanceToMario < 1500.f && (gMarioState->pos[1] == _o->oPosY || _o->oBehParams & 0xFF)) {
             _o->oAction = MOTOS_ACT_PLAYER_SEARCH;
             _o->oTimer = 0;
             if (!(_o->oBehParams & 0xFF)) {
