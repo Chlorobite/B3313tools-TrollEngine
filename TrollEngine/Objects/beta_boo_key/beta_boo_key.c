@@ -51,6 +51,14 @@ static void beta_boo_key_inside_boo_loop(void) {
 
     o->oPosY += 50.0f * parent->oBooBaseScale;
 
+    // Hide/show depending on parent object
+    if (parent->header.gfx.node.flags & GRAPH_RENDER_INVISIBLE) {
+        cur_obj_hide();
+    }
+    else {
+        cur_obj_unhide();
+    }
+
     // If the boo is dying/dead, set the action to BETA_BOO_KEY_ACT_DROPPING.
     if (parent->oBooDeathStatus != BOO_DEATH_STATUS_ALIVE) {
         o->oAction = BETA_BOO_KEY_ACT_DROPPING;

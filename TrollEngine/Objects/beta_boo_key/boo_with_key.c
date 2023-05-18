@@ -43,11 +43,14 @@
 
 void boo_chase_mario(f32 a0, s16 a1, f32 a2);
 
+extern const BehaviorScript bhvBooWithKey[];
+extern const BehaviorScript bhvBigBooWithKey[];
+
 
 
 //! Key-boo
 static void boo_with_key_act_0(void) {
-    o->oBooParentBigBoo = NULL;
+    o->oBooParentBigBoo = cur_obj_nearest_object_with_behavior(bhvBigBooWithKey);
     o->oBooTargetOpacity = 0xFF;
     o->oBooBaseScale = 1.2f;
 
@@ -92,7 +95,30 @@ static void boo_with_key_act_2(void) {
 
 static void boo_with_key_act_3(void) {
     if (boo_update_during_death()) {
+        if (o->oBooParentBigBoo != NULL)
+            o->oAction = 4;
+        else
+            obj_mark_for_deletion(o);
+    }
+}
+
+static void boo_with_key_act_4(void) {
+    s32 dialogID;
+
+    // If there are no remaining "minion" boos, show the dialog of the Big Boo
+    if (cur_obj_nearest_object_with_behavior(bhvBooWithKey) == NULL) {
+        dialogID = DIALOG_108;
+    } else {
+        dialogID = DIALOG_107;
+    }
+
+    if (cur_obj_update_dialog(MARIO_DIALOG_LOOK_UP, DIALOG_FLAG_TEXT_DEFAULT, dialogID, 0)) {
+        create_sound_spawner(SOUND_OBJ_DYING_ENEMY1);
         obj_mark_for_deletion(o);
+
+        if (dialogID == DIALOG_108) { // If the Big Boo should spawn, play the jingle
+            play_puzzle_jingle();
+        }
     }
 }
 
@@ -122,6 +148,8 @@ void bhv_big_boo_with_key_init(void) {
     key = spawn_object(o, modelID, bhvBetaBooKey);
     //obj_scale_xyz(key, 2.f, 2.f, 2.f);
     key->oBehParams = o->oBehParams;
+
+    o->oBigBooNumMinionBoosKilled = 0; // this is set by the bhv, but to prevent shifting the small boos' behavior address, fix it here instead. Honestly should have done it here since the beginning
 }
 
 
@@ -129,7 +157,8 @@ static void (*sBooWithKeyActions[])(void) = {
     boo_with_key_act_0,
     boo_with_key_act_1,
     boo_with_key_act_2,
-    boo_with_key_act_3
+    boo_with_key_act_3,
+    boo_with_key_act_4
 };
 
 void bhv_boo_with_key_loop(void)
