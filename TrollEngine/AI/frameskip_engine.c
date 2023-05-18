@@ -12,6 +12,11 @@
 #include "game_init.h"
 #include "main.h"
 #include "memory.h"
+#include "obj_behaviors.h"
+#include "obj_behaviors_2.h"
+#include "object_constants.h"
+#include "object_helpers.h"
+#include "object_list_processor.h"
 #include "profiler.h"
 #include "save_file.h"
 #include "seq_ids.h"
@@ -100,4 +105,84 @@ s32 troll_lvl_init_or_update(s16 initOrUpdate) {
     stats_tracking_debug_display();
 
     return result;
+}
+
+
+s32 troll_cur_obj_check_anim_frame(s32 frame) {
+    s32 animFrame = gCurrentObject->header.gfx.animInfo.animFrame;
+    struct Animation *anim = gCurrentObject->header.gfx.animInfo.curAnim;
+    s32 i;
+
+    for (i = 0; i < render_frame_count; i++) {
+        if (animFrame == frame) {
+            return TRUE;
+        }
+
+        // Approximation of the animation frame update function to iterate frames
+        if (anim->flags & ANIM_FLAG_FORWARD) {
+            frame--;
+
+            if (frame < anim->loopStart) {
+                if (anim->flags & ANIM_FLAG_NOLOOP) {
+                    frame = anim->loopStart;
+                } else {
+                    frame = anim->loopEnd - 1;
+                }
+            }
+        } else {
+            frame++;
+
+            if (frame >= anim->loopEnd) {
+                if (anim->flags & ANIM_FLAG_NOLOOP) {
+                    frame = anim->loopEnd - 1;
+                } else {
+                    frame = anim->loopStart;
+                }
+            }
+        }
+    }
+    return FALSE;
+}
+
+s32 troll_cur_obj_check_if_near_animation_end(void) {
+    struct Animation *anim = gCurrentObject->header.gfx.animInfo.curAnim;
+    u32 animFlags = (s32)anim->flags;
+    s32 animFrame = gCurrentObject->header.gfx.animInfo.animFrame;
+    s32 nearLoopEnd = anim->loopEnd - 2;
+    s32 i;
+
+    for (i = 0; i < render_frame_count; i++) {
+        if (animFlags & ANIM_FLAG_NOLOOP && nearLoopEnd + 1 == animFrame) {
+            return TRUE;
+        }
+
+        if (animFrame == nearLoopEnd) {
+            return TRUE;
+        }
+
+        // Approximation of the animation frame update function to iterate frames
+        if (animFlags & ANIM_FLAG_FORWARD) {
+            animFrame--;
+
+            if (animFrame < anim->loopStart) {
+                if (animFlags & ANIM_FLAG_NOLOOP) {
+                    animFrame = anim->loopStart;
+                } else {
+                    animFrame = anim->loopEnd - 1;
+                }
+            }
+        } else {
+            animFrame++;
+
+            if (animFrame >= anim->loopEnd) {
+                if (animFlags & ANIM_FLAG_NOLOOP) {
+                    animFrame = anim->loopEnd - 1;
+                } else {
+                    animFrame = anim->loopStart;
+                }
+            }
+        }
+    }
+
+    return FALSE;
 }

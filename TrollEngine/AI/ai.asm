@@ -329,10 +329,13 @@ NOP
 .endarea
 
 ; object_helpers.c
-.org 0x802A4960
-.area 0x802A4BE4-0x802A4960
-.importobj "AI/trolls/cur_obj_update_dialog.o"
-.endarea
+.org 0x8029FF04
+J       troll_cur_obj_check_if_near_animation_end
+NOP
+
+.org 0x802A0008
+J       troll_cur_obj_check_anim_frame
+NOP
 
 .org 0x802A1A18
 .area 0x802A1B34-0x802A1A18
@@ -347,6 +350,11 @@ NOP
 .org 0x802A3B40
 .area 0x802A3C18-0x802A3B40
 .importobj "AI/trolls/cur_obj_scale_over_time.o"
+.endarea
+
+.org 0x802A4960
+.area 0x802A4BE4-0x802A4960
+.importobj "AI/trolls/cur_obj_update_dialog.o"
 .endarea
 
 .org 0x802A958C
