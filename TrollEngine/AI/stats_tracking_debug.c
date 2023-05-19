@@ -17,8 +17,7 @@
 #define HUD_TOP_Y 185
 #define HUD_LEFT_X 20
 
-extern const BehaviorScript bhvBooWithKey[];
-extern const BehaviorScript bhvBigBooWithKey[];
+extern const BehaviorScript bhvTextOnScreen[];
 
 s32 dynamicSurfaceTris = 0;
 struct Object *debugCurrObject = NULL;
@@ -490,7 +489,6 @@ void sound_test() {
 	}
 }
 
-s32 spawnBigBoo = TRUE;
 void haks() {
 	char float_buffer[10];
 	
@@ -504,15 +502,15 @@ void haks() {
 	print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "RIGHT  FUNY SPAWN");
 	if (gPlayer1Controller->buttonPressed & R_JPAD) {
 		// spawn object
-		u8 spawnModel = MODEL_BOO;
-		u32 *spawnBhv = (u32*)segmented_to_virtual(spawnBigBoo ? bhvBigBooWithKey : bhvBooWithKey);
+		u8 spawnModel = 0;
+		u32 *spawnBhv = (u32*)segmented_to_virtual(bhvTextOnScreen);
 
 		struct Object *obj = create_object(spawnBhv);
 		struct SpawnInfo spawnInfo;
 
 		// Behavior parameters are often treated as four separate bytes, but
 		// are stored as an s32.
-		obj->oBehParams = ((random_u16() & 7) | (spawnBigBoo ? 8 : 0)) << 24;
+		obj->oBehParams = ((random_u16() % 10) << 16) | (random_u16() & 0x0300);
 		// The second byte of the behavior parameters is copied over to a special field
 		// as it is the most frequently used by objects.
 		obj->oBehParams2ndByte = ((obj->oBehParams) >> 16) & 0xFF;
@@ -537,8 +535,6 @@ void haks() {
 		obj->oPosX = gMarioObject->oPosX;
 		obj->oPosY = gMarioObject->oPosY;
 		obj->oPosZ = gMarioObject->oPosZ;
-
-		spawnBigBoo = FALSE;
 	}
 }
 

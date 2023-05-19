@@ -1551,3 +1551,5 @@
 .definelabel boo_get_attack_status, 0x802C4158
 .definelabel boo_chase_mario, 0x802C4210
 .definelabel bhv_big_boo_loop, 0x802C4F30
+
+.definelabel print_text_centered, 0x802D66C0

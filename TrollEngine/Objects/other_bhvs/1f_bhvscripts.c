@@ -41,6 +41,7 @@ void bhv_beta_boo_key_loop();
 void bhv_boo_with_key_init();
 void bhv_big_boo_with_key_init();
 void bhv_boo_with_key_loop();
+void bhv_text_on_screen_loop();
 
 
 const BehaviorScript bhvPlaymaSoundLoop[] = {
@@ -207,5 +208,13 @@ const BehaviorScript bhvBigBooWithKey[] = {
     CALL_NATIVE(bhv_big_boo_with_key_init),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_big_boo_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvTextOnScreen[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_text_on_screen_loop),
     END_LOOP(),
 };
