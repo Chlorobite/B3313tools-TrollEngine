@@ -3,6 +3,8 @@
 #include "AI/personalization_helpers.h"
 
 
+extern u16 betaKeyFlags;
+
 void init_mario(void) {
     Vec3s capPos;
     register struct Object *capObject;
@@ -88,4 +90,6 @@ void init_mario(void) {
 
         capObject->oMoveAngleYaw = 0;
     }
+
+    betaKeyFlags = 0;
 }

@@ -534,12 +534,16 @@ void save_file_move_cap_to_default_location(void) {
 }
 
 
+// chris brutal agresion wanted it to be persistent, then temporary...
+// this is reset to 0 on init_mario
+u16 betaKeyFlags;
+
 // Beta key stuff from Gamma64 (iProgramInCpp)
 s32 save_file_get_total_betakey_count(s32 fileIndex)
 {
 	s16 flag = 1, count = 0, i;
 	for (i = 0; i < 8; i++) {
-		if (gSaveBuffer.files[fileIndex].keyFlags & flag)
+		if (betaKeyFlags & flag)
 			count++;
 		flag <<= 1;
 	}
@@ -548,7 +552,7 @@ s32 save_file_get_total_betakey_count(s32 fileIndex)
 
 s32 save_file_get_betakey_flags(s32 fileIndex)
 {
-	return gSaveBuffer.files[fileIndex].keyFlags;
+	return betaKeyFlags;
 }
 
 /**
@@ -556,6 +560,6 @@ s32 save_file_get_betakey_flags(s32 fileIndex)
  */
 void save_file_collect_beta_key(s16 keyIndex) {
     s32 fileIndex = gCurrSaveFileNum - 1;
-	gSaveBuffer.files[fileIndex].keyFlags |= (1 << keyIndex);
+	betaKeyFlags |= (1 << keyIndex);
 }
 
