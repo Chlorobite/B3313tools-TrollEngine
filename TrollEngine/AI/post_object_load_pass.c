@@ -207,6 +207,7 @@ extern u8 *gMovtexIdToTexture[8];
 extern uintptr_t sSegmentTable[32];
 void troll_geo_layout(u32 *areaGeoLayout) {
 	register s32 i, j;
+	register struct ObjectNode *listHead;
 	register struct Object *obj;
 	s32 starCount = (save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1) * get_red_star_count(gCurrSaveFileNum - 1)) / 13;
 	u16 oldSeed;
@@ -228,28 +229,32 @@ void troll_geo_layout(u32 *areaGeoLayout) {
 	}
 	
 	nightModeSetting = 0;
-	obj = &gObjectPool[0];
-	for (i = 0; i < 240; i++) {
-		if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED)) {
-			if (obj->behavior == segmented_to_virtual(bhvTroll)) {
-				// painting data, add the texture sample to protect it from being overwritten
-				for (j = 0; j < 256; j++) {
-					if (foundTextures[j] == NULL) {
-						u32 *trollptr = (u32*)paintings[(u8)(obj->oBehParams >> 24)];
-						foundTextures[j] = trollptr;
-						foundTextureSamples[j] = *trollptr;
-						break;
+	for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
+		listHead = &gObjectLists[i];
+
+		obj = (struct Object *) listHead->next;
+
+		while (obj != (struct Object *) listHead) {
+			if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED)) {
+				if (obj->behavior == segmented_to_virtual(bhvTroll)) {
+					// painting data, add the texture sample to protect it from being overwritten
+					for (j = 0; j < 256; j++) {
+						if (foundTextures[j] == NULL) {
+							u32 *trollptr = (u32*)paintings[(u8)(obj->oBehParams >> 24)];
+							foundTextures[j] = trollptr;
+							foundTextureSamples[j] = *trollptr;
+							break;
+						}
 					}
 				}
+				else if (obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
+					// personalizator object, get night mode here
+					nightModeSetting = (u8)(obj->oBehParams >> 8);
+					personalizationFlags = (u8)(obj->oBehParams & 0xFF);
+				}
 			}
-			else if (obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
-				// personalizator object, get night mode here
-				nightModeSetting = (u8)(obj->oBehParams >> 8);
-				personalizationFlags = (u8)(obj->oBehParams & 0xFF);
-			}
+			obj = (struct Object *) obj->header.next;
 		}
-		
-		obj++;
 	}
 	if (random_u16() >= (3313.0f * starCount / 666.0f)) {
 		lsd_textures = 0;
@@ -301,34 +306,39 @@ void troll_geo_layout(u32 *areaGeoLayout) {
 s32 hud_type_param = 0;
 static void update_rtc_and_level_info() {
 	register s32 i;
+	register struct ObjectNode *listHead;
 	register struct Object *obj;
 	
 	updateRTC();
 	
 	levelType = 0;
 	
-	obj = &gObjectPool[0];
-	for (i = 0; i < 240; i++) {
-		if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && (u32)obj->behavior >= 0x80000000) {
-			if (obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
-				// this is a special object that defines lava/cave type levels, and terrain type otherwise
-				switch ((obj->oBehParams >> 16) & 0xFF) {
-					case 0:
-						levelType = 4; // cave
-						break;
-					case 1:
-						levelType = 6; // lava
-						break;
-					default:
-						gCurrentArea->terrainType = ((obj->oBehParams >> 16) & 0xFF) - 2;
-						break;
+	for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
+		listHead = &gObjectLists[i];
+
+		obj = (struct Object *) listHead->next;
+
+		while (obj != (struct Object *) listHead) {
+			if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && (u32)obj->behavior >= 0x80000000) {
+				if (obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
+					// this is a special object that defines lava/cave type levels, and terrain type otherwise
+					switch ((obj->oBehParams >> 16) & 0xFF) {
+						case 0:
+							levelType = 4; // cave
+							break;
+						case 1:
+							levelType = 6; // lava
+							break;
+						default:
+							gCurrentArea->terrainType = ((obj->oBehParams >> 16) & 0xFF) - 2;
+							break;
+					}
+					hud_type_param = obj->oBehParams >> 24;
+					break; // found the object
 				}
-				hud_type_param = obj->oBehParams >> 24;
-				break; // found the object
 			}
+			obj = (struct Object *) obj->header.next;
 		}
-		
-		obj++;
 	}
 	
 	if (levelType == 0) {
@@ -450,56 +460,63 @@ void level_init_intercept() {
 
 void trollWarps() {
 	register s32 i;
+	register struct ObjectNode *listHead;
 	register struct Object *obj;
 	register struct Object *otherDoor;
 	
 	u16 oldSeed = gRandomSeed16;
 	gRandomSeed16 = personalizationRandSeed;
 	
-	obj = &gObjectPool[0];
-	for (i = 0; i < 240; i++, obj++) {
-		u16 rng = random_u16();
-		if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && rng < 1986) { // 1/33 chance
-			// swap 2 random doors' warps
-			if (obj->behavior == segmented_to_virtual(bhvDoorWarp)) {
-				// find door 2
-				otherDoor = obj;
-				otherDoor--;
-				if (otherDoor->behavior != obj->behavior
-					// TODO: somehow figure out whether we should flip the warp destination or not if the doors aren't next to each other?
-					// if it's not a double door, otherDoor could be anything, including a single door rotated either way
-					// maybe we could just assign a floor type for behind the door (quicksand? :trol:) that would silently flip the warp
-					// or door's bparam3
-					// either way, pain
-					|| obj->oPosY != otherDoor->oPosY || absf(absf(obj->oMoveAngleYaw - otherDoor->oMoveAngleYaw) - 0x8000) > 0x1000) {
-					otherDoor = NULL;
-				};
-				
-				if (otherDoor != NULL) {
+	for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
+		listHead = &gObjectLists[i];
+
+		obj = (struct Object *) listHead->next;
+
+		while (obj != (struct Object *) listHead) {
+			u16 rng = random_u16();
+			if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && rng < 1986) { // 1/33 chance
+				// swap 2 random doors' warps
+				if (obj->behavior == segmented_to_virtual(bhvDoorWarp)) {
+					// find door 2
+					otherDoor = obj;
+					otherDoor--;
+					if (otherDoor->behavior != obj->behavior
+						// TODO: somehow figure out whether we should flip the warp destination or not if the doors aren't next to each other?
+						// if it's not a double door, otherDoor could be anything, including a single door rotated either way
+						// maybe we could just assign a floor type for behind the door (quicksand? :trol:) that would silently flip the warp
+						// or door's bparam3
+						// either way, pain
+						|| obj->oPosY != otherDoor->oPosY || absf(absf(obj->oMoveAngleYaw - otherDoor->oMoveAngleYaw) - 0x8000) > 0x1000) {
+						otherDoor = NULL;
+					};
+
+					if (otherDoor != NULL) {
+						// :trol:
+						u32 swap = obj->oBehParams & 0x00FF00FF;
+						obj->oBehParams = (obj->oBehParams & 0xFF00FF00) | (otherDoor->oBehParams & 0x00FF00FF);
+						otherDoor->oBehParams = (otherDoor->oBehParams & 0xFF00FF00) | swap;
+
+						obj->oBehParams2ndByte = ((obj->oBehParams) >> 16) & 0xFF;
+						otherDoor->oBehParams2ndByte = ((otherDoor->oBehParams) >> 16) & 0xFF;
+
+						// double door, set bparam3 so the warp destination is flipped (otherwise mario ends up in gbj)
+						// doesn't ensure that mario doesn't end up behind a door, but it covers the main use case (we may put this condition above if it happens too often)
+						//if (obj->oPosY == otherDoor->oPosY) {
+							obj->oBehParams ^= 0x0100;
+							otherDoor->oBehParams ^= 0x0100;
+						//}
+						continue;
+					}
+				}
+
+				// swap normal and cursed warp
+				if ((obj->oBehParams & 0x00FF) && (obj->oInteractType == INTERACT_WARP || obj->behavior == segmented_to_virtual(bhvDoorWarp) || obj->behavior == segmented_to_virtual(bhvTroll))) {
 					// :trol:
-					u32 swap = obj->oBehParams & 0x00FF00FF;
-					obj->oBehParams = (obj->oBehParams & 0xFF00FF00) | (otherDoor->oBehParams & 0x00FF00FF);
-					otherDoor->oBehParams = (otherDoor->oBehParams & 0xFF00FF00) | swap;
-					
+					obj->oBehParams = (obj->oBehParams & 0xFF00FF00) | ((obj->oBehParams & 0x00FF0000) >> 16) | ((obj->oBehParams & 0x000000FF) << 16);
 					obj->oBehParams2ndByte = ((obj->oBehParams) >> 16) & 0xFF;
-					otherDoor->oBehParams2ndByte = ((otherDoor->oBehParams) >> 16) & 0xFF;
-					
-					// double door, set bparam3 so the warp destination is flipped (otherwise mario ends up in gbj)
-					// doesn't ensure that mario doesn't end up behind a door, but it covers the main use case (we may put this condition above if it happens too often)
-					//if (obj->oPosY == otherDoor->oPosY) {
-						obj->oBehParams ^= 0x0100;
-						otherDoor->oBehParams ^= 0x0100;
-					//}
-					continue;
 				}
 			}
-			
-			// swap normal and cursed warp
-			if ((obj->oBehParams & 0x00FF) && (obj->oInteractType == INTERACT_WARP || obj->behavior == segmented_to_virtual(bhvDoorWarp) || obj->behavior == segmented_to_virtual(bhvTroll))) {
-				// :trol:
-				obj->oBehParams = (obj->oBehParams & 0xFF00FF00) | ((obj->oBehParams & 0x00FF0000) >> 16) | ((obj->oBehParams & 0x000000FF) << 16);
-				obj->oBehParams2ndByte = ((obj->oBehParams) >> 16) & 0xFF;
-			}
+			obj = (struct Object *) obj->header.next;
 		}
 	}
 	
@@ -508,29 +525,34 @@ void trollWarps() {
 
 void addMoreObjects() {
 	register s32 i;
+	register struct ObjectNode *listHead;
 	register struct Object *obj;
 
 	switch (get_red_star_count(gCurrSaveFileNum - 1)) {
 		case 0:
 			// All warp holes in castle turn to bowser, otherwise despawn
-			obj = &gObjectPool[0];
-			for (i = 0; i < 240; i++) {
-				if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual((void*)0x13000780)) {
-					if (gCurrLevelNum == 0x10) { // Castle Grounds
-						// set the warp to go to bowser
-						struct ObjectWarpNode *warpNode = area_get_warp_node(obj->oBehParams2ndByte);
-						if (warpNode != NULL) {
-							warpNode->node.destLevel = 0x1E;
-							warpNode->node.destArea = 1;
-							warpNode->node.destNode = 10;
+			for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
+				listHead = &gObjectLists[i];
+
+				obj = (struct Object *) listHead->next;
+
+				while (obj != (struct Object *) listHead) {
+					if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual((void*)0x13000780)) {
+						if (gCurrLevelNum == 0x10) { // Castle Grounds
+							// set the warp to go to bowser
+							struct ObjectWarpNode *warpNode = area_get_warp_node(obj->oBehParams2ndByte);
+							if (warpNode != NULL) {
+								warpNode->node.destLevel = 0x1E;
+								warpNode->node.destArea = 1;
+								warpNode->node.destNode = 10;
+							}
+						}
+						else {
+							obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
 						}
 					}
-					else {
-						obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
-					}
+					obj = (struct Object *) obj->header.next;
 				}
-
-				obj++;
 			}
 			break;
 		case 1:
@@ -549,17 +571,21 @@ void addMoreObjects() {
 		case 13:
 		// check for personalization flag 0x02 (PERSONALIZATION_FLAG_DISABLE_OBJECTS)
 		{
-			obj = &gObjectPool[0];
-			for (i = 0; i < 240; i++) {
-				if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
-					if (obj->oBehParams & 0x02)
-					{
-						// yeah we do not add objects here
-						return;
-					}
-				}
+			for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
+				listHead = &gObjectLists[i];
 
-				obj++;
+				obj = (struct Object *) listHead->next;
+
+				while (obj != (struct Object *) listHead) {
+					if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
+						if (obj->oBehParams & 0x02)
+						{
+							// yeah we do not add objects here
+							return;
+						}
+					}
+					obj = (struct Object *) obj->header.next;
+				}
 			}
 		}
 		{
@@ -682,27 +708,31 @@ void addMoreObjects() {
 					// use the now useless object_count_goal for the RNG ceiling
 					object_count_goal = 65536 * (sqrtf(TRACKER_difficulty_modifier) / 2.0f + 0.5f);
 					
-					obj = &gObjectPool[0];
-					for (i = 0; i < 240; i++) {
-						if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && (u32)obj->behavior >= 0x80000000) {
-							// use totali, also unused
-							totali = get_object_list_from_behavior(obj->behavior);
-							if (obj->oInteractType == INTERACT_DAMAGE || totali == OBJ_LIST_DESTRUCTIVE || totali == OBJ_LIST_PUSHABLE) {
-								// despawn time
-								if (random_u16() > object_count_goal) {
-									obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
+					for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
+						listHead = &gObjectLists[i];
+
+						obj = (struct Object *) listHead->next;
+
+						while (obj != (struct Object *) listHead) {
+							if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && (u32)obj->behavior >= 0x80000000) {
+								// use totali, also unused
+								totali = get_object_list_from_behavior(obj->behavior);
+								if (obj->oInteractType == INTERACT_DAMAGE || totali == OBJ_LIST_DESTRUCTIVE || totali == OBJ_LIST_PUSHABLE) {
+									// despawn time
+									if (random_u16() > object_count_goal) {
+										obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
+									}
+								}
+
+								if (nightMode && (obj->behavior == segmented_to_virtual(bhvBobombBuddy) || obj->behavior == segmented_to_virtual(bhvToadMessage))) {
+									// despawn random NPCs at night
+									if (random_u16() > 33130) {
+										obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
+									}
 								}
 							}
-							
-							if (nightMode && (obj->behavior == segmented_to_virtual(bhvBobombBuddy) || obj->behavior == segmented_to_virtual(bhvToadMessage))) {
-								// despawn random NPCs at night
-								if (random_u16() > 33130) {
-									obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
-								}
-							}
+							obj = (struct Object *) obj->header.next;
 						}
-						
-						obj++;
 					}
 				}
 			}
@@ -726,6 +756,7 @@ s32 is_star(struct Object *obj) {
 extern const BehaviorScript bhvMusicModifier[];
 void postObjectLoadPass() {
 	register s32 i;
+	register struct ObjectNode *listHead;
 	register struct Object *obj;
 	s32 goombaCount;
 	f32 minY = 32767.0f, maxY = -32768.0f, avgY;
@@ -744,63 +775,67 @@ void postObjectLoadPass() {
 	
 	// Enumerate the objects to find out what trollage we can do
 	goombaCount = 0;
-	obj = &gObjectPool[0];
-	for (i = 0; i < 240; i++) {
-		if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && (u32)obj->behavior >= 0x80000000) {
-			if (obj->behavior == segmented_to_virtual(bhvGoomba)) {
-				goombaCount += 1;
-			}
-			else if (obj->behavior == segmented_to_virtual(bhvGoombaTripletSpawner)) {
-				goombaCount += 3;
-			}
-			else if (obj->behavior == segmented_to_virtual(bhvGombaTower)) {
-				s16 __count = obj->oBehParams >> 24;
-				if (__count == 0) {
-					__count = 5;
+	for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
+		listHead = &gObjectLists[i];
+
+		obj = (struct Object *) listHead->next;
+
+		while (obj != (struct Object *) listHead) {
+			if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && (u32)obj->behavior >= 0x80000000) {
+				if (obj->behavior == segmented_to_virtual(bhvGoomba)) {
+					goombaCount += 1;
 				}
-				goombaCount += __count;
-			}
-			else if (obj->behavior == segmented_to_virtual(bhvStar)) {
-				AI_star_set_bparams(obj);
-			}
-			else if (obj->behavior == segmented_to_virtual(bhvTroll)) {
-				// we have to uniformly scale here because paintings are a bit limited
-				levelScaleV = levelScaleH;
-			}
-			else if (obj->behavior == segmented_to_virtual(bhvExclamationBox)) {
-				switch (obj->oBehParams2ndByte) {
-					case 0:
-						wingCapBox = TRUE;
-						break;
-					case 1:
-						metalCapBox = TRUE;
-						break;
-					case 2:
-						vanishCapBox = TRUE;
-						break;
+				else if (obj->behavior == segmented_to_virtual(bhvGoombaTripletSpawner)) {
+					goombaCount += 3;
+				}
+				else if (obj->behavior == segmented_to_virtual(bhvGombaTower)) {
+					s16 __count = obj->oBehParams >> 24;
+					if (__count == 0) {
+						__count = 5;
+					}
+					goombaCount += __count;
+				}
+				else if (obj->behavior == segmented_to_virtual(bhvStar)) {
+					AI_star_set_bparams(obj);
+				}
+				else if (obj->behavior == segmented_to_virtual(bhvTroll)) {
+					// we have to uniformly scale here because paintings are a bit limited
+					levelScaleV = levelScaleH;
+				}
+				else if (obj->behavior == segmented_to_virtual(bhvExclamationBox)) {
+					switch (obj->oBehParams2ndByte) {
+						case 0:
+							wingCapBox = TRUE;
+							break;
+						case 1:
+							metalCapBox = TRUE;
+							break;
+						case 2:
+							vanishCapBox = TRUE;
+							break;
+					}
+				}
+				else if (obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
+					// personalizator object
+					personalization_beeparams = obj->oBehParams;
+				}
+				else if (obj->behavior == segmented_to_virtual(bhvMusicModifier)) {
+					mus_transposition = (((obj->oBehParams >> 28) & 0xF) - 7) / 8.0f;
+					mus_pitchmul = (((obj->oBehParams >> 24) & 0xF) + 1) / 8.0f;
+					mus_tempooverride = (obj->oBehParams >> 16) & 0xFF;
+					mus_nlstday = (obj->oBehParams >> 8) & 0xFF;
+					mus_nlstnight = obj->oBehParams & 0xFF;
+				}
+
+				if (obj->oPosY < minY) {
+					minY = obj->oPosY;
+				}
+				if (obj->oPosY > maxY) {
+					maxY = obj->oPosY;
 				}
 			}
-			else if (obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
-				// personalizator object
-				personalization_beeparams = obj->oBehParams;
-			}
-			else if (obj->behavior == segmented_to_virtual(bhvMusicModifier)) {
-				mus_transposition = (((obj->oBehParams >> 28) & 0xF) - 7) / 8.0f;
-				mus_pitchmul = (((obj->oBehParams >> 24) & 0xF) + 1) / 8.0f;
-				mus_tempooverride = (obj->oBehParams >> 16) & 0xFF;
-				mus_nlstday = (obj->oBehParams >> 8) & 0xFF;
-				mus_nlstnight = obj->oBehParams & 0xFF;
-			}
-			
-			if (obj->oPosY < minY) {
-				minY = obj->oPosY;
-			}
-			if (obj->oPosY > maxY) {
-				maxY = obj->oPosY;
-			}
+			obj = (struct Object *) obj->header.next;
 		}
-		
-		obj++;
 	}
 	
 	// luigi model troll from level_cmd_init_mario moved here to fix bug
@@ -962,49 +997,53 @@ void postObjectLoadPass() {
 		gCurrentArea->camera->areaCenZ *= levelScaleH;
 	}
 	
-	obj = &gObjectPool[0];
-	for (i = 0; i < 240; i++) {
-		if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && (u32)obj->behavior >= 0x80000000 && (u32)obj->behavior != 0x80401700) {
-			// we can't switch case this because C
-			/*if (obj->behavior == segmented_to_virtual(bhvGoomba)) {
-				if (goombaType == 3) {
-					obj->oHealth = 2;
-				}
-			}
-			else*/ if (obj->behavior == segmented_to_virtual(bhvStaticObject)) {
-				// scale all objects that have the "bhvStaticObject" behavior (used for what you would think to be level geometry)
-				obj_scale_personalized(obj);
-			}
-			else if (obj->behavior == segmented_to_virtual(bhvStar)) {
-				// Performance enhancement: assign the bparam here so it doesn't find the average Y for every single star in the level
-				if (obj->oPosY > avgY) {
-					// platform
-					obj->oBehParams |= 0x08;
-				}
-			}
-			else if (TRACKER_star_preferences_cap[2] > 1.0f && vanishCapBox) {
-				if (!PERSONALIZATION_FLAG_DISABLE_OBJECTS) {
-					// replace blue coins with clear coins
-					if (obj->behavior == segmented_to_virtual(bhvBlueCoinSwitch)) {
-						obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
-					}
-					else if (obj->behavior == segmented_to_virtual(bhvHiddenBlueCoin)) {
-						// convert to a clear coin
-						obj->oBehParams = 0x05000000;
-						obj->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_YELLOW_COIN];
-						obj->behavior = segmented_to_virtual(bhvYellowCoin);
-						obj->curBhvCommand = obj->behavior;
+	for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
+		listHead = &gObjectLists[i];
+
+		obj = (struct Object *) listHead->next;
+
+		while (obj != (struct Object *) listHead) {
+			if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && (u32)obj->behavior >= 0x80000000 && (u32)obj->behavior != 0x80401700) {
+				// we can't switch case this because C
+				/*if (obj->behavior == segmented_to_virtual(bhvGoomba)) {
+					if (goombaType == 3) {
+						obj->oHealth = 2;
 					}
 				}
+				else*/ if (obj->behavior == segmented_to_virtual(bhvStaticObject)) {
+					// scale all objects that have the "bhvStaticObject" behavior (used for what you would think to be level geometry)
+					obj_scale_personalized(obj);
+				}
+				else if (obj->behavior == segmented_to_virtual(bhvStar)) {
+					// Performance enhancement: assign the bparam here so it doesn't find the average Y for every single star in the level
+					if (obj->oPosY > avgY) {
+						// platform
+						obj->oBehParams |= 0x08;
+					}
+				}
+				else if (TRACKER_star_preferences_cap[2] > 1.0f && vanishCapBox) {
+					if (!PERSONALIZATION_FLAG_DISABLE_OBJECTS) {
+						// replace blue coins with clear coins
+						if (obj->behavior == segmented_to_virtual(bhvBlueCoinSwitch)) {
+							obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
+						}
+						else if (obj->behavior == segmented_to_virtual(bhvHiddenBlueCoin)) {
+							// convert to a clear coin
+							obj->oBehParams = 0x05000000;
+							obj->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_YELLOW_COIN];
+							obj->behavior = segmented_to_virtual(bhvYellowCoin);
+							obj->curBhvCommand = obj->behavior;
+						}
+					}
+				}
+
+				// position it
+				obj->oPosX *= levelScaleH;
+				obj->oPosY *= levelScaleV;
+				obj->oPosZ *= levelScaleH;
 			}
-			
-			// position it
-			obj->oPosX *= levelScaleH;
-			obj->oPosY *= levelScaleV;
-			obj->oPosZ *= levelScaleH;
+			obj = (struct Object *) obj->header.next;
 		}
-		
-		obj++;
 	}
 	
 	if (!PERSONALIZATION_FLAG_DISABLE_OBJECTS) {
@@ -1014,13 +1053,4 @@ void postObjectLoadPass() {
 }
 
 void load_stuff_in_level_pool() {
-	// Load lava skeeter
-	lava_skeeter = FALSE;
-	if (sLevelPool != NULL) {
-		if (!get_model_loaded(MODEL_SKEETER)) {
-			/*gLoadedGraphNodes[MODEL_SKEETER] = process_geo_layout(sLevelPool, personalized_skeeter_geo);
-			set_model_loaded(MODEL_SKEETER, TRUE);*/
-			lava_skeeter = TRUE;
-		}
-	}
 }

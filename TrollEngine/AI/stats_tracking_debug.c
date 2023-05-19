@@ -41,16 +41,22 @@ void print_level_information() {
 	u32 bparams = 0xFFFFFFFF;
 	
 	register s32 i;
-	register struct Object *obj = &gObjectPool[0];
-	for (i = 0; i < 240; i++) {
-		if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && (u32)obj->behavior >= 0x80000000) {
-			if (obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
-				bparams = obj->oBehParams;
-				break; // found the object
+	register struct ObjectNode *listHead;
+	register struct Object *obj;
+	for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
+		listHead = &gObjectLists[i];
+
+		obj = (struct Object *) listHead->next;
+
+		while (obj != (struct Object *) listHead) {
+			if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && (u32)obj->behavior >= 0x80000000) {
+				if (obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
+					bparams = obj->oBehParams;
+					break; // found the object
+				}
 			}
+			obj = (struct Object *) obj->header.next;
 		}
-		
-		obj++;
 	}
 	
 	print_text(HUD_LEFT_X, HUD_TOP_Y, "STAGE INFO");
@@ -97,17 +103,23 @@ void print_performance_information() {
 	u32 bparams = 0xFFFFFFFF;
 	
 	register s32 i;
-	register struct Object *obj = &gObjectPool[0];
+	register struct ObjectNode *listHead;
+	register struct Object *obj;
 	register s32 objCount = 0;
-	for (i = 0; i < 240; i++) {
-		if (obj->activeFlags & ACTIVE_FLAG_ACTIVE && (u32)obj->behavior >= 0x80000000) {
-			objCount++;
-			if (obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
-				bparams = obj->oBehParams;
+	for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
+		listHead = &gObjectLists[i];
+
+		obj = (struct Object *) listHead->next;
+
+		while (obj != (struct Object *) listHead) {
+			if (obj->activeFlags & ACTIVE_FLAG_ACTIVE && (u32)obj->behavior >= 0x80000000) {
+				objCount++;
+				if (obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
+					bparams = obj->oBehParams;
+				}
 			}
+			obj = (struct Object *) obj->header.next;
 		}
-		
-		obj++;
 	}
 	
 	print_text(HUD_LEFT_X, HUD_TOP_Y, "PROFILER");
@@ -344,7 +356,7 @@ void print_mods() {
 	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 48, float_buffer);
 }
 
-void print_obj_debug() {
+/*void print_obj_debug() {
 	char float_buffer[10];
 
 	if (debugCurrObject == NULL) {
@@ -388,7 +400,7 @@ void print_obj_debug() {
 	print_text(HUD_LEFT_X, HUD_TOP_Y - 48, "SCALEY");
 	sprintf(float_buffer, "%.3f", TRACKER_level_scale_modifier_v);
 	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 48, float_buffer);*/
-}
+//}
 
 int musSelection = 0;
 int musForceNLST = 0;
@@ -574,9 +586,9 @@ void stats_tracking_debug_display() {
 				case 9:
 					print_mods();
 					break;
-				case 10:
+				/*case 10:
 					print_obj_debug();
-					break;
+					break;*/
 			}
 			break;
 		case 1:
@@ -595,7 +607,7 @@ void stats_tracking_debug_display() {
 		else {
 			switch (tab2) {
 				case 0:
-					tab = (tab + 1) % 11;
+					tab = (tab + 1) % 10;
 					break;
 				case 1:
 					// playma music

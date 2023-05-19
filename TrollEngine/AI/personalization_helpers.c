@@ -926,21 +926,26 @@ void on_collected_star(struct Object *starObj) {
 
 void AI_star_set_platform_bparam_if_above_average_y(struct Object *starObj) {
     s32 i;
+    struct ObjectNode *listHead;
 	struct Object *obj;
 	f32 minY = 32767.0f, maxY = -32768.0f, avgY;
     
-	obj = &gObjectPool[0];
-	for (i = 0; i < 240; i++) {
-		if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && (u32)obj->behavior >= 0x80000000) {
-			if (obj->oPosY < minY) {
-				minY = obj->oPosY;
-			}
-			if (obj->oPosY > maxY) {
-				maxY = obj->oPosY;
-			}
-		}
-		
-		obj++;
+	for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
+		listHead = &gObjectLists[i];
+
+		obj = (struct Object *) listHead->next;
+
+		while (obj != (struct Object *) listHead) {
+            if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && (u32)obj->behavior >= 0x80000000) {
+                if (obj->oPosY < minY) {
+                    minY = obj->oPosY;
+                }
+                if (obj->oPosY > maxY) {
+                    maxY = obj->oPosY;
+                }
+            }
+			obj = (struct Object *) obj->header.next;
+        }
 	}
 	
 	avgY = (minY + maxY) / 2.0f;
@@ -1661,6 +1666,7 @@ extern const BehaviorScript *bhvStarMagnet;
 struct Object *troll_spawn_star(struct Object *sp30, f32 sp34, f32 sp38, f32 sp3C) {
     register f32 starMagnetDist = 33130.f;
 	register s32 i;
+	register struct ObjectNode *listHead;
 	register struct Object *obj;
     register struct Object *o = gCurrentObject;
     register u32 closestBparams = 0;
@@ -1674,22 +1680,26 @@ struct Object *troll_spawn_star(struct Object *sp30, f32 sp34, f32 sp38, f32 sp3
     sp30->oHomeZ = sp3C * levelScaleH;
 
     // Find closest star magnet, if any.
-	obj = &gObjectPool[0];
-	for (i = 0; i < 240; i++) {
-		if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual(&bhvStarMagnet)) {
-			register f32 dist = dist_between_objects(o, obj);
-            
-            if (dist < starMagnetDist) {
-                starMagnetDist = dist;
-                sp30->oHomeX = obj->oPosX;
-                sp30->oHomeY = obj->oPosY;
-                sp30->oHomeZ = obj->oPosZ;
-                
-                closestBparams = obj->oBehParams;
+	for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
+		listHead = &gObjectLists[i];
+
+		obj = (struct Object *) listHead->next;
+
+		while (obj != (struct Object *) listHead) {
+            if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual(&bhvStarMagnet)) {
+                register f32 dist = dist_between_objects(o, obj);
+
+                if (dist < starMagnetDist) {
+                    starMagnetDist = dist;
+                    sp30->oHomeX = obj->oPosX;
+                    sp30->oHomeY = obj->oPosY;
+                    sp30->oHomeZ = obj->oPosZ;
+
+                    closestBparams = obj->oBehParams;
+                }
             }
-		}
-		
-		obj++;
+			obj = (struct Object *) obj->header.next;
+        }
 	}
 	
 	if (starMagnetDist < 33130.f) {

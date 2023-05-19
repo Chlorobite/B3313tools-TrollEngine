@@ -126,16 +126,22 @@ void bhv_radius_dialog_box_loop() {
         // Dialog appears only if no stars collected
         // Check for any collected stars
         register s32 i;
-        register struct Object *obj = &gObjectPool[0];
-        
-        for (i = 0; i < 240; i++) {
-            if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && (u32)obj->header.gfx.sharedChild == (u32)gLoadedGraphNodes[MODEL_TRANSPARENT_STAR]) {
-                // deth
-                o->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
-                return;
+        register struct ObjectNode *listHead;
+        register struct Object *obj;
+
+        for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
+            listHead = &gObjectLists[i];
+
+            obj = (struct Object *) listHead->next;
+
+            while (obj != (struct Object *) listHead) {
+                if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && (u32)obj->header.gfx.sharedChild == (u32)gLoadedGraphNodes[MODEL_TRANSPARENT_STAR]) {
+                    // deth
+                    o->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
+                    return;
+                }
+                obj = (struct Object *) obj->header.next;
             }
-            
-            obj++;
         }
     }
     
@@ -298,32 +304,40 @@ void bhv_star_magnet_two() {
 	register struct Object *closestObject = NULL;
 
     // Find closest hidden star spawner, if any.
-	obj = &gObjectPool[0];
-	for (i = 0; i < 240; i++) {
-		if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && is_object_star_spawner(obj)) {
-			register f32 dist = dist_between_objects(o, obj);
+	for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
+		listHead = &gObjectLists[i];
 
-            if (dist < starMagnetDist) {
-                starMagnetDist = dist;
-                closestObject = obj;
+		obj = (struct Object *) listHead->next;
+
+		while (obj != (struct Object *) listHead) {
+            if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && is_object_star_spawner(obj)) {
+                register f32 dist = dist_between_objects(o, obj);
+
+                if (dist < starMagnetDist) {
+                    starMagnetDist = dist;
+                    closestObject = obj;
+                }
             }
-		}
-
-		obj++;
+            obj = (struct Object *) obj->header.next;
+        }
 	}
 
     if (closestObject != NULL) {
         // Unload any star markers, if any.
         register s32 spawnMarker = FALSE;
 
-        obj = &gObjectPool[0];
-        for (i = 0; i < 240; i++) {
-            if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj != closestObject && obj->parentObj == closestObject) {
-                obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
-                spawnMarker = TRUE;
-            }
+        for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
+            listHead = &gObjectLists[i];
 
-            obj++;
+            obj = (struct Object *) listHead->next;
+
+            while (obj != (struct Object *) listHead) {
+                if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj != closestObject && obj->parentObj == closestObject) {
+                    obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
+                    spawnMarker = TRUE;
+                }
+                obj = (struct Object *) obj->header.next;
+            }
         }
 
         closestObject->oPosX = o->oPosX;

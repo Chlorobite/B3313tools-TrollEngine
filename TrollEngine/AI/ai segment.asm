@@ -24,7 +24,6 @@ CVT.S.W    F0, F0
 .importobj "Objects/gear_bhv/gear_bhv.o"
 .importobj "Objects/blooper_bhv/bhv.o"
 .importobj "Objects/beta_boo_key/beta_boo_key.o"
-.importobj "Objects/text/text.o"
 .endarea
 
 ; part 2 (0x807E0000-0x807EC000)
@@ -52,6 +51,7 @@ CVT.S.W    F0, F0
 .importobj "AI/save_file.o"
 .importobj "Trolls/cameratroll/sCamBeyta.o"
 .importobj "Objects/beta_boo_key/boo_with_key.o"
+.importobj "Objects/text/text.o"
 .endarea
 
 
