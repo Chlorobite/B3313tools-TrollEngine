@@ -15,15 +15,7 @@ CVT.S.W    F0, F0
 .importobj "AI/objects_collision.o"
 .importobj "AI/personalization_helpers.o"
 .importobj "AI/post_object_load_pass.o"
-
-; object behaviors
-.importobj "Objects/other_bhvs/aiseg_bhv.o"
-.include "Objects/other_bhvs/aiseg_bhv_asm.asm"
-
-.importobj "Objects/custom_purple_switch/script.o"
-.importobj "Objects/gear_bhv/gear_bhv.o"
-.importobj "Objects/blooper_bhv/bhv.o"
-.importobj "Objects/beta_boo_key/beta_boo_key.o"
+.importobj "AI/stats_tracking_debug.o"
 .endarea
 
 ; part 2 (0x807E0000-0x807EC000)
@@ -43,13 +35,23 @@ CVT.S.W    F0, F0
 .area 0x9000,0x01
 
 .importobj "AI/stats_tracking.o"
-.importobj "AI/stats_tracking_debug.o"
 .importobj "AI/audio_trolls.o"
 .importobj "AI/frameskip_engine.o"
 .importobj "AI/troll_hud.o"
 .importobj "AI/yellow_coin_geo.o"
 .importobj "AI/save_file.o"
+
 .importobj "Trolls/cameratroll/sCamBeyta.o"
+
+; object behaviors
+.importobj "Objects/other_bhvs/aiseg_bhv.o"
+.include "Objects/other_bhvs/aiseg_bhv_asm.asm"
+
+.importobj "Objects/custom_purple_switch/script.o"
+.importobj "Objects/gear_bhv/gear_bhv.o"
+.importobj "Objects/blooper_bhv/bhv.o"
+.importobj "Objects/beta_boo_key/beta_boo_key.o"
+
 .importobj "Objects/beta_boo_key/boo_with_key.o"
 .importobj "Objects/text/text.o"
 .endarea

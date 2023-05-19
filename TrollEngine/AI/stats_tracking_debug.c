@@ -20,10 +20,6 @@
 extern const BehaviorScript bhvTextOnScreen[];
 
 s32 dynamicSurfaceTris = 0;
-struct Object *debugCurrObject = NULL;
-u8 *watchDMADest = 0;
-u8 *watchDMASrcStart = 0;
-u32 watchDMASize = 0;
 
 char *hudTypes[] = {
 	"NO OBJ", "NORMAL", "B ROLL", "SHOSHINKAI", "E3", "DECEMBER"
@@ -35,9 +31,24 @@ char *nightTypes[] = {
 	"NO OBJ", "RTC OR DAY", "RTC OR NIGHT", "FLIP RTC OR DAY", "FLIP RTC OR NIGHT", "DAY", "NIGHT"
 };
 
+char float_buffer[10];
+
+void print_text_value_helper(s32 xOffset, s32 yOffset, char *ptrLeft, char *ptrRight) {
+	print_text(HUD_LEFT_X, yOffset, ptrLeft);
+	print_text(xOffset, yOffset, ptrRight);
+}
+
+void sprintf_hex(s32 value) {
+    sprintf(float_buffer, "%x", value);
+}
+void sprintf_decimal(s32 value) {
+    sprintf(float_buffer, "%d", value);
+}
+void sprintf_float(f32 value) {
+    sprintf(float_buffer, "%.3f", value);
+}
+
 void print_level_information() {
-	char float_buffer[10];
-	
 	u32 bparams = 0xFFFFFFFF;
 	
 	register s32 i;
@@ -61,45 +72,36 @@ void print_level_information() {
 	
 	print_text(HUD_LEFT_X, HUD_TOP_Y, "STAGE INFO");
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 16, "COURSE");
-	sprintf(float_buffer, "%x", gCurrLevelNum);
-	print_text(HUD_LEFT_X + 96, HUD_TOP_Y - 16, float_buffer);
+	sprintf_hex(gCurrLevelNum);
+	print_text_value_helper(HUD_LEFT_X + 96, HUD_TOP_Y - 16, "COURSE", float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "AREA");
-	sprintf(float_buffer, "%d", gCurrentArea->index);
-	print_text(HUD_LEFT_X + 96, HUD_TOP_Y - 32, float_buffer);
+	sprintf_decimal(gCurrentArea->index);
+	print_text_value_helper(HUD_LEFT_X + 96, HUD_TOP_Y - 32, "AREA", float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 48, "HUD");
-	print_text(HUD_LEFT_X + 96, HUD_TOP_Y - 48, hudTypes[(u8)((bparams >> 24) + 1)]);
+	print_text_value_helper(HUD_LEFT_X + 96, HUD_TOP_Y - 48, "HUD", hudTypes[(u8)((bparams >> 24) + 1)]);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 64, "TERRAIN");
-	print_text(HUD_LEFT_X + 96, HUD_TOP_Y - 64, terrainTypes[(u8)((bparams >> 16) + 1)]);
+	print_text_value_helper(HUD_LEFT_X + 96, HUD_TOP_Y - 64, "TERRAIN", terrainTypes[(u8)((bparams >> 16) + 1)]);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 80, "NIGHT");
-	print_text(HUD_LEFT_X + 96, HUD_TOP_Y - 80, nightTypes[(u8)((bparams >> 8) + 1)]);
+	print_text_value_helper(HUD_LEFT_X + 96, HUD_TOP_Y - 80, "NIGHT", nightTypes[(u8)((bparams >> 8) + 1)]);
 	
 	print_text(HUD_LEFT_X, HUD_TOP_Y - 96, "POS");
-	sprintf(float_buffer, "%d", (s32)gMarioState->pos[0]);
+	sprintf_decimal((s32)gMarioState->pos[0]);
 	print_text(HUD_LEFT_X + 64, HUD_TOP_Y - 96, float_buffer);
-	sprintf(float_buffer, "%d", (s32)gMarioState->pos[1]);
+	sprintf_decimal((s32)gMarioState->pos[1]);
 	print_text(HUD_LEFT_X + 64+80, HUD_TOP_Y - 96, float_buffer);
-	sprintf(float_buffer, "%d", (s32)gMarioState->pos[2]);
+	sprintf_decimal((s32)gMarioState->pos[2]);
 	print_text(HUD_LEFT_X + 64+80*2, HUD_TOP_Y - 96, float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 112, "REDS");
-	sprintf(float_buffer, "%d", get_red_star_count(gCurrSaveFileNum - 1));
-	print_text(HUD_LEFT_X + 96, HUD_TOP_Y - 112, float_buffer);
+	sprintf_decimal(get_red_star_count(gCurrSaveFileNum - 1));
+	print_text_value_helper(HUD_LEFT_X + 96, HUD_TOP_Y - 112, "REDS", float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 128, "GREENS");
-	sprintf(float_buffer, "%d", get_green_star_count(gCurrSaveFileNum - 1));
-	print_text(HUD_LEFT_X + 96, HUD_TOP_Y - 128, float_buffer);
+	sprintf_decimal(get_green_star_count(gCurrSaveFileNum - 1));
+	print_text_value_helper(HUD_LEFT_X + 96, HUD_TOP_Y - 128, "GREENS", float_buffer);
 }
 
 extern float _gLastFrameTime;
 extern s32 render_frame_count, last_render_frame_count;
 void print_performance_information() {
-	char float_buffer[10];
-	
 	u32 bparams = 0xFFFFFFFF;
 	
 	register s32 i;
@@ -124,283 +126,144 @@ void print_performance_information() {
 	
 	print_text(HUD_LEFT_X, HUD_TOP_Y, "PROFILER");
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 16, "TIME");
-	sprintf(float_buffer, "%.3f", _gLastFrameTime);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 16, float_buffer);
+	sprintf_float(_gLastFrameTime);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 16, "TIME", float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "FCOUNT");
-	sprintf(float_buffer, "%d", render_frame_count);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 32, float_buffer);
+	sprintf_decimal(render_frame_count);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 32, "FCOUNT", float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 48, "DSURFS");
-	sprintf(float_buffer, "%d", dynamicSurfaceTris);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 48, float_buffer);
+	sprintf_decimal(dynamicSurfaceTris);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 48, "DSURFS", float_buffer);
 	dynamicSurfaceTris = 0;
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 64, "OBJ");
-	sprintf(float_buffer, "%d", objCount);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 64, float_buffer);
+	sprintf_decimal(objCount);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 64, "OBJ", float_buffer);
 }
 
 void print_general_stats() {
-	char float_buffer[10];
-	
 	print_text(HUD_LEFT_X, HUD_TOP_Y, "GEN TRACKS");
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 16, "SPD");
-	sprintf(float_buffer, "%.3f", TRACKER_speed);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 16, float_buffer);
+	sprintf_float(TRACKER_speed);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 16, "SPD", float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "AIR");
-	sprintf(float_buffer, "%.3f", TRACKER_air_time);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 32, float_buffer);
+	sprintf_float(TRACKER_air_time);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 32, "AIR", float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 48, "WATER");
-	sprintf(float_buffer, "%.3f", TRACKER_water);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 48, float_buffer);
+	sprintf_float(TRACKER_water);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 48, "WATER", float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 64, "HEALTH");
-	sprintf(float_buffer, "%.3f", TRACKER_hp);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 64, float_buffer);
+	sprintf_float(TRACKER_hp);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 64, "HEALTH", float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 80, "BOSS");
-	sprintf(float_buffer, "%.3f", TRACKER_boss_performance);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 80, float_buffer);
+	sprintf_float(TRACKER_boss_performance);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 80, "BOSS", float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 96, "DEATH");
-	sprintf(float_buffer, "%.3f", TRACKER_accum_deaths);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 96, float_buffer);
+	sprintf_float(TRACKER_accum_deaths);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 96, "DEATH", float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 112, "SOCIAL");
-	sprintf(float_buffer, "%.3f", TRACKER_accum_social);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 112, float_buffer);
+	sprintf_float(TRACKER_accum_social);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 112, "SOCIAL", float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 128, "NERD");
-	sprintf(float_buffer, "%.3f", TRACKER_accum_nerd);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 128, float_buffer);
+	sprintf_float(TRACKER_accum_nerd);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 128, "NERD", float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 144, "KILL");
-	sprintf(float_buffer, "%.3f", TRACKER_accum_murder);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 144, float_buffer);
+	sprintf_float(TRACKER_accum_murder);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 144, "KILL", float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 160, "STARS");
-	sprintf(float_buffer, "%.3f", TRACKER_accum_stars);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 160, float_buffer);
+	sprintf_float(TRACKER_accum_stars);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 160, "STARS", float_buffer);
 }
 
+char *death_reasons_text[] = {
+	"ENEMY", "BAD", "HOT", "FALL", "TROLL"
+};
 void print_death_stats() {
-	char float_buffer[10];
+	s32 i;
 	
 	print_text(HUD_LEFT_X, HUD_TOP_Y, "DEATH REASONS");
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 16, "ENEMY");
-	sprintf(float_buffer, "%.3f", TRACKER_death_reasons[0]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 16, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "BAD");
-	sprintf(float_buffer, "%.3f", TRACKER_death_reasons[1]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 32, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 48, "HOT");
-	sprintf(float_buffer, "%.3f", TRACKER_death_reasons[2]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 48, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 64, "FALL");
-	sprintf(float_buffer, "%.3f", TRACKER_death_reasons[3]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 64, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 80, "TROLL");
-	sprintf(float_buffer, "%.3f", TRACKER_death_reasons[4]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 80, float_buffer);
+	for (i = 0; i < 5; i++) {
+		sprintf_float(TRACKER_death_reasons[i]);
+		print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 16 * (i + 1), death_reasons_text[i], float_buffer);
+	}
 }
 
+char *star_prefs_gameplay_text[] = {
+	"BOSS", "CANNON", "GRAB", "FREE", "KILL", "WAHOO", "SLIDE", "TIMER"
+};
 void print_star_prefs_gameplay() {
-	char float_buffer[10];
+	s32 i;
 	
 	print_text(HUD_LEFT_X, HUD_TOP_Y, "- PREFS GAMEPLAY");
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 16, "BOSS");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_gameplay[0]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 16, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "CANNON");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_gameplay[1]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 32, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 48, "GRAB");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_gameplay[2]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 48, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 64, "FREE");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_gameplay[3]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 64, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 80, "KILL");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_gameplay[4]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 80, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 96, "WAHOO");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_gameplay[5]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 96, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 112, "SLIDE");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_gameplay[6]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 112, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 128, "TIMER");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_gameplay[7]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 128, float_buffer);
+
+	for (i = 0; i < 8; i++) {
+		sprintf_float(TRACKER_star_preferences_gameplay[i]);
+		print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 16 * (i + 1), star_prefs_gameplay_text[i], float_buffer);
+	}
 }
 
+char *star_prefs_level_type_text[] = {
+	"HOUSE", "GROUND", "SNOW", "DESERT", "UNDERG", "WATER", "FIRE", "SECRET"
+};
 void print_star_prefs_level_type() {
-	char float_buffer[10];
+	s32 i;
 	
 	print_text(HUD_LEFT_X, HUD_TOP_Y, "- PREFS AREA TYPE");
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 16, "HOUSE");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_level_type[0]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 16, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "GROUND");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_level_type[1]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 32, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 48, "SNOW");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_level_type[2]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 48, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 64, "DESERT");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_level_type[3]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 64, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 80, "UNDERG");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_level_type[4]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 80, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 96, "WATER");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_level_type[5]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 96, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 112, "FIRE");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_level_type[6]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 112, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 128, "SECRET");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_level_type[7]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 128, float_buffer);
+	for (i = 0; i < 8; i++) {
+		sprintf_float(TRACKER_star_preferences_level_type[i]);
+		print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 16 * (i + 1), star_prefs_level_type_text[i], float_buffer);
+	}
 }
 
+char *star_prefs_caps_text[] = {
+	"WING", "METAL", "GHOST"
+};
 void print_star_prefs_caps() {
-	char float_buffer[10];
+	s32 i;
 	
 	print_text(HUD_LEFT_X, HUD_TOP_Y, "- PREFS CAPS");
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 16, "WING");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_cap[0]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 16, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "METAL");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_cap[1]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 32, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 48, "GHOST");
-	sprintf(float_buffer, "%.3f", TRACKER_star_preferences_cap[2]);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 48, float_buffer);
+	for (i = 0; i < 3; i++) {
+		sprintf_float(TRACKER_star_preferences_cap[i]);
+		print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 16 * (i + 1), star_prefs_caps_text[i], float_buffer);
+	}
 }
 
 void print_prefs() {
-	char float_buffer[10];
-	
 	print_text(HUD_LEFT_X, HUD_TOP_Y, "PREFERENCES");
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 16, "GRAB");
-	sprintf(float_buffer, "%.3f", TRACKER_prefer_collect);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 16, float_buffer);
+	sprintf_float(TRACKER_prefer_collect);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 16, "GRAB", float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "EXPLOR");
-	sprintf(float_buffer, "%.3f", TRACKER_prefer_exploration);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 32, float_buffer);
+	sprintf_float(TRACKER_prefer_exploration);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 32, "EXPLOR", float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 48, "LORE");
-	sprintf(float_buffer, "%.3f", TRACKER_prefer_lore);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 48, float_buffer);
+	sprintf_float(TRACKER_prefer_lore);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 48, "LORE", float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 64, "KILL");
-	sprintf(float_buffer, "%.3f", TRACKER_prefer_murder);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 64, float_buffer);
+	sprintf_float(TRACKER_prefer_murder);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 64, "KILL", float_buffer);
+
+	sprintf_float(TRACKER_prefer_parkour);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 80, "WAHOO", float_buffer);
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 80, "WAHOO");
-	sprintf(float_buffer, "%.3f", TRACKER_prefer_parkour);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 80, float_buffer);
-	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 96, "WATER");
-	sprintf(float_buffer, "%.3f", TRACKER_prefer_swimming);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 96, float_buffer);
+	sprintf_float(TRACKER_prefer_swimming);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 96, "WATER", float_buffer);
 }
 
 void print_mods() {
-	char float_buffer[10];
-
 	print_text(HUD_LEFT_X, HUD_TOP_Y, "MODIFIERS");
 
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 16, "HARD");
-	sprintf(float_buffer, "%.3f", TRACKER_difficulty_modifier);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 16, float_buffer);
+	sprintf_float(TRACKER_difficulty_modifier);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 16, "HARD", float_buffer);
 
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "SCALEH");
-	sprintf(float_buffer, "%.3f", TRACKER_level_scale_modifier_h);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 32, float_buffer);
+	sprintf_float(TRACKER_level_scale_modifier_h);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 32, "SCALEH", float_buffer);
 
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 48, "SCALEY");
-	sprintf(float_buffer, "%.3f", TRACKER_level_scale_modifier_v);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 48, float_buffer);
+	sprintf_float(TRACKER_level_scale_modifier_v);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 48, "SCALEY", float_buffer);
 }
-
-/*void print_obj_debug() {
-	char float_buffer[10];
-
-	if (debugCurrObject == NULL) {
-		print_text(HUD_LEFT_X, HUD_TOP_Y, "NO OBJ FOUND");
-		return;
-	}
-
-	print_text(HUD_LEFT_X, HUD_TOP_Y, "OBJ DEBUG");
-
-	{
-		s32 modelId = 0;
-		for (; modelId <= 255; modelId++) {
-			if (debugCurrObject->header.gfx.sharedChild == gLoadedGraphNodes[modelId]) break;
-		}
-
-		print_text(HUD_LEFT_X, HUD_TOP_Y - 16, "MODEL");
-		sprintf(float_buffer, "%d", modelId);
-		print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 16, float_buffer);
-
-		print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "BHV");
-		sprintf(float_buffer, "%x", debugCurrObject->curBhvCommand);
-		print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 32, float_buffer);
-
-		print_text(HUD_LEFT_X, HUD_TOP_Y - 48, "*BHV");
-		sprintf(float_buffer, "%x", *debugCurrObject->curBhvCommand);
-		print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 48, float_buffer);
-
-		print_text(HUD_LEFT_X, HUD_TOP_Y - 64, "DMA");
-		sprintf(float_buffer, "%x", watchDMADest);
-		print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 64, float_buffer);
-		sprintf(float_buffer, "%x", watchDMASrcStart);
-		print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 80, float_buffer);
-		sprintf(float_buffer, "%x", watchDMASize);
-		print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 96, float_buffer);
-	}
-
-	/*print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "SCALEH");
-	sprintf(float_buffer, "%.3f", TRACKER_level_scale_modifier_h);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 32, float_buffer);
-
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 48, "SCALEY");
-	sprintf(float_buffer, "%.3f", TRACKER_level_scale_modifier_v);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 48, float_buffer);*/
-//}
 
 int musSelection = 0;
 int musForceNLST = 0;
@@ -411,12 +274,10 @@ int nowPlaying_nlst = 0;
 int nowPlaying_tempo = 0;
 int soundTestSelection = 0;
 void sound_test() {
-	char float_buffer[10];
-	
 	print_text(HUD_LEFT_X, HUD_TOP_Y, "SOUND TEST");
 	
 	print_text(HUD_LEFT_X + (soundTestSelection == 0 ? 16 : 0), HUD_TOP_Y - 24, "MUSIC");
-	sprintf(float_buffer, "%d", musSelection);
+	sprintf_decimal(musSelection);
 	print_text(HUD_LEFT_X + (soundTestSelection == 0 ? 16 : 0) + 80, HUD_TOP_Y - 24, float_buffer);
 	if (soundTestSelection == 0) {
 		if (gPlayer1Controller->buttonPressed & L_JPAD) {
@@ -432,7 +293,7 @@ void sound_test() {
 		print_text(HUD_LEFT_X + (soundTestSelection == 1 ? 16 : 0) + 80, HUD_TOP_Y - 40, "DEFAULT");
 	}
 	else {
-		sprintf(float_buffer, "%d", musForceNLST);
+		sprintf_decimal(musForceNLST);
 		print_text(HUD_LEFT_X + (soundTestSelection == 1 ? 16 : 0) + 80, HUD_TOP_Y - 40, float_buffer);
 	}
 	if (soundTestSelection == 1) {
@@ -445,7 +306,7 @@ void sound_test() {
 	}
 	
 	print_text(HUD_LEFT_X + (soundTestSelection == 2 ? 16 : 0), HUD_TOP_Y - 56, "TEMPO");
-	sprintf(float_buffer, "%d", musTempo);
+	sprintf_decimal(musTempo);
 	print_text(HUD_LEFT_X + (soundTestSelection == 2 ? 16 : 0) + 80, HUD_TOP_Y - 56, float_buffer);
 	if (soundTestSelection == 2) {
 		if (gPlayer1Controller->buttonDown & L_JPAD) {
@@ -457,7 +318,7 @@ void sound_test() {
 	}
 	
 	print_text(HUD_LEFT_X + (soundTestSelection == 3 ? 16 : 0), HUD_TOP_Y - 72, "PITCH");
-	sprintf(float_buffer, "%d", musPitch);
+	sprintf_decimal(musPitch);
 	print_text(HUD_LEFT_X + (soundTestSelection == 3 ? 16 : 0) + 80, HUD_TOP_Y - 72, float_buffer);
 	if (soundTestSelection == 3) {
 		if (gPlayer1Controller->buttonPressed & L_JPAD) {
@@ -469,7 +330,7 @@ void sound_test() {
 	}
 	
 	print_text(HUD_LEFT_X + (soundTestSelection == 4 ? 16 : 0), HUD_TOP_Y - 88, "TRANSP");
-	sprintf(float_buffer, "%d", musTranspose);
+	sprintf_decimal(musTranspose);
 	print_text(HUD_LEFT_X + (soundTestSelection == 4 ? 16 : 0) + 80, HUD_TOP_Y - 88, float_buffer);
 	if (soundTestSelection == 4) {
 		if (gPlayer1Controller->buttonPressed & L_JPAD) {
@@ -484,12 +345,10 @@ void sound_test() {
 	
 	
 	print_text(HUD_LEFT_X, HUD_TOP_Y - 136, "CURRENT");
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 152, "NLST");
-	sprintf(float_buffer, "%d", nowPlaying_nlst);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 152, float_buffer);
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 168, "TEMPO");
-	sprintf(float_buffer, "%d", nowPlaying_tempo);
-	print_text(HUD_LEFT_X + 80, HUD_TOP_Y - 168, float_buffer);
+	sprintf_decimal(nowPlaying_nlst);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 152, "NLST", float_buffer);
+	sprintf_decimal(nowPlaying_tempo);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 168, "TEMPO", float_buffer);
 	
 	
 	
@@ -502,8 +361,6 @@ void sound_test() {
 }
 
 void haks() {
-	char float_buffer[10];
-	
 	print_text(HUD_LEFT_X, HUD_TOP_Y, "HAKS");
 	
 	print_text(HUD_LEFT_X, HUD_TOP_Y - 16, "LEFT   DEBUG MOVE");
@@ -586,9 +443,6 @@ void stats_tracking_debug_display() {
 				case 9:
 					print_mods();
 					break;
-				/*case 10:
-					print_obj_debug();
-					break;*/
 			}
 			break;
 		case 1:
@@ -626,20 +480,9 @@ void stats_tracking_debug_display() {
 
 
 void set_cur_obj_debug_information() {
-	if (gCurrentObject->header.gfx.sharedChild == gLoadedGraphNodes[MODEL_MARIO])
-		debugCurrObject = gCurrentObject;
 }
 
 #define ALIGN16(val) (((val) + 0xF) & ~0xF)
 void intercept_dma(u8 *dest, u8 *srcStart, u8 *srcEnd) {
-    register u32 size = ALIGN16(srcEnd - srcStart);
-	register u32 checkPtr = 0x8011A3A0;
-	register u32 startPtr = (u32)dest;
-
-	if (startPtr <= checkPtr && checkPtr < (startPtr + size)) {
-		watchDMADest = dest;
-		watchDMASrcStart = srcStart;
-		watchDMASize = size;
-	}
 }
 

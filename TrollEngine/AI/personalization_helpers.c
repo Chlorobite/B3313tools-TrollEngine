@@ -239,39 +239,6 @@ void texCopyRGBA16(u16 *ptrFrom, u16 *ptrTo, int size) {
 	}
 }
 
-void lightRGBA5551(u16 *ptr, int size, float multiplier) {
-	int i;
-    u8 r;
-    u8 g;
-    u8 b;
-	u16 value;
-	
-	for (i = 0; i < size; i++) {
-		value = *ptr;
-		
-		r = (value >> 11) << 3;
-		g = ((value >> 6) & 0x1F) << 3;
-		b = ((value >> 1) & 0x1F) << 3;
-		
-        r *= multiplier;
-        g *= multiplier;
-        b *= multiplier;
-		
-		*ptr = (
-			// R
-			((r >> 3) << 11)
-			// G
-			+ ((g >> 3) << 6)
-			// B
-			+ ((b >> 3) << 1)
-			// A
-			+ (value & 1)
-		);
-		
-		ptr++;
-	}
-}
-
 
 void darkenRGBA16(u16 *ptr, int size) {
 	int i;
