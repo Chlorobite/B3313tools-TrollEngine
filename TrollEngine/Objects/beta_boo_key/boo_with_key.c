@@ -50,7 +50,9 @@ extern const BehaviorScript bhvBigBooWithKey[];
 
 //! Key-boo
 static void boo_with_key_act_0(void) {
-    o->oBooParentBigBoo = cur_obj_nearest_object_with_behavior(bhvBigBooWithKey);
+    o->oBooParentBigBoo = NULL;
+    if (o->oBehParams2ndByte == 1)
+        o->oBooParentBigBoo = cur_obj_nearest_object_with_behavior(bhvBigBooWithKey);
     o->oBooTargetOpacity = 0xFF;
     o->oBooBaseScale = 1.2f;
 
