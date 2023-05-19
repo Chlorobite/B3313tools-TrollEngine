@@ -59,7 +59,7 @@ void bhv_text_on_screen_loop(void) {
     if (o->oBehParams & 0x0200 && random_u16() & 1)
         return;
 
-    if (o->oDistanceToMario > 300.f) return;
+    if (o->oDistanceToMario > ((o->oBehParams >> 24) & 0xFF) * 10.f) return;
 
     print_text_centered(160, (o->oBehParams & 0x0100) ? 120 : 40, strings[(o->oBehParams >> 16) & 0xFF]);
 }
