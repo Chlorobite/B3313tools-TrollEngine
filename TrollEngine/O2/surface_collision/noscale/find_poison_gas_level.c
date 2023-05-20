@@ -1,4 +1,5 @@
 #include "../surface_collision_headers.h"
+#include "AI/personalization_helpers.h"
 
 f32 find_poison_gas_level(f32 x, f32 z) {
     s32 i;
@@ -8,7 +9,7 @@ f32 find_poison_gas_level(f32 x, f32 z) {
     f32 gasLevel = FLOOR_LOWER_LIMIT;
     s16 *p = gEnvironmentRegions;
 
-    if (p != NULL) {
+    if (p != NULL && PERSONALIZATION_FLAG_ENABLE_TOXIC_GAS) {
         numRegions = *p++;
 
         for (i = 0; i < numRegions; i++) {

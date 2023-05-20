@@ -31,7 +31,7 @@ extern u8 personalizationFlags;
 #define PERSONALIZATION_FLAG_DISABLE_OBJECTS       (personalizationFlags&0x02)
 #define PERSONALIZATION_FLAG_DISABLE_RETEXTURE     (personalizationFlags&0x04)
 #define PERSONALIZATION_FLAG_DISABLE_LEVEL_SCALE   (personalizationFlags&0x08)
-#define PERSONALIZATION_FLAG_10                    (personalizationFlags&0x10)
+#define PERSONALIZATION_FLAG_ENABLE_TOXIC_GAS      (personalizationFlags&0x10)
 #define PERSONALIZATION_FLAG_LOAD_RED_STAR         (personalizationFlags&0x20)
 #define PERSONALIZATION_FLAG_HUE_SHIFT_STAR        (personalizationFlags&0x40)
 #define PERSONALIZATION_FLAG_TROLL_FAST_TRAVEL     (personalizationFlags&0x80)

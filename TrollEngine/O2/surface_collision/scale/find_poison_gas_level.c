@@ -9,7 +9,7 @@ f32 find_poison_gas_level(register f32 x, register f32 z) {
     f32 gasLevel = FLOOR_LOWER_LIMIT;
     register s16 *p = gEnvironmentRegions;
 
-    if (p != NULL) {
+    if (p != NULL && PERSONALIZATION_FLAG_ENABLE_TOXIC_GAS) {
         numRegions = *p++;
 
         for (i = 0; i < numRegions; i++) {
