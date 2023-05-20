@@ -602,7 +602,7 @@ void call_a_random_ass_function() {
         if ((u32)(*funcptr) == JR_RA) {
             funcCount++;
         }
-        
+
         funcptr++;
     }
     
@@ -618,7 +618,7 @@ void call_a_random_ass_function() {
                 break;
             }
         }
-        
+
         funcptr++;
     }
 }
@@ -1636,7 +1636,6 @@ struct Object *troll_spawn_star(struct Object *sp30, f32 sp34, f32 sp38, f32 sp3
 	register struct ObjectNode *listHead;
 	register struct Object *obj;
     register struct Object *o = gCurrentObject;
-    register u32 closestBparams = 0;
     
     sp30 = spawn_object_abs_with_rot(o, 0, MODEL_STAR, bhvStarSpawnCoordinates, o->oPosX, o->oPosY,
                                      o->oPosZ, 0, 0, 0);
@@ -1662,18 +1661,13 @@ struct Object *troll_spawn_star(struct Object *sp30, f32 sp34, f32 sp38, f32 sp3
                     sp30->oHomeY = obj->oPosY;
                     sp30->oHomeZ = obj->oPosZ;
 
-                    closestBparams = obj->oBehParams;
+                    sp30->oBehParams = obj->oBehParams;
+                    sp30->oBehParams2ndByte = obj->oBehParams2ndByte;
                 }
             }
 			obj = (struct Object *) obj->header.next;
         }
 	}
-	
-	if (starMagnetDist < 33130.f) {
-        if (closestBparams & 0x01000000) {
-            sp30->oInteractionSubtype |= INT_SUBTYPE_NO_EXIT;
-        }
-    }
 
     sp30->oFaceAnglePitch = 0;
     sp30->oFaceAngleRoll = 0;
