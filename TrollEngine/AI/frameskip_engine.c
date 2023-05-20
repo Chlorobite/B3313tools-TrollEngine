@@ -28,6 +28,7 @@
 
 #include "src/engine/behavior_script.h"
 
+extern u16 gRandomSeed16;
 
 #define SECONDS_PER_CYCLE 0.00000002133f
 // slightly higher than 1/30 to account for slight variations
@@ -103,6 +104,12 @@ s32 troll_lvl_init_or_update(s16 initOrUpdate) {
     }
 
     stats_tracking_debug_display();
+
+    // Make RNG more random
+    gRandomSeed16 ^= gControllers[0].buttonDown;
+    random_u16();
+    gRandomSeed16 ^= gControllers[0].buttonPressed;
+    random_u16();
 
     return result;
 }
