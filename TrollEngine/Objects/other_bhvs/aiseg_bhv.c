@@ -301,6 +301,7 @@ void bhv_star_magnet_two() {
     register f32 starMagnetDist = 33130.f;
 	register s32 i;
 	register struct Object *obj;
+    register struct ObjectNode *listHead;
 	register struct Object *closestObject = NULL;
 
     // Find closest hidden star spawner, if any.
