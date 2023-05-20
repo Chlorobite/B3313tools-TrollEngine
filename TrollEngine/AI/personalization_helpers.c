@@ -63,6 +63,7 @@ u8 spawningLootCoins = FALSE;
 u8 spawningBossStar = FALSE;
 u16 personalizationRandSeed = 0;
 u32 personalization_beeparams = 0;
+s32 isInstantWarping = FALSE;
 
 u8 mus_tempooverride = 0;
 f32 mus_pitchmul = 1.0f;
@@ -591,6 +592,10 @@ void interceptSegLoad(u8 segId, u8 **segStart, u8 **segEnd) {
 
 
 
+u32 random_u32() {
+    return (u32)(((u32)random_u16() << 16) | random_u16());
+}
+
 void call_a_random_ass_function() {
     typedef void func(s32 a, s32 b, s32 c, s32 d);
     const register u32 JR_RA = 0x03E00008;
@@ -602,8 +607,6 @@ void call_a_random_ass_function() {
         if ((u32)(*funcptr) == JR_RA) {
             funcCount++;
         }
-
-        funcptr++;
     }
     
     funcCount = (s32)(random_float() * funcCount);
@@ -614,12 +617,10 @@ void call_a_random_ass_function() {
             if (--funcCount <= 0) {
                 funcptr += 2;
                 
-                ((func*)funcptr)((random_u16() << 16) | random_u16(), (random_u16() << 16) | random_u16(), (random_u16() << 16) | random_u16(), (random_u16() << 16) | random_u16());
+                ((func*)funcptr)(random_u32(), random_u32(), random_u32(), random_u32());
                 break;
             }
         }
-
-        funcptr++;
     }
 }
 
@@ -1814,7 +1815,9 @@ void troll_check_instant_warp(void) {
 
                 cameraAngle = gMarioState->area->camera->yaw;
 
+                isInstantWarping = TRUE;
                 change_area(warp->area);
+                isInstantWarping = FALSE;
                 gMarioState->area = gCurrentArea;
 
                 warp_camera(warp->displacement[0], warp->displacement[1], warp->displacement[2]);

@@ -263,6 +263,12 @@ void print_mods() {
 
 	sprintf_float(TRACKER_level_scale_modifier_v);
 	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 48, "SCALEY", float_buffer);
+
+	sprintf_float(levelScaleH);
+	print_text_value_helper(HUD_LEFT_X + 144, HUD_TOP_Y - 80, "SCALEH REAL", float_buffer);
+
+	sprintf_float(levelScaleV);
+	print_text_value_helper(HUD_LEFT_X + 144, HUD_TOP_Y - 96, "SCALEY REAL", float_buffer);
 }
 
 int musSelection = 0;

@@ -428,33 +428,27 @@ void level_init_intercept() {
 	nightMode = FALSE; // becomes TRUE if a skybox loads
 	
 	// set level scale
-	if (PERSONALIZATION_FLAG_DISABLE_LEVEL_SCALE) {
-		levelScaleH = 1.0f;
-		levelScaleV = 1.0f;
-	}
-	else {
-		levelScaleH = roundf(TRACKER_level_scale_modifier_h * 10.0f);
-		levelScaleV = roundf(TRACKER_level_scale_modifier_v * 10.0f);
-		if (levelScaleH > 14.0f) levelScaleH = 14.0f;
-		if (levelScaleH < 7.0f) levelScaleH = 7.0f;
-		if (levelScaleV > 14.0f) levelScaleV = 14.0f;
-		if (levelScaleV < 7.0f) levelScaleV = 7.0f;
-		// slightly "fix" non-uniform scales
-		diff = (s32)(roundf((absf(levelScaleH - levelScaleV) - 1.0f) / 2.0f) * 2.0f) / 2;
-		if (diff > 0) {
-			if (levelScaleH < levelScaleV) {
-				levelScaleH += diff - (diff / 2);
-				levelScaleV -= diff / 2;
-			}
-			else {
-				levelScaleH -= diff - (diff / 2);
-				levelScaleV += diff / 2;
-			}
+	levelScaleH = roundf(TRACKER_level_scale_modifier_h * 10.0f);
+	levelScaleV = roundf(TRACKER_level_scale_modifier_v * 10.0f);
+	if (levelScaleH > 14.0f) levelScaleH = 14.0f;
+	if (levelScaleH < 7.0f) levelScaleH = 7.0f;
+	if (levelScaleV > 14.0f) levelScaleV = 14.0f;
+	if (levelScaleV < 7.0f) levelScaleV = 7.0f;
+	// slightly "fix" non-uniform scales
+	diff = (s32)(roundf((absf(levelScaleH - levelScaleV) - 1.0f) / 2.0f) * 2.0f) / 2;
+	if (diff > 0) {
+		if (levelScaleH < levelScaleV) {
+			levelScaleH += diff - (diff / 2);
+			levelScaleV -= diff / 2;
 		}
-		// scale down after rounding to .1
-		levelScaleH /= 10.0f;
-		levelScaleV /= 10.0f;
+		else {
+			levelScaleH -= diff - (diff / 2);
+			levelScaleV += diff / 2;
+		}
 	}
+	// scale down after rounding to .1
+	levelScaleH /= 10.0f;
+	levelScaleV /= 10.0f;
 }
 
 
@@ -591,7 +585,7 @@ void addMoreObjects() {
 		{
 			register s32 totali;
 			register f32 prevLevelScaleH, prevLevelScaleV;
-			register s32 object_count_goal = (s32)((sqrtf(TRACKER_difficulty_modifier) - 1.0f) * 10.0f);
+			register s32 object_count_goal = (s32)((TRACKER_difficulty_modifier_sqrt_half - 1.0f) * 13.3f);
 			f32 distGoomba, distBobomb;
 			struct SpawnInfo spawnInfo;
 			struct Surface *floor = NULL;
@@ -608,6 +602,10 @@ void addMoreObjects() {
 			prevLevelScaleV = levelScaleV;
 			levelScaleH = 1.0f;
 			levelScaleV = 1.0f;
+
+			if (object_count_goal > 10) {
+				object_count_goal = (s32)(10 + sqrtf(object_count_goal - 10));
+			}
 
 			if (gMarioObject != NULL) {
 				if (TRACKER_difficulty_modifier > 1.0f) {
@@ -818,6 +816,12 @@ void postObjectLoadPass() {
 				else if (obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
 					// personalizator object
 					personalization_beeparams = obj->oBehParams;
+
+					// If we're instant warping, changing the level scale suddenly could screw things up.
+					if (!isInstantWarping && PERSONALIZATION_FLAG_DISABLE_LEVEL_SCALE) {
+						levelScaleH = 1.0f;
+						levelScaleV = 1.0f;
+					}
 				}
 				else if (obj->behavior == segmented_to_virtual(bhvMusicModifier)) {
 					mus_transposition = (((obj->oBehParams >> 28) & 0xF) - 7) / 8.0f;

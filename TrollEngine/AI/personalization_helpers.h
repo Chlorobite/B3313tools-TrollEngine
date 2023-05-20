@@ -18,6 +18,7 @@ extern u8 spawningLootCoins;
 extern u8 spawningBossStar;
 extern u16 personalizationRandSeed;
 extern u32 personalization_beeparams;
+extern s32 isInstantWarping;
 
 extern u8 mus_tempooverride;
 extern f32 mus_pitchmul;
