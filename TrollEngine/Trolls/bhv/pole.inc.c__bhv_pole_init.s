@@ -11,9 +11,9 @@ SLL     T2, T2, 1
 MTC1    T2, F4
 NOP
 CVT.S.W F4, F4
-; F6 = levelScaleH
-LUI     AT, ((levelScaleH + 0x8000) >> 16)
-LWC1    F6, (levelScaleH & 0xFFFF) (AT)
+; F6 = levelScaleV
+LUI     AT, ((levelScaleV + 0x8000) >> 16)
+LWC1    F6, (levelScaleV & 0xFFFF) (AT)
 NOP
 ; F4 *= F6
 MUL.S   F4, F4, F6
