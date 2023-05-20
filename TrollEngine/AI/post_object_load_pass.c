@@ -975,7 +975,7 @@ void postObjectLoadPass() {
 	}
 	
 	// load star texture
-	if (personalization_beeparams & 0x20) {
+	if (PERSONALIZATION_FLAG_LOAD_RED_STAR) {
 		// load red star
 		dma_read(0x80408800, &tex_stars_start + 32*32*8*2 / 4, &tex_stars_start + 2 * 32*32*8*2 / 4 - 1);
 	}
@@ -983,7 +983,7 @@ void postObjectLoadPass() {
 		// load yellow star
 		dma_read(0x80408800, &tex_stars_start, &tex_stars_start + 32*32*8*2/4 - 1);
 	}
-	if (personalization_beeparams & 0x40) {
+	if (PERSONALIZATION_FLAG_HUE_SHIFT_STAR) {
 		// hue shift star (red->green)
 		hueRotateRGBA5551((u16*)0x80408800, 32*32 * 8, 85);
 	}
