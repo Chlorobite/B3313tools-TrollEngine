@@ -274,6 +274,12 @@ NOP
 .importobj "AI/trolls/camera_course_processing.o"
 .endarea
 
+; skip TTM painting specific code
+.org 0x80298804 ; cutscene_exit_painting_start
+B        0x8029882C
+.org 0x80298B58 ; cutscene_exit_painting
+B        0x80298B80 ; skip TTM painting specific code
+
 ; level_update.c
 ; level_trigger_warp
 .org 0x8024AB88
