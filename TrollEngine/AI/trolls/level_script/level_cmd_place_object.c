@@ -6,10 +6,13 @@ void level_cmd_place_object(void) {
     register struct SpawnInfo *spawnInfo;
 
     if ((objActFlags & 2) != (objActFlags & 4)) {
-        // if nightTime != 0, then it is night. In that case, spawn if act 2 is not set (while act 3 is).
-        // if nightTime = 0, then it is day. In that case, spawn if act 2 is set (therefore act 3 is not).
-        if ((nightTime != 0) != ((objActFlags & 2) != 0)) {
-            objActFlags |= 0x6;
+        // if nightTime != 0, then it is night. In that case, don't spawn if act 2 is set (while act 3 is not).
+        // if nightTime = 0, then it is day. In that case, don't spawn if act 2 is not set (therefore act 3 is).
+        if ((nightTime != 0) == ((objActFlags & 2) != 0)) {
+            objActFlags = 0;
+        }
+        else {
+            objActFlags |= 6;
         }
     }
 
