@@ -601,6 +601,11 @@ BEQ     T1, R0, 0x80385CF0
 .importobj "AI/trolls/level_script/level_cmd_load_model_from_geo.o"
 .endarea
 
+.org 0x8037F45C
+.area 0x8037F67C-0x8037F45C
+.importobj "AI/trolls/level_script/level_cmd_place_object.o"
+.endarea
+
 .org 0x8037F790
 .area 0x8037F920-0x8037F790
 .importobj "AI/trolls/level_script/level_cmd_create_instant_warp.o"
