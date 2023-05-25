@@ -5,7 +5,7 @@ void level_cmd_place_object(void) {
     register s32 objActFlags = CMD_GET(u8, 2);
     register struct SpawnInfo *spawnInfo;
 
-    if ((objActFlags & 2) != (objActFlags & 4)) {
+    if (((objActFlags & 2) != 0) != ((objActFlags & 4) != 0)) {
         // if nightTime != 0, then it is night. In that case, don't spawn if act 2 is set (while act 3 is not).
         // if nightTime = 0, then it is day. In that case, don't spawn if act 2 is not set (therefore act 3 is).
         if ((nightTime != 0) == ((objActFlags & 2) != 0)) {
@@ -23,9 +23,9 @@ void level_cmd_place_object(void) {
         spawnInfo->startPos[1] = CMD_GET(s16, 6);
         spawnInfo->startPos[2] = CMD_GET(s16, 8);
 
-        spawnInfo->startAngle[0] = CMD_GET(s16, 10) * 0x8000 / 180;
-        spawnInfo->startAngle[1] = CMD_GET(s16, 12) * 0x8000 / 180;
-        spawnInfo->startAngle[2] = CMD_GET(s16, 14) * 0x8000 / 180;
+        spawnInfo->startAngle[0] = (s16)(CMD_GET(s16, 10) * 182.04444444f);
+        spawnInfo->startAngle[1] = (s16)(CMD_GET(s16, 12) * 182.04444444f);
+        spawnInfo->startAngle[2] = (s16)(CMD_GET(s16, 14) * 182.04444444f);
 
         spawnInfo->areaIndex = sCurrAreaIndex;
         spawnInfo->activeAreaIndex = sCurrAreaIndex;
