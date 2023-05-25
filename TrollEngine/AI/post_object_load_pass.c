@@ -967,10 +967,10 @@ void postObjectLoadPass() {
 		dma_read(0x80410000, &moto_bhv_start, &moto_bhv_start+0x5000/4);
 		// load motos model data
 		if (levelType == 2) {
-			dma_read(0x80415000, &moto_model_ice_start, &moto_model_ice_start+0x8000/4);
+			dma_read(0x80415000, &moto_model_ice_start, &moto_model_ice_start+0x7B00/4);
 		}
 		else {
-			dma_read(0x80415000, &moto_model_normal_start, &moto_model_normal_start+0x8000/4);
+			dma_read(0x80415000, &moto_model_normal_start, &moto_model_normal_start+0x7B00/4);
 		}
 	}
 	

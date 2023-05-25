@@ -1984,14 +1984,14 @@ s32 can_pass_through_walls() {
 
 
 // We kept running low on heap memory, causing the most random crashes
-// We use the 0x3000 bytes of unused space after Motos now
+// We use the 0x3500 bytes of unused space after Motos now
 #define ALIGN4(val) (((val) + 0x3) & ~0x3)
 struct AllocOnlyPool *troll_render_pool_init() {
-    void *addr = (void*)0x8041D000;
+    void *addr = (void*)0x8041CB00;
     struct AllocOnlyPool *subPool = NULL;
 
     subPool = (struct AllocOnlyPool *) addr;
-    subPool->totalSpace = ALIGN4(0x3000 - sizeof(struct AllocOnlyPool));
+    subPool->totalSpace = ALIGN4(0x3500 - sizeof(struct AllocOnlyPool));
     subPool->usedSpace = 0;
     subPool->startPtr = (u8 *) addr + sizeof(struct AllocOnlyPool);
     subPool->freePtr = (u8 *) addr + sizeof(struct AllocOnlyPool);
