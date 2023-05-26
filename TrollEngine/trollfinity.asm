@@ -1555,3 +1555,7 @@
 .definelabel print_text_centered, 0x802D66C0
 
 .definelabel bhv_toad_message_loop, 0x8027684C
+
+.definelabel ggfxpool, 0x8033B074
+.definelabel ggfxpools, 0x80207D00
+.definelabel ggfxsptask, 0x8033B068

@@ -40,6 +40,10 @@
 .include "crashfix.asm"
 
 
+.orga 0x130C ;8024630C
+; gEffectsMemoryPool size
+ORI     A0, R0, 0x2000
+
 .orga 0xEFFFC
 ; total audio heap size (there is unused stack space after)
 .word 0x80200600-0x801ce000

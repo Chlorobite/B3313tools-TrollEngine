@@ -43,6 +43,8 @@ CVT.S.W    F0, F0
 
 .importobj "Trolls/cameratroll/sCamBeyta.o"
 
+.importobj "AI/extra_dl_pools.o"
+
 ; object behaviors
 .importobj "Objects/other_bhvs/aiseg_bhv.o"
 .include "Objects/other_bhvs/aiseg_bhv_asm.asm"

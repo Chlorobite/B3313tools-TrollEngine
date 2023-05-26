@@ -165,6 +165,12 @@ LW      A0, 0x0024 (SP)
 JAL     0x80248090
 SW      V0, 0x0024 (SP)
 
+; game_init.c
+.org 0x80247fdc
+.area 0x80248090-0x80247fdc
+.importobj "AI/trolls/select_gfx_pool.o"
+.endarea
+
 ; memory.c
 .org 0x80278498
 .area 0x80278504-0x80278498

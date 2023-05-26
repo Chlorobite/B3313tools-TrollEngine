@@ -20,6 +20,8 @@
 extern const BehaviorScript bhvTextOnScreen[];
 
 s32 dynamicSurfaceTris = 0;
+s32 displayHeapSize = 0x3500;
+s32 *displayHeapUsed = NULL;
 
 char *hudTypes[] = {
 	"NO OBJ", "NORMAL", "B ROLL", "SHOSHINKAI", "E3", "DECEMBER"
@@ -138,6 +140,12 @@ void print_performance_information() {
 	
 	sprintf_decimal(objCount);
 	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 64, "OBJ", float_buffer);
+
+	sprintf_hex(displayHeapSize);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 80, "DHEAP", float_buffer);
+
+	sprintf_hex(*displayHeapUsed);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 96, "USED", float_buffer);
 }
 
 void print_general_stats() {

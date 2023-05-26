@@ -1984,17 +1984,29 @@ s32 can_pass_through_walls() {
 
 
 // We kept running low on heap memory, causing the most random crashes
-// We use the 0x3500 bytes of unused space after Motos now
+// We use the 0x3500 bytes of unused space after Motos now, unless we actually have more space in heap somehow!!
 #define ALIGN4(val) (((val) + 0x3) & ~0x3)
+extern s32 displayHeapSize;
+extern s32 *displayHeapUsed;
 struct AllocOnlyPool *troll_render_pool_init() {
     void *addr = (void*)0x8041CB00;
     struct AllocOnlyPool *subPool = NULL;
 
-    subPool = (struct AllocOnlyPool *) addr;
-    subPool->totalSpace = ALIGN4(0x3500 - sizeof(struct AllocOnlyPool));
-    subPool->usedSpace = 0;
-    subPool->startPtr = (u8 *) addr + sizeof(struct AllocOnlyPool);
-    subPool->freePtr = (u8 *) addr + sizeof(struct AllocOnlyPool);
+    if (main_pool_available() > 0x3500) {
+        subPool = alloc_only_pool_init(main_pool_available() - sizeof(struct AllocOnlyPool),
+                                                MEMORY_POOL_LEFT);
+        main_pool_free(subPool);
+    }
+    else {
+        subPool = (struct AllocOnlyPool *) addr;
+        subPool->totalSpace = ALIGN4(0x3500 - sizeof(struct AllocOnlyPool));
+        subPool->usedSpace = 0;
+        subPool->startPtr = (u8 *) addr + sizeof(struct AllocOnlyPool);
+        subPool->freePtr = (u8 *) addr + sizeof(struct AllocOnlyPool);
+    }
+
+    displayHeapSize = subPool->totalSpace;
+    displayHeapUsed = &subPool->usedSpace;
     return subPool;
 }
 
