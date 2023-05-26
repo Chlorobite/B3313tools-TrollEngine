@@ -66,6 +66,22 @@ OR      A2, T7, R0
 
 .headersize 0x80245000
 
+; fix setup_game_memory not setting A3=0 (side) for load_segment for segment 2, causing random crashes on start
+.org 0x80248A8C
+LUI     A1, 0x0011
+ADDIU   A2, A1, 0x8A40
+ADDIU   A1, A1, 0x8A10
+ADDIU   A0, R0, 0x0010
+JAl     0x8027868C
+OR      A3, R0, R0
+LUI     A1, 0x0080
+ADDIU   A1, A1, 0x3156
+LUI     A2, 0x0082
+ADDIU   A2, A2, 0xD164
+ADDIU   A0, R0, 0x0002
+JAl     0x8027868C
+OR      A3, R0, R0
+
 ; WHAT THE FUCK IS THIS SCUTTLEBUG DOING IN BEEIE GET THE FUCK OUT
 .org 0x80294FFC
 LW      T6, 0xDF60 (T6)
