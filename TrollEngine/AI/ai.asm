@@ -38,9 +38,9 @@ BEQ     S0, AT, 0x802875A0 ; huh, c4a2 was on the list already for some reason? 
 
 ; the weird embedded function
 .org 0x802875E4
-ADDIU   SP, SP, -0x28
-SW      RA, 0x0014 (SP)
+.area 0x80287648 - 0x802875E4
 LUI     A3, 0x8080
+SW      RA, 0xFF30 (A3)
 ADDIU   A3, A3, 0xFFFC
 LW      T7, 0x0000 (A3)
 ADDIU   T7, T7, 0xFE40
@@ -59,9 +59,11 @@ LW      T7, 0xDF60 (T7)
 ADDIU   A1, T7, 0x0004
 JAL     0x8028CBF0
 ADDIU   A0, A0, 0x0010
-LW      RA, 0x0014 (SP)
+LUI     A3, 0x8080
+LW      RA, 0xFF30 (A3)
 JR      RA
-ADDIU   SP, SP, 0x28
+LUI     T9, 0xC416
+.endarea
 
 ; elevator data
 .org 0x803302F0
