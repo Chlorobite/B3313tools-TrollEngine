@@ -70,6 +70,19 @@ OR      A2, T7, R0
 
 .headersize 0x80245000
 
+; lvl_init_from_save_file
+.org 0x8024BDF0
+LUI     AT, (nightTime + 0x8000) >> 16
+LB      V0, (nightTime & 0xFFFF) (AT)
+BEQ     V0, R0, .noOverride
+LW      V0, 0x002C (SP) ; course 13 value added by tweak I guess?
+ORI     V0, R0, 0x05 ; course 4
+.noOverride:
+LW      RA, 0x001C (SP)
+LW      S0, 0x0018 (SP)
+JR      RA
+ADDIU   SP, SP, 0x28
+
 ; fix setup_game_memory not setting A3=0 (side) for load_segment for segment 2, causing random crashes on start
 .org 0x80248A8C
 LUI     A1, 0x0011

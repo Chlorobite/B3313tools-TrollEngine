@@ -323,6 +323,10 @@ NOP
 .include "Trolls/bhv/pole.inc.c__bhv_pole_init.s"
 .endarea
 
+; bhv_snow_leaf_particle_spawn_init
+.org 0x802B09C8
+B       0x802B0A8C ; always spawn leaves
+
 .org 0x80312B80
 .area 0x80312D0C-0x80312B80
 .importobj "Trolls/bhv/skeeter.inc.c__skeeter_act_idle.o"
