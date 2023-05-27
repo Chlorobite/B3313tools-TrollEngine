@@ -109,7 +109,6 @@ void print_performance_information() {
 	register s32 i;
 	register struct ObjectNode *listHead;
 	register struct Object *obj;
-	register s32 objCount = 0;
 	for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
 		listHead = &gObjectLists[i];
 
@@ -117,7 +116,6 @@ void print_performance_information() {
 
 		while (obj != (struct Object *) listHead) {
 			if (obj->activeFlags & ACTIVE_FLAG_ACTIVE && (u32)obj->behavior >= 0x80000000) {
-				objCount++;
 				if (obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
 					bparams = obj->oBehParams;
 				}
@@ -138,7 +136,7 @@ void print_performance_information() {
 	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 48, "DSURFS", float_buffer);
 	dynamicSurfaceTris = 0;
 	
-	sprintf_decimal(objCount);
+	sprintf_decimal(loadedObjectCount);
 	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 64, "OBJ", float_buffer);
 
 	sprintf_hex(displayHeapSize);

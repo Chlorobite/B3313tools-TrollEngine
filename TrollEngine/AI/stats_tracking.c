@@ -185,12 +185,15 @@ void object_scan() {
 	hasNerdObject = FALSE;
 	
 	// Enumerate the objects to find out what trollage we can do
+	loadedObjectCount = 0;
 	for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
 		listHead = &gObjectLists[i];
 		
 		obj = (struct Object *) listHead->next;
 		
 		while (obj != (struct Object *) listHead) {
+			loadedObjectCount++;
+
 			// we can't switch case this because C
 			if (obj->oInteractionSubtype & INT_SUBTYPE_NPC) {
 				if ((u32)obj->header.gfx.sharedChild == (u32)gLoadedGraphNodes[MODEL_WOODEN_SIGNPOST]) {

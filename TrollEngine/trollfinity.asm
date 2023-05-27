@@ -1559,3 +1559,5 @@
 .definelabel ggfxpool, 0x8033B074
 .definelabel ggfxpools, 0x80207D00
 .definelabel ggfxsptask, 0x8033B068
+
+.definelabel sGrowingBowserFlameHitbox, 0x80330688

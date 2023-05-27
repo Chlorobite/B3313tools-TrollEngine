@@ -64,6 +64,7 @@ u8 spawningBossStar = FALSE;
 u16 personalizationRandSeed = 0;
 u32 personalization_beeparams = 0;
 s32 isInstantWarping = FALSE;
+s32 loadedObjectCount = 0;
 
 u8 mus_tempooverride = 0;
 f32 mus_pitchmul = 1.0f;

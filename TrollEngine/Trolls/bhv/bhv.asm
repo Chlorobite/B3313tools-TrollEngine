@@ -152,6 +152,26 @@ NOP
 .importobj "Trolls/bhv/bowser.inc.c__bhv_bowser_init.o"
 .endarea
 
+.org 0x802B8434
+.area 0x802B84AC-0x802B8434
+.importobj "Trolls/bhv/bowser_flame.inc.c__bowser_flame_should_despawn.o"
+.endarea
+
+.org 0x802B8D68
+.area 0x802B8E7C-0x802B8D68
+.importobj "Trolls/bhv/bowser_flame.inc.c__bhv_blue_bowser_flame_init.o"
+.endarea
+
+.org 0x802B8E7C
+.area 0x802B9034-0x802B8E7C
+.importobj "Trolls/bhv/bowser_flame.inc.c__bhv_blue_bowser_flame_loop.o"
+.endarea
+
+.org 0x802B921C
+.area 0x802B935C-0x802B921C
+.importobj "Trolls/bhv/bowser_flame.inc.c__bhv_blue_flames_group_loop.o"
+.endarea
+
 .org 0x802A6EE4
 .area 0x802A7020-0x802A6EE4
 .importobj "Trolls/bhv/capswitch.inc.c__cap_switch_act_0.o"
