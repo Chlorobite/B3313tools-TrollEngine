@@ -8,7 +8,7 @@ void level_cmd_place_object(void) {
     if (((objActFlags & 2) != 0) != ((objActFlags & 4) != 0)) {
         // if nightTime != 0, then it is night. In that case, don't spawn if act 2 is set (while act 3 is not).
         // if nightTime = 0, then it is day. In that case, don't spawn if act 2 is not set (therefore act 3 is).
-        if ((nightTime != 0) == ((objActFlags & 2) != 0)) {
+        if ((nightTimeButReal != 0) == ((objActFlags & 2) != 0)) {
             objActFlags = 0;
         }
         else {

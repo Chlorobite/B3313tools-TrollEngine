@@ -55,6 +55,7 @@ f32 levelScaleH = 1.0f, levelScaleV = 1.0f;
 u8 renderingLevel = FALSE;
 u8 rtcHour = 0, rtcMinute = 0, rtcSecond = 0;
 u8 nightTime = FALSE;
+u8 nightTimeButReal = FALSE;
 u8 nightMode = FALSE;
 u8 nightModeSetting = 0;
 u8 sunsetMode = FALSE;
@@ -524,7 +525,7 @@ void updateRTC() {
         rtcSecond = 0;
     }
 
-    nightTime = rtcHour <= 4 || rtcHour >= 20;
+    nightTimeButReal = nightTime = rtcHour <= 4 || rtcHour >= 20;
     if (nightModeSetting >= 2) nightTime ^= TRUE;
 }
 

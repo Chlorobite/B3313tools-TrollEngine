@@ -10,6 +10,7 @@ extern f32 levelScaleH, levelScaleV;
 extern u8 renderingLevel;
 extern u8 rtcHour, rtcMinute, rtcSecond;
 extern u8 nightTime;
+extern u8 nightTimeButReal;
 extern u8 nightMode;
 extern u8 nightModeSetting;
 extern u8 sunsetMode;
