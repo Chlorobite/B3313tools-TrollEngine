@@ -47,11 +47,6 @@ LW      T6, 0xDDCC (AT)
 .org 0x8032DDC8 ; struct Area *gAreas (vanilla: = gAreaData)
 .word gAreaDataNew
 
-; init_camera: whatever tf this is, vanilla doesn't access gAreaData
-.org 0x80287600
-LUI     A0, ((gAreaDataNew + 0x8000) >> 16)
-LW      A0, ((gAreaDataNew & 0xFFFF) + 0x60) (A0)
-
 
 ; Engine segment
 .headersize 0x80283280

@@ -32,6 +32,37 @@ NOP
 ; Game segment
 .headersize 0x80245000
 
+; init_camera
+.org 0x80287728
+BEQ     S0, AT, 0x802875A0 ; huh, c4a2 was on the list already for some reason? ez
+
+; the weird embedded function
+.org 0x802875E4
+ADDIU   SP, SP, -0x28
+SW      RA, 0x0014 (SP)
+LUI     A3, 0x8080
+ADDIU   A3, A3, 0xFFFC
+LW      T7, 0x0000 (A3)
+ADDIU   T7, T7, 0xFE40
+SW      T7, 0x0000 (A3)
+LW      A0, gCurrentArea
+LW      A0, 0x24 (A0)
+ADDIU   A2, A3, 0xFFF4
+LUI     T7, 0x42FA
+SW      T7, 0x0004 (A2)
+LUI     T7, 0x43C8
+SW      T7, 0x0008 (A2)
+LUI     T7, 0xC43C
+SW      T7, 0x0008 (A0)
+LUI     T7, 0x8033
+LW      T7, 0xDF60 (T7)
+ADDIU   A1, T7, 0x0004
+JAL     0x8028CBF0
+ADDIU   A0, A0, 0x0010
+LW      RA, 0x0014 (SP)
+JR      RA
+ADDIU   SP, SP, 0x28
+
 ; elevator data
 .org 0x803302F0
 .halfword -4348, 0, 0
