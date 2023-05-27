@@ -95,6 +95,11 @@ NOP
 
 
 ; mario_actions_cutscene.c
+.org 0x802586CC
+.area 0x80258744-0x802586CC
+.importobj "Mario/Trolls/mario_actions_cutscene/common_death_handler.o"
+.endarea
+
 .org 0x80258184 ; general_star_dance_handler (to implement silver stars)
 J       troll_general_star_dance_handler ; implemented in AI/personalization_helpers.c
 NOP

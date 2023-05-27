@@ -1561,3 +1561,4 @@
 .definelabel ggfxsptask, 0x8033B068
 
 .definelabel sGrowingBowserFlameHitbox, 0x80330688
+.definelabel stop_and_set_height_to_floor, 0x802559b0
