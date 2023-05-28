@@ -282,6 +282,7 @@ int musForceNLST = 0;
 int musTempo = 0;
 int musPitch = 7;
 int musTranspose = 0;
+int nowPlaying_seqId = 0;
 int nowPlaying_nlst = 0;
 int nowPlaying_tempo = 0;
 int soundTestSelection = 0;
@@ -296,7 +297,7 @@ void sound_test() {
 			if (--musSelection < 0) musSelection = 0;
 		}
 		if (gPlayer1Controller->buttonPressed & R_JPAD) {
-			if (++musSelection > 100) musSelection = 100;
+			if (++musSelection > 255) musSelection = 255;
 		}
 	}
 	
@@ -353,14 +354,16 @@ void sound_test() {
 		}
 	}
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 112, "L  PLAY");
+	print_text(HUD_LEFT_X, HUD_TOP_Y - 110, "L  PLAY");
 	
 	
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 136, "CURRENT");
+	print_text(HUD_LEFT_X, HUD_TOP_Y - 132, "CURRENT");
+	sprintf_decimal(nowPlaying_seqId);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 148, "MUSIC", float_buffer);
 	sprintf_decimal(nowPlaying_nlst);
-	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 152, "NLST", float_buffer);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 164, "NLST", float_buffer);
 	sprintf_decimal(nowPlaying_tempo);
-	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 168, "TEMPO", float_buffer);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 180, "TEMPO", float_buffer);
 	
 	
 	

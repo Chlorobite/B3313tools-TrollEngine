@@ -26,6 +26,7 @@ void sequence_channel_process_script(struct SequenceChannel *seqChannel);
 u8 get_instrument(struct SequenceChannel *seqChannel, u8 instId, struct Instrument **instOut,
                   struct AdsrSettings *adsr);
 
+extern int nowPlaying_seqId;
 extern int nowPlaying_nlst;
 extern int nowPlaying_tempo;
 
@@ -714,6 +715,8 @@ struct AudioBank *troll_load_banks_immediate(s32 seqId, u8 *outDefaultBank) {
     register u32 bankId;
     u16 offset;
     register s32 i;
+
+    nowPlaying_seqId = seqId;
 
     offset = ((u16 *) gAlBankSets)[seqId];
     for (i = gAlBankSets[offset++]; i != 0; i--) {
