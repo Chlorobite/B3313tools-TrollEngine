@@ -42,7 +42,7 @@
 
 .orga 0x130C ;8024630C
 ; gEffectsMemoryPool size
-ORI     A0, R0, 0x2000
+ORI     A0, R0, 0x4000
 
 .orga 0xEFFFC
 ; total audio heap size (there is unused stack space after)
