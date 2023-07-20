@@ -97,6 +97,8 @@ void bhv_blooper_fall(void) {
 void bhv_blooper_loop(void) {
     f32 ceilHeight;
     struct Surface *surface;
+
+    cur_obj_rotate_yaw_toward(o->oAngleToMario, 0x400);
     
     if (obj_update_standard_actions(1.0f)) {
         o->oMoveAngleYaw = approach_s16_asymptotic(o->oMoveAngleYaw, o->oAngleToMario, 0x400);
