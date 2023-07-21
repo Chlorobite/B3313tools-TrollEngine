@@ -2264,20 +2264,20 @@ s32 act_squatkick(struct MarioState *m) {
 
 
 // for red coins, silver star etc
-struct Object *troll_spawn_star_bypass_magnets(struct Object *sp30, f32 sp34, f32 sp38, f32 sp3C) {
+struct Object *troll_spawn_star_bypass_magnets(struct Object *star, f32 posX, f32 posY, f32 posZ) {
     register struct Object *o = gCurrentObject;
 
-    sp30 = spawn_object_abs_with_rot(o, 0, MODEL_STAR, bhvStarSpawnCoordinates, o->oPosX, o->oPosY,
+    star = spawn_object_abs_with_rot(o, 0, MODEL_STAR, bhvStarSpawnCoordinates, o->oPosX, o->oPosY,
                                      o->oPosZ, 0, 0, 0);
-    sp30->oBehParams = o->oBehParams;
+    star->oBehParams = o->oBehParams;
 
-    sp30->oHomeX = sp34;
-    sp30->oHomeY = sp38;
-    sp30->oHomeZ = sp3C;
+    star->oHomeX = posX;
+    star->oHomeY = posY;
+    star->oHomeZ = posZ;
 
-    sp30->oFaceAnglePitch = 0;
-    sp30->oFaceAngleRoll = 0;
-    return sp30;
+    star->oFaceAnglePitch = 0;
+    star->oFaceAngleRoll = 0;
+    return star;
 }
 
 s32 is_object_star_spawner(struct Object *obj) {

@@ -1,9 +1,5 @@
 #include "surface_load_headers.h"
 
-struct SurfaceNode *cachedLast[] = { NULL, NULL, NULL };
-u32 lastCell = 0;
-s32 lastListIndex = 0;
-
 f32 absf(f32 a);
 
 void add_surface_to_cell(s32 dynamic, s16 cellX, s16 cellZ, struct Surface *surface) {
@@ -31,27 +27,9 @@ void add_surface_to_cell(s32 dynamic, s16 cellX, s16 cellZ, struct Surface *surf
         dynamicSurfaceTris++;
 #endif
         list = &gDynamicSurfacePartition[cellZ][cellX][listIndex];
-        
-        /*if (cachedLast[listIndex] != NULL) {
-            u32 cell = (cellX << 16) | cellZ;
-            
-            if (cell == lastCell && listIndex == lastListIndex) {
-                list = cachedLast[listIndex];
-            }
-            
-            lastCell = cell;
-            lastListIndex = listIndex;
-        }*/
     } else {
         list = &gStaticSurfacePartition[cellZ][cellX][listIndex];
     }
-
-    // Loop until we find the appropriate place for the surface in the list.
-    //while (list->next != NULL)
-    //    list = list->next;
-    
-    //if (dynamic)
-    //    cachedLast[listIndex] = list;
 
     newNode->next = list->next;
     list->next = newNode;
