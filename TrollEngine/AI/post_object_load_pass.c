@@ -209,7 +209,7 @@ void troll_geo_layout(u32 *areaGeoLayout) {
 	register s32 i, j;
 	register struct ObjectNode *listHead;
 	register struct Object *obj;
-	s32 starCount = (save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1) * get_red_star_count(gCurrSaveFileNum - 1)) / 13;
+	s32 starCount = (save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1) * (get_red_star_count(gCurrSaveFileNum - 1) - 3)) / 13;
 	u16 oldSeed;
 	u32 *lavamovtex;
 	
@@ -522,67 +522,28 @@ void addMoreObjects() {
 	register struct ObjectNode *listHead;
 	register struct Object *obj;
 
-	switch (get_red_star_count(gCurrSaveFileNum - 1)) {
-		case 0:
-			// All warp holes in castle turn to bowser, otherwise despawn
-			for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
-				listHead = &gObjectLists[i];
+	register s32 redStarCount = get_red_star_count(gCurrSaveFileNum - 1);
 
-				obj = (struct Object *) listHead->next;
-
-				while (obj != (struct Object *) listHead) {
-					if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual((void*)0x13000780)) {
-						if (gCurrLevelNum == 0x10) { // Castle Grounds
-							// set the warp to go to bowser
-							struct ObjectWarpNode *warpNode = area_get_warp_node(obj->oBehParams2ndByte);
-							if (warpNode != NULL) {
-								warpNode->node.destLevel = 0x1E;
-								warpNode->node.destArea = 1;
-								warpNode->node.destNode = 10;
-							}
-						}
-						else {
-							obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
-						}
-					}
-					obj = (struct Object *) obj->header.next;
-				}
-			}
-			break;
-		case 1:
-			break;
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-		case 6:
-		case 7:
-		case 8:
-		case 9:
-		case 10:
-		case 11:
-		case 12:
-		case 13:
+	if (redStarCount > 0) {
 		// check for personalization flag 0x02 (PERSONALIZATION_FLAG_DISABLE_OBJECTS)
-		{
-			for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
-				listHead = &gObjectLists[i];
+		for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
+			listHead = &gObjectLists[i];
 
-				obj = (struct Object *) listHead->next;
+			obj = (struct Object *) listHead->next;
 
-				while (obj != (struct Object *) listHead) {
-					if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
-						if (obj->oBehParams & 0x02)
-						{
-							// yeah we do not add objects here
-							return;
-						}
+			while (obj != (struct Object *) listHead) {
+				if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual(bhvLoadBlueGomba)) {
+					if (obj->oBehParams & 0x02)
+					{
+						// yeah we do not add objects here
+						return;
 					}
-					obj = (struct Object *) obj->header.next;
 				}
+				obj = (struct Object *) obj->header.next;
 			}
 		}
-		{
+
+		if (redStarCount >= 5) {
 			register s32 totali;
 			register f32 prevLevelScaleH, prevLevelScaleV;
 			register s32 object_count_goal = (s32)((TRACKER_difficulty_modifier_sqrt_half - 1.0f) * 13.3f);
@@ -610,7 +571,7 @@ void addMoreObjects() {
 			if (gMarioObject != NULL) {
 				if (TRACKER_difficulty_modifier > 1.0f) {
 					// spawn some more enemies in :trol:
-					
+
 					// i will be increased only if an object was successfully spawned
 					// totali is used to limit the amount of iterations to avoid a long loading screen / potentially infinite loop
 					for (i = 0, totali = 0; i < object_count_goal && totali < object_count_goal * object_count_goal; totali++) {
@@ -620,7 +581,7 @@ void addMoreObjects() {
 						// use as a temp variable
 						distGoomba = find_water_level(spawnInfo.startPos[0], spawnInfo.startPos[2]);
 						water = FALSE;
-						
+
 						if (distGoomba > spawnInfo.startPos[1] + 100.0f) {
 							water = TRUE;
 							spawnInfo.startPos[1] = distGoomba;
@@ -645,10 +606,10 @@ void addMoreObjects() {
 								_find_nearest_object_with_behavior(spawnInfo.startPos[0], spawnInfo.startPos[2], segmented_to_virtual(bhvGoombaTripletSpawner), &distBobomb);
 								if (distGoomba > distBobomb)
 									distGoomba = distBobomb;
-								
+
 								// use distbobomb correctly now
 								_find_nearest_object_with_behavior(spawnInfo.startPos[0], spawnInfo.startPos[2], segmented_to_virtual(bhvBobomb), &distBobomb);
-								
+
 								if (distGoomba < distBobomb || (distGoomba == distBobomb && (random_u16() & 1))) {
 									spawnBhv = segmented_to_virtual(bhvGoomba);
 									spawnModel = MODEL_GOOMBA;
@@ -664,7 +625,7 @@ void addMoreObjects() {
 								spawnBhv = NULL;
 							}
 						}
-						
+
 						if (spawnBhv != NULL && get_model_loaded(spawnModel)) {
 							// spawn skeet
 							obj = create_object(spawnBhv);
@@ -705,7 +666,7 @@ void addMoreObjects() {
 					// delete some enemies
 					// use the now useless object_count_goal for the RNG ceiling
 					object_count_goal = 65536 * (sqrtf(TRACKER_difficulty_modifier) / 2.0f + 0.5f);
-					
+
 					for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
 						listHead = &gObjectLists[i];
 
@@ -740,7 +701,33 @@ void addMoreObjects() {
 			levelScaleV = prevLevelScaleV;
 			gRandomSeed16 = oldSeed; // return the seed
 		}
-			break;
+	}
+	else {
+		// All warp holes in castle turn to bowser, otherwise despawn
+		for (i = OBJ_LIST_PLAYER; i < NUM_OBJ_LISTS; i++) {
+			listHead = &gObjectLists[i];
+
+			obj = (struct Object *) listHead->next;
+
+			while (obj != (struct Object *) listHead) {
+				if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual((void*)0x13000780)) {
+					if (gCurrLevelNum == 0x10) { // Castle Grounds
+						// set the warp to go to bowser
+						struct ObjectWarpNode *warpNode = area_get_warp_node(obj->oBehParams2ndByte);
+						if (warpNode != NULL) {
+							warpNode->node.destLevel = 0x1E;
+							warpNode->node.destArea = 1;
+							warpNode->node.destNode = 10;
+						}
+					}
+					else {
+						obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
+					}
+				}
+				obj = (struct Object *) obj->header.next;
+			}
+		}
+		break;
 	}
 }
 
@@ -850,7 +837,7 @@ void postObjectLoadPass() {
 	avgY = (minY + maxY) / 2.0f;
 	
 	
-	if (!PERSONALIZATION_FLAG_DISABLE_RETEXTURE) {
+	if (!PERSONALIZATION_FLAG_DISABLE_RETEXTURE && get_red_star_count(gCurrSaveFileNum - 1) >= 6) {
 		// Goomba Personalization
 		// check if gomba are loaded, and set gomba type, trolling the texture accordingly
 
@@ -873,7 +860,7 @@ void postObjectLoadPass() {
 					// yellow goombas (easier)
 					goombaType = 4;
 				}
-				else if (TRACKER_accum_murder > 1.0f + sqrtf(goombaCount) * TRACKER_difficulty_modifier) {
+				else if (TRACKER_accum_murder * 0.5f > 1.0f + sqrtf(goombaCount) * TRACKER_difficulty_modifier) {
 					// the player doing a little too much killing
 					goombaType = 5; // FUCKFUCK RUN
 				}
@@ -1026,7 +1013,7 @@ void postObjectLoadPass() {
 					}
 				}
 				else if (TRACKER_star_preferences_cap[2] > 1.0f && vanishCapBox) {
-					if (!PERSONALIZATION_FLAG_DISABLE_OBJECTS) {
+					if (!PERSONALIZATION_FLAG_DISABLE_OBJECTS && get_red_star_count(gCurrSaveFileNum - 1) >= (5 + ((personalizationRandSeed & 16) ? 1 : 0))) {
 						// replace blue coins with clear coins
 						if (obj->behavior == segmented_to_virtual(bhvBlueCoinSwitch)) {
 							obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload

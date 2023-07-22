@@ -253,8 +253,8 @@ void TRACKER_record_mario_state(struct MarioState *m) {
 	object_scan();
 	
 	if (get_red_star_count(gCurrSaveFileNum - 1) >= 1) {
-		register s32 unlockDynamicDifficulty = get_red_star_count(gCurrSaveFileNum - 1) >= 2;
-		register s32 unlockLevelScale = get_red_star_count(gCurrSaveFileNum - 1) >= 3;
+		register s32 unlockDynamicDifficulty = get_red_star_count(gCurrSaveFileNum - 1) >= 4;
+		register s32 unlockLevelScale = get_red_star_count(gCurrSaveFileNum - 1) >= 5;
 		
 		afkTimer++;
 		if (gPlayer1Controller->buttonPressed || gPlayer1Controller->stickMag > 32.0f || absf(lastStickMag - gPlayer1Controller->stickMag) > 1.0f) {
@@ -386,6 +386,8 @@ void TRACKER_handle_mario_state_change(struct MarioState *m) {
 }
 
 void TRACKER_on_npc_talk(register struct Object *o) {
+	if (get_red_star_count(gCurrSaveFileNum - 1) == 0) return;
+
 	if ((u32)o->header.gfx.sharedChild == (u32)gLoadedGraphNodes[MODEL_WOODEN_SIGNPOST])
 		TRACKER_accum_nerd += 0.25f;
 	else

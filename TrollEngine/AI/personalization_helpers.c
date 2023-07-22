@@ -505,14 +505,19 @@ void updateRTC() {
     u8 h, m, s;
     
     rtcbuffer[2] = 0;
-    
-    osEepromGetTime(&gSIEventMesgQueue, rtcbuffer);
-    h = rtcbuffer[2] - 0x80;
-    h = ((h & 240) >> 4) * 10 + (h & 15);
-    m = rtcbuffer[1];
-    m = ((m & 240) >> 4) * 10 + (m & 15);
-    s = rtcbuffer[0];
-    s = ((s & 240) >> 4) * 10 + (s & 15);
+
+    if (get_red_star_count(gCurrSaveFileNum - 1) < 4) {
+        h = 80;
+    }
+    else {
+        osEepromGetTime(&gSIEventMesgQueue, rtcbuffer);
+        h = rtcbuffer[2] - 0x80;
+        h = ((h & 240) >> 4) * 10 + (h & 15);
+        m = rtcbuffer[1];
+        m = ((m & 240) >> 4) * 10 + (m & 15);
+        s = rtcbuffer[0];
+        s = ((s & 240) >> 4) * 10 + (s & 15);
+    }
 
     if (h != 80) {
         rtcHour = h;
@@ -688,16 +693,16 @@ s32 coin_troll_hitbox(struct Object *o) {
 }
 
 u8 get_coin_bparam(struct Object *o, u8 type) {
+    if (random_u16() < 20 + get_red_star_count(gCurrSaveFileNum - 1)) {
+        return 4; // white
+    }
+
     if (PERSONALIZATION_FLAG_DISABLE_RETEXTURE) {
         // unpersonalize the coin even if it's personalized
         return 0;
     }
     
-    if (random_u16() < 20) {
-        return 4; // white
-    }
-    
-    if ((o->oBehParams & 0xFF000000) != 0) {
+    if ((o->oBehParams & 0xFF000000) != 0 || get_red_star_count(gCurrSaveFileNum - 1) < 6) {
         // coin already personalized
         return o->oBehParams >> 24;
     }
@@ -1833,7 +1838,7 @@ void troll_check_instant_warp(void) {
 void set_mario_y_vel_based_on_fspeed(struct MarioState *m, f32 initialVelY, f32 multiplier);
 
 void triple_jump_set_mario_y_vel_based_on_fspeed(struct MarioState *m, f32 initialVelY, f32 multiplier) {
-    if (get_red_star_count(gCurrSaveFileNum - 1) == 0)
+    if (get_red_star_count(gCurrSaveFileNum - 1) < 2)
         initialVelY = 62.f;
     set_mario_y_vel_based_on_fspeed(m, initialVelY, multiplier);
 }
@@ -1850,7 +1855,7 @@ s32 troll_act_crouch_slide(struct MarioState *m) {
         return set_mario_action(m, ACT_BUTT_SLIDE, 0);
     }
 
-    if (get_red_star_count(gCurrSaveFileNum - 1) >= 1) {
+    if (get_red_star_count(gCurrSaveFileNum - 1) >= 2) {
         if (m->actionTimer < 30) {
             m->actionTimer++;
             if (m->input & INPUT_A_PRESSED) {
@@ -1860,7 +1865,7 @@ s32 troll_act_crouch_slide(struct MarioState *m) {
             }
         }
 
-        if (get_red_star_count(gCurrSaveFileNum - 1) >= 1) { // really should be 2 for lore reasons
+        if (get_red_star_count(gCurrSaveFileNum - 1) >= 3) {
             if (m->input & INPUT_B_PRESSED) {
                 return set_mario_action(m, ACT_SQUATKICK, 9);
             }
@@ -1886,7 +1891,7 @@ s32 troll_act_crouching(struct MarioState *m) {
     }
 
     if (m->input & INPUT_A_PRESSED) {
-        return set_jumping_action(m, get_red_star_count(gCurrSaveFileNum - 1) >= 2 ? ACT_BACKFLIP : ACT_JUMP, 0);
+        return set_jumping_action(m, get_red_star_count(gCurrSaveFileNum - 1) >= (2 + (personalizationRandSeed & 8)) ? ACT_BACKFLIP : ACT_JUMP, 0);
     }
 
     if (m->input & INPUT_OFF_FLOOR) {
@@ -1910,8 +1915,10 @@ s32 troll_act_crouching(struct MarioState *m) {
             return set_mario_action(m, ACT_START_CRAWLING, 0);
         }
 
-        if (m->input & INPUT_B_PRESSED) {
-            return set_mario_action(m, ACT_PUNCHING, 9);
+        if (get_red_star_count(gCurrSaveFileNum - 1) >= 3) {
+            if (m->input & INPUT_B_PRESSED) {
+                return set_mario_action(m, ACT_PUNCHING, 9);
+            }
         }
     }
 
@@ -1930,7 +1937,7 @@ s32 troll_act_start_crouching(struct MarioState *m) {
     }
 
     if (m->input & INPUT_A_PRESSED) {
-        return set_jumping_action(m, get_red_star_count(gCurrSaveFileNum - 1) >= 2 ? ACT_BACKFLIP : ACT_JUMP, 0);
+        return set_jumping_action(m, get_red_star_count(gCurrSaveFileNum - 1) >= (2 + (personalizationRandSeed & 8)) ? ACT_BACKFLIP : ACT_JUMP, 0);
     }
 
     if (m->input & INPUT_ABOVE_SLIDE) {
@@ -1955,7 +1962,7 @@ s32 troll_act_stop_crouching(struct MarioState *m) {
     }
 
     if (m->input & INPUT_A_PRESSED) {
-        return set_jumping_action(m, get_red_star_count(gCurrSaveFileNum - 1) >= 2 ? ACT_BACKFLIP : ACT_JUMP, 0);
+        return set_jumping_action(m, get_red_star_count(gCurrSaveFileNum - 1) >= (2 + (personalizationRandSeed & 8)) ? ACT_BACKFLIP : ACT_JUMP, 0);
     }
 
     if (m->input & INPUT_ABOVE_SLIDE) {
