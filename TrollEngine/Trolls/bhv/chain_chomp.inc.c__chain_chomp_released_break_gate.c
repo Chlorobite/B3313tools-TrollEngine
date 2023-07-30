@@ -11,7 +11,8 @@ void chain_chomp_released_break_gate(void) {
         }
     }
     // Removed else to prevent gbj
-    if (o->oMoveFlags & OBJ_MOVE_MASK_ON_GROUND) {
+    if (o->oMoveFlags & OBJ_MOVE_MASK_ON_GROUND || o->oPosY < o->oHomeY) {
+        o->oChainChompHitGate = TRUE;
         o->oChainChompReleaseStatus = CHAIN_CHOMP_RELEASED_JUMP_AWAY;
         o->oHomeX = 3288.0f;
         o->oHomeZ = -1770.0f;

@@ -211,6 +211,12 @@ NOP
 .importobj "Trolls/bhv/chain_chomp.inc.c__chain_chomp_released_break_gate.o"
 .endarea
 
+.org 0x803008A8
+.area 0x803008EC-0x803008A8
+J       troll_chain_chomp_released_jump_away
+NOP
+.endarea
+
 .org 0x802AB5C8
 .area 0x802AB650-0x802AB5C8
 .importobj "Trolls/bhv/coin.inc.c__bhv_coin_sparkles_init.o"

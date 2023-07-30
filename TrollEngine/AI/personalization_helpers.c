@@ -2376,3 +2376,11 @@ u32 troll_interact_door(register struct MarioState *m, UNUSED u32 interactType, 
 }
 
 
+void troll_chain_chomp_released_jump_away(void) {
+    if (gCurrentObject->oMoveFlags & OBJ_MOVE_MASK_ON_GROUND || gCurrentObject->oPosY < gCurrentObject->oHomeY - 1000.f) {
+        gObjCutsceneDone = TRUE;
+        gCurrentObject->oChainChompReleaseStatus = CHAIN_CHOMP_RELEASED_END_CUTSCENE;
+    }
+}
+
+
