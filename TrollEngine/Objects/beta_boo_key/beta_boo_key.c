@@ -171,10 +171,10 @@ static void beta_boo_key_dropped_loop(void) {
 			play_sound(SOUND_GENERAL_VANISH_SFX, gMarioState->marioObj->header.gfx.cameraToObject);
 			//play_sound(SOUND_MENU_STAR_SOUND, gMarioState->marioObj->header.gfx.cameraToObject);
 
-			if (save_file_get_total_betakey_count(gCurrSaveFileNum - 1) >= 6 && index < 8)
+			/*if (save_file_get_total_betakey_count(gCurrSaveFileNum - 1) >= 6 && index < 8)
 			{
 				bhv_spawn_star_no_level_exit(1);
-			}
+			}*/
         }
     }
 }
