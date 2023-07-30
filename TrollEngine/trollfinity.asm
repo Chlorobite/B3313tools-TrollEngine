@@ -1567,3 +1567,4 @@
 .definelabel play_sound_cbutton_up, 0x8028B850
 .definelabel play_sound_cbutton_side, 0x8028B8B8
 .definelabel scbuttonspressed, 0x8033C68E
+.definelabel cur_obj_reflect_move_angle_off_wall, 0x802a3268

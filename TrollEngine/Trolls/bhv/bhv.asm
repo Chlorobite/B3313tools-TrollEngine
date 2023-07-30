@@ -206,6 +206,11 @@ NOP
 .importobj "Trolls/bhv/celebration_star.c__celeb_star_act_face_camera.o"
 .endarea
 
+.org 0x80300778
+.area 0x803008A8-0x80300778
+.importobj "Trolls/bhv/chain_chomp.inc.c__chain_chomp_released_break_gate.o"
+.endarea
+
 .org 0x802AB5C8
 .area 0x802AB650-0x802AB5C8
 .importobj "Trolls/bhv/coin.inc.c__bhv_coin_sparkles_init.o"
