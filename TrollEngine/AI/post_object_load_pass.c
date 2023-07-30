@@ -710,24 +710,35 @@ void addMoreObjects() {
 			obj = (struct Object *) listHead->next;
 
 			while (obj != (struct Object *) listHead) {
-				if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual((void*)0x13000780)) {
-					if (gCurrLevelNum == 0x10) { // Castle Grounds
-						// set the warp to go to bowser
-						struct ObjectWarpNode *warpNode = area_get_warp_node(obj->oBehParams2ndByte);
-						if (warpNode != NULL) {
-							warpNode->node.destLevel = 0x1E;
-							warpNode->node.destArea = 1;
-							warpNode->node.destNode = 10;
+				if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED)) {
+					// Warp Holes
+					if (obj->behavior == segmented_to_virtual((void*)0x13000780)) {
+						if (gCurrLevelNum == 0x10) { // Castle Grounds
+							// bye rng warp
+							obj->oBehParams &= 0xFFFFFF00;
+
+							// set the only warp left to go to bowser
+							struct ObjectWarpNode *warpNode = area_get_warp_node(obj->oBehParams2ndByte);
+							if (warpNode != NULL) {
+								warpNode->node.destLevel = 0x1E;
+								warpNode->node.destArea = 1;
+								warpNode->node.destNode = 10;
+							}
+						}
+						else {
+							obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
 						}
 					}
-					else {
-						obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // unload
+					if (/*Warp doors*/ obj->behavior == segmented_to_virtual((void*)0x13000afc) ||
+						/*Paintings*/  obj->behavior == segmented_to_virtual(bhvTroll)
+					) {
+						// bye rng warp
+						obj->oBehParams &= 0xFFFFFF00;
 					}
 				}
 				obj = (struct Object *) obj->header.next;
 			}
 		}
-		break;
 	}
 }
 

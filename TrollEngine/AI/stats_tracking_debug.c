@@ -383,7 +383,7 @@ void haks() {
 		set_mario_action(gMarioState, gMarioState->action == ACT_DEBUG_FREE_MOVE ? ACT_IDLE : ACT_DEBUG_FREE_MOVE, 0);
 	}
 
-	print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "RIGHT  FUNY SPAWN");
+	/*print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "RIGHT  FUNY SPAWN");
 	if (gPlayer1Controller->buttonPressed & R_JPAD) {
 		// spawn object
 		u8 spawnModel = 0;
@@ -419,7 +419,7 @@ void haks() {
 		obj->oPosX = gMarioObject->oPosX;
 		obj->oPosY = gMarioObject->oPosY;
 		obj->oPosZ = gMarioObject->oPosZ;
-	}
+	}*/
 }
 
 int tab = 0;
