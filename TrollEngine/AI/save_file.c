@@ -422,7 +422,7 @@ s32 save_file_get_total_star_count(register s32 fileIndex, register s32 minCours
     count += save_file_masked_get_course_star_count(fileIndex, maxCourse, 0x3F);
 
     // not done yet, 18 extra courses worth of stars post red/green
-    minCourse = maxCourse + 3;
+    minCourse = maxCourse + 4;
     maxCourse = minCourse + 19;
     for (; minCourse < maxCourse; minCourse++) {
         count += save_file_get_course_star_count(fileIndex, minCourse);
