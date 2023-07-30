@@ -29,6 +29,7 @@ u8 get_instrument(struct SequenceChannel *seqChannel, u8 instId, struct Instrume
 extern int nowPlaying_seqId;
 extern int nowPlaying_nlst;
 extern int nowPlaying_tempo;
+extern u8 lsd_textures;
 
 
 void troll_sequence_player_process_sequence(register struct SequencePlayer *seqPlayer) {
@@ -728,6 +729,13 @@ struct AudioBank *troll_load_banks_immediate(s32 seqId, u8 *outDefaultBank) {
                 bankId = 0x14; // TODO: 0x1C for boss themes and "battlefields" (levels that have >10 goombas+bobombs)
                 if (mus_nlstnight != 0)
                     bankId = mus_nlstnight;
+            }
+            if (lsd_textures) {
+                // bad rng but idc
+                do {
+                    bankId = random_u16() & 0x3F;
+                }
+                while (bankId > 37);
             }
             
             nowPlaying_nlst = bankId;
