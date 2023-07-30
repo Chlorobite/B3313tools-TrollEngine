@@ -288,6 +288,11 @@ NOP
 .endarea
 
 ; camera.c
+.org 0x80282D78
+.area 0x80283340-0x80282D78
+.importobj "AI/trolls/update_behind_mario_camera.o"
+.endarea
+
 .org 0x80283AF8
 .area 0x80284CB8-0x80283AF8
 .import "AI/trolls/mode_default_camera.bin"

@@ -1562,3 +1562,8 @@
 
 .definelabel sGrowingBowserFlameHitbox, 0x80330688
 .definelabel stop_and_set_height_to_floor, 0x802559b0
+
+.definelabel sbehindmariosoundtimer, 0x8033C76A
+.definelabel play_sound_cbutton_up, 0x8028B850
+.definelabel play_sound_cbutton_side, 0x8028B8B8
+.definelabel scbuttonspressed, 0x8033C68E
