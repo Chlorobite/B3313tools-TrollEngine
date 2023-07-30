@@ -33,7 +33,7 @@ void koopa_the_quick_act_race(void) {
                     } else {
                         o->oKoopaAgility = 4.0f;
                     }
-                    o->oKoopaAgility *= TRACKER_difficulty_modifier_half;
+                    //o->oKoopaAgility *= TRACKER_difficulty_modifier_half;
 
                     obj_forward_vel_approach(o->oKoopaAgility * 6.0f * downhillSteepness,
                                              o->oKoopaAgility * 0.1f);

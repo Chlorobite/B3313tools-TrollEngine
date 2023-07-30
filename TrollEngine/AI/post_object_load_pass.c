@@ -714,11 +714,12 @@ void addMoreObjects() {
 					// Warp Holes
 					if (obj->behavior == segmented_to_virtual((void*)0x13000780)) {
 						if (gCurrLevelNum == 0x10) { // Castle Grounds
+							struct ObjectWarpNode *warpNode = area_get_warp_node(obj->oBehParams2ndByte);
+
 							// bye rng warp
 							obj->oBehParams &= 0xFFFFFF00;
 
 							// set the only warp left to go to bowser
-							struct ObjectWarpNode *warpNode = area_get_warp_node(obj->oBehParams2ndByte);
 							if (warpNode != NULL) {
 								warpNode->node.destLevel = 0x1E;
 								warpNode->node.destArea = 1;
