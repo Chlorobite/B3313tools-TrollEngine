@@ -1891,7 +1891,7 @@ s32 troll_act_crouching(struct MarioState *m) {
     }
 
     if (m->input & INPUT_A_PRESSED) {
-        return set_jumping_action(m, get_red_star_count(gCurrSaveFileNum - 1) >= (2 + (personalizationRandSeed & 8)) ? ACT_BACKFLIP : ACT_JUMP, 0);
+        return set_jumping_action(m, get_red_star_count(gCurrSaveFileNum - 1) >= (2 + ((personalizationRandSeed & 8) ? 1 : 0)) ? ACT_BACKFLIP : ACT_JUMP, 0);
     }
 
     if (m->input & INPUT_OFF_FLOOR) {
@@ -1937,7 +1937,7 @@ s32 troll_act_start_crouching(struct MarioState *m) {
     }
 
     if (m->input & INPUT_A_PRESSED) {
-        return set_jumping_action(m, get_red_star_count(gCurrSaveFileNum - 1) >= (2 + (personalizationRandSeed & 8)) ? ACT_BACKFLIP : ACT_JUMP, 0);
+        return set_jumping_action(m, get_red_star_count(gCurrSaveFileNum - 1) >= (2 + ((personalizationRandSeed & 8) ? 1 : 0)) ? ACT_BACKFLIP : ACT_JUMP, 0);
     }
 
     if (m->input & INPUT_ABOVE_SLIDE) {
@@ -1962,7 +1962,7 @@ s32 troll_act_stop_crouching(struct MarioState *m) {
     }
 
     if (m->input & INPUT_A_PRESSED) {
-        return set_jumping_action(m, get_red_star_count(gCurrSaveFileNum - 1) >= (2 + (personalizationRandSeed & 8)) ? ACT_BACKFLIP : ACT_JUMP, 0);
+        return set_jumping_action(m, get_red_star_count(gCurrSaveFileNum - 1) >= (2 + ((personalizationRandSeed & 8) ? 1 : 0)) ? ACT_BACKFLIP : ACT_JUMP, 0);
     }
 
     if (m->input & INPUT_ABOVE_SLIDE) {
@@ -1995,8 +1995,6 @@ s32 can_pass_through_walls() {
 // We kept running low on heap memory, causing the most random crashes
 // We use the 0x3500 bytes of unused space after Motos now, unless we actually have more space in heap somehow!!
 #define ALIGN4(val) (((val) + 0x3) & ~0x3)
-extern s32 displayHeapSize;
-extern s32 *displayHeapUsed;
 struct AllocOnlyPool *troll_render_pool_init() {
     void *addr = (void*)0x8041CB00;
     struct AllocOnlyPool *subPool = NULL;
@@ -2014,8 +2012,6 @@ struct AllocOnlyPool *troll_render_pool_init() {
         subPool->freePtr = (u8 *) addr + sizeof(struct AllocOnlyPool);
     }
 
-    displayHeapSize = subPool->totalSpace;
-    displayHeapUsed = &subPool->usedSpace;
     return subPool;
 }
 
