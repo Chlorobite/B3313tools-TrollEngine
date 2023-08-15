@@ -859,8 +859,7 @@
 .definelabel mario_handle_special_floors, 0x802507fc                
 .definelabel sink_mario_in_quicksand, 0x80254390                
 .definelabel squish_mario_model, 0x80253588                
-.definelabel set_submerged_cam_preset_and_spawn_bubbles, 0x80253ec0                
-.definelabel update_mario_health, 0x80254060                
+.definelabel set_submerged_cam_preset_and_spawn_bubbles, 0x80253ec0
 .definelabel update_mario_info_for_cam, 0x802542b4                
 .definelabel mario_update_hitbox_and_cap_model, 0x80254588                
 .definelabel spawn_wind_particles, 0x802ae4c0                

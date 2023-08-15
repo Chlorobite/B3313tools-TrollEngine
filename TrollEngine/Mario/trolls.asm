@@ -24,6 +24,11 @@ JAL     sideflip_set_mario_y_vel_based_on_fspeed ; declared in AI/personalizatio
 .importobj "Mario/Trolls/mario/set_mario_action.o"
 .endarea
 
+.org 0x80254060
+.area 0x802542B4-0x80254060
+.importobj "Mario/Trolls/mario/update_mario_health.o"
+.endarea
+
 .org 0x80254830
 .area 0x80254B20-0x80254830
 .importobj "Mario/Trolls/mario/execute_mario_action.o"
