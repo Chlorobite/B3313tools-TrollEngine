@@ -6,6 +6,12 @@
 ; Game segment
 .headersize 0x80245000
 
+; ukiki_act_go_to_cage
+.org 0x802BB3D4
+JAL     spawn_red_coin_cutscene_star
+.orga 0x1203F88
+J       spawn_red_coin_cutscene_star
+
 .org 0x802E8AE4
 .area 0x802E8ECC-0x802E8AE4
 .importobj "Trolls/bhv/amp.inc.c__bhv_circling_amp_init.o"
