@@ -977,6 +977,11 @@ void postObjectLoadPass() {
 	if (PERSONALIZATION_FLAG_LOAD_RED_STAR) {
 		// load red star
 		dma_read(0x80408800, &tex_stars_start + 32*32*8*2 / 4, &tex_stars_start + 2 * 32*32*8*2 / 4 - 1);
+		// discolor the star door if it's loaded
+		vaddr = segmented_to_virtual((void*)0x090000C0);
+		if (*((u32*)vaddr) == 0xBA83BA41) {
+			hueRotateRGBA5551((u16*)vaddr, 32*64 * 2 + 32*31, -44);
+		}
 	}
 	else {
 		// load yellow star
