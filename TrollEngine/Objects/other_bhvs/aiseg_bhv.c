@@ -368,3 +368,8 @@ void bhv_fly_guy_boss_spawner_loop() {
         o->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // troll complete, unload
     }
 }
+
+void bhv_set_act_one() {
+    gCurrActNum = 1;
+    o->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // troll complete, unload
+}

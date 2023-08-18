@@ -43,6 +43,7 @@ void bhv_big_boo_with_key_init();
 void bhv_boo_with_key_loop();
 void bhv_text_on_screen_loop();
 void bhv_fly_guy_boss_spawner_loop();
+void bhv_set_act_one();
 
 
 const BehaviorScript bhvPlaymaSoundLoop[] = {
@@ -237,5 +238,12 @@ const BehaviorScript bhvFlyGuyBossSpawner[] = {
     BEGIN(OBJ_LIST_GENACTOR),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_fly_guy_boss_spawner_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvSetActOne[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_set_act_one),
     END_LOOP(),
 };
