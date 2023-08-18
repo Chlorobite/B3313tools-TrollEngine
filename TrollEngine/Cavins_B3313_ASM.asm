@@ -910,7 +910,7 @@ ORI AT, R0, 0x4
 BNE AT, V1, cavin_check_boss_collision_loop
 LUI A0, 0x8036
 LW A0, 0x1158 (A0)
-JAL 0x802C91EC
+JAL 0x802C91EC		// detect_object_hurtbox_overlap
 OR A1, R0, S0
 BEQZ V0, cavin_check_boss_collision_end
 NOP
@@ -1337,7 +1337,8 @@ BNE AT, T1, cavin_mega_flyguy_die_loop
 ADDIU T1, T1, 0x4
 LW T2, 0x148 (S0)	// Load action timer
 ORI AT, R0, 0x5A	// 90 frames
-BNE AT, T2, cavin_mega_flyguy_common
+SUBU AT, T2, AT
+BLE  AT, T2, cavin_mega_flyguy_common
 LUI T0, 0x8034
 LWC1 F12, 0xB1AC (T0)	// Load Mario's posX
 LWC1 F14, 0x168 (S0)	// Load homeY
