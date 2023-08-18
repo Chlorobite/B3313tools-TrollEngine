@@ -1338,7 +1338,7 @@ ADDIU T1, T1, 0x4
 LW T2, 0x148 (S0)	// Load action timer
 ORI AT, R0, 0x5A	// 90 frames
 SUBU AT, T2, AT
-BLE  AT, T2, cavin_mega_flyguy_common
+BLEZ AT, cavin_mega_flyguy_common
 LUI T0, 0x8034
 LWC1 F12, 0xB1AC (T0)	// Load Mario's posX
 LWC1 F14, 0x168 (S0)	// Load homeY
