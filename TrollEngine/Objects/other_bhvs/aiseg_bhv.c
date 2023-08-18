@@ -357,3 +357,14 @@ void bhv_star_magnet_two() {
 
     o->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // troll complete, unload
 }
+
+
+void bhv_fly_guy_boss_spawner_loop() {
+    f32 distance;
+    struct Object *flyGuy = cur_obj_find_nearest_object_with_behavior(bhvFlyGuy, &distance);
+
+    if (flyGuy == NULL) {
+        spawn_object(o, 220, ((void*)0x00405260));
+        o->activeFlags &= ~ACTIVE_FLAG_ACTIVE; // troll complete, unload
+    }
+}

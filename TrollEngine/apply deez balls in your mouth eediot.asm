@@ -39,6 +39,9 @@
 ; I don't have the original armips for this :( so the funny binary data from previous rom will have to do
 .include "crashfix.asm"
 
+; cavin's code with source code aint no fucking way
+.include "Cavins_B3313_ASM.asm"
+
 
 .orga 0x130C ;8024630C
 ; gEffectsMemoryPool size

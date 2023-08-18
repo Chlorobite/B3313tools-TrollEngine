@@ -42,6 +42,7 @@ void bhv_boo_with_key_init();
 void bhv_big_boo_with_key_init();
 void bhv_boo_with_key_loop();
 void bhv_text_on_screen_loop();
+void bhv_fly_guy_boss_spawner_loop();
 
 
 const BehaviorScript bhvPlaymaSoundLoop[] = {
@@ -229,5 +230,12 @@ const BehaviorScript bhvToadMessageNoAnim[] = {
     CALL_NATIVE(bhv_toad_message_init),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_toad_message_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvFlyGuyBossSpawner[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_fly_guy_boss_spawner_loop),
     END_LOOP(),
 };
