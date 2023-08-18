@@ -37,6 +37,7 @@ extern u8 *moto_bhv_start;
 extern u8 *moto_model_normal_start;
 extern u8 *moto_model_ice_start;
 extern const BehaviorScript bhvHiddenSilverStarStar[];
+extern void *powermeter_last_romstart;
 
 static void crawlVertices(u8 *ptr, u16 count) {
 	register s32 i;
@@ -766,6 +767,8 @@ void postObjectLoadPass() {
 	mus_transposition = 0;
 	mus_nlstday = 0;
 	mus_nlstnight = 0;
+
+	powermeter_last_romstart = NULL;
 	
 	update_rtc_and_level_info();
 	troll_geo_layout(area_geo_layout_addresses[gCurrentArea->index]);

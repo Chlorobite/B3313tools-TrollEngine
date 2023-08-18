@@ -261,7 +261,7 @@ extern Gfx RCP_damegemeter_off[] = {
 
 
 // only does dma_read when necessary
-void *powermeter_last_romstart = (void*)0;
+void *powermeter_last_romstart = NULL;
 void dma_read_wrapper_powermeter(void *ram, void *romstart, void *romend) {
 	if (romstart != powermeter_last_romstart) {
 		powermeter_last_romstart = romstart;
