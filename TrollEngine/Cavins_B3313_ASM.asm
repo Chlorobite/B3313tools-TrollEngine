@@ -1575,7 +1575,7 @@ SUBIU AT, S1, 0x11	// Max damage to die
 BLTZ AT, cavin_mega_flyguy_end_3
 ORI AT, R0, 0x4		// Set action to 4
 SW AT, 0x14C (S0)	// Store action
-SW R0, 0x148 (S0)	// Reset action timer
+//SW R0, 0x148 (S0)	// Reset action timer
 JAL 0x8024927C		// Fadeout level music
 ORI A0, R0, 0x5A
 cavin_mega_flyguy_end_3:

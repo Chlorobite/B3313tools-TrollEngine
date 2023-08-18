@@ -138,12 +138,6 @@ void print_performance_information() {
 	
 	sprintf_decimal(loadedObjectCount);
 	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 64, "OBJ", float_buffer);
-
-	sprintf_hex(displayHeapSize);
-	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 80, "DHEAP", float_buffer);
-
-	sprintf_hex(*displayHeapUsed);
-	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 96, "USED", float_buffer);
 }
 
 void print_general_stats() {
