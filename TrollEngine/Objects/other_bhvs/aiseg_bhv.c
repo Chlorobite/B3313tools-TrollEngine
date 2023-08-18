@@ -360,7 +360,7 @@ void bhv_star_magnet_two() {
 
 
 void bhv_fly_guy_boss_spawner_loop() {
-    f32 distance;
+    f32 distance = 99999.0f;
     struct Object *flyGuy = cur_obj_find_nearest_object_with_behavior(bhvFlyGuy, &distance);
 
     if (flyGuy == NULL) {
