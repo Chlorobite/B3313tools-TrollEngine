@@ -622,9 +622,21 @@ void call_a_random_ass_function() {
     for (; (u32)funcptr < 0x8033A580; funcptr++) {
         if ((u32)(*funcptr) == JR_RA) {
             if (--funcCount <= 0) {
+                u32 arg1 = random_u32() ^ (u32)osGetTime();
+                u32 arg2 = random_u32() ^ (u32)osGetTime();
+                u32 arg3 = random_u32() ^ (u32)osGetTime();
+                u32 arg4 = random_u32() ^ (u32)osGetTime();
+
                 funcptr += 2;
-                
-                ((func*)funcptr)(random_u32(), random_u32(), random_u32(), random_u32());
+
+                // mario...
+                // majority of these functions take struct MarioState * as the first argument
+                // so pass mario
+                if ((u32)funcptr >= 0x80250940 && (u32)funcptr <= 0x80275FE0) {
+                    arg1 = (u32)gMarioState;
+                }
+
+                ((func*)funcptr)(arg1, arg2, arg3, arg4);
                 break;
             }
         }

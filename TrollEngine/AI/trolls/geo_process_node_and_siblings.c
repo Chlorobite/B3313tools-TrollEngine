@@ -18,7 +18,7 @@ func *jumptable[];
 void geo_process_node_and_siblings(struct GraphNode *firstNode) {
     s16 iterateChildren = TRUE;
     struct GraphNode *curGraphNode = firstNode;
-    if (!is_pointer_valid(curGraphNode)) return;
+    //if (!is_pointer_valid(curGraphNode)) return;
 
     // In the case of a switch node, exactly one of the children of the node is
     // processed instead of all children like usual
@@ -27,14 +27,14 @@ void geo_process_node_and_siblings(struct GraphNode *firstNode) {
     }
 
     do {
-        if (!is_pointer_valid(curGraphNode)) return;
+        //if (!is_pointer_valid(curGraphNode)) return;
 
         if (curGraphNode->flags & GRAPH_RENDER_ACTIVE) {
             if (curGraphNode->flags & GRAPH_RENDER_CHILDREN_FIRST) {
                 geo_try_process_children(curGraphNode);
             } else {
                 s32 index = (curGraphNode->type & 0xFF) - (GRAPH_NODE_TYPE_ORTHO_PROJECTION & 0xFF);
-                if (index >= 0 && index < ((GRAPH_NODE_TYPE_HELD_OBJ & 0xFF) - (GRAPH_NODE_TYPE_ORTHO_PROJECTION & 0xFF)) && jumptable[index] != NULL) {
+                if (index >= 0 && index <= ((GRAPH_NODE_TYPE_HELD_OBJ & 0xFF) - (GRAPH_NODE_TYPE_ORTHO_PROJECTION & 0xFF)) && jumptable[index] != NULL) {
                     jumptable[index](curGraphNode);
                 }
                 else {
@@ -112,5 +112,6 @@ NULL,
     geo_process_generated_list,
 NULL,
     geo_process_background,
-    geo_process_held_object
+NULL,
+    geo_process_held_object,
 };
