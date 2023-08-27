@@ -551,9 +551,10 @@ LUI AT, 0x0002
 ORI AT, AT, 0x0464	// Stumbling from hit
 SW AT, 0xB17C (T9)	// Store action state
 ADDIU T3, T3, 0xFF00
+SH T3, 0xB21E (T9)
 cavin_toxic_floor_end:
 JR RA
-SH T3, 0xB21E (T9)
+NOP
 
 
 
