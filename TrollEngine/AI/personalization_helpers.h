@@ -113,4 +113,6 @@ struct Object *troll_spawn_star_bypass_magnets(struct Object *sp30, f32 sp34, f3
 
 s32 is_object_star_spawner(struct Object *obj);
 
+s32 is_pointer_valid(void *ptr);
+
 #endif

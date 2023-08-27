@@ -2373,4 +2373,8 @@ void troll_chain_chomp_released_jump_away(void) {
     }
 }
 
+s32 is_pointer_valid(void *ptr) {
+    return ((u32)ptr & 0xFF800003) == 0x80000000;
+}
+
 

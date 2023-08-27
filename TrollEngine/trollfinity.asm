@@ -298,7 +298,7 @@
 
 ;.definelabel geo_set_animation_globals, 0x8027cf38                
 .definelabel obj_is_in_view, 0x8027D518
-.definelabel geo_process_node_and_siblings, 0x8027dea8            
+;.definelabel geo_process_node_and_siblings, 0x8027dea8
 
 .definelabel print_text, 0x802d6554                
 
@@ -1568,3 +1568,20 @@
 .definelabel scbuttonspressed, 0x8033C68E
 .definelabel cur_obj_reflect_move_angle_off_wall, 0x802a3268
 .definelabel gObjCutsceneDone, 0x8033cbc8
+
+.definelabel geo_try_process_children, 0x8027DE68
+.definelabel geo_process_ortho_projection, 0x8027BA98
+.definelabel geo_process_perspective, 0x8027BC74
+.definelabel geo_process_master_list, 0x8027BA00
+.definelabel geo_process_level_of_detail, 0x8027BDF0
+.definelabel geo_process_switch, 0x8027BE84
+.definelabel geo_process_translation_rotation, 0x8027C114
+.definelabel geo_process_translation, 0x8027C238
+.definelabel geo_process_rotation, 0x8027C35C
+.definelabel geo_process_billboard, 0x8027C594
+.definelabel geo_process_display_list, 0x8027C73C
+.definelabel geo_process_scale, 0x8027C474
+.definelabel geo_process_shadow, 0x8027D0B8
+.definelabel geo_process_generated_list, 0x8027C7A4
+.definelabel geo_process_background, 0x8027C858
+.definelabel geo_process_held_object, 0x8027DA84
