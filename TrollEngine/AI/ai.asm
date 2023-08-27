@@ -22,13 +22,6 @@
 ;.orga 0x31EB13C
 ;.word 0x1101A049 ; set lava immunity flag
 
-; dudaw troll (allows adding condition to beta heal)
-.orga 0x120F764
-JAL     troll_betaheal ; AI/personalization_helpers.c
-NOP
-NOP
-NOP
-
 ; Game segment
 .headersize 0x80245000
 

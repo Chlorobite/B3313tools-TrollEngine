@@ -1255,12 +1255,6 @@ void troll_goomba_wander(register struct Object *_o) {
     }
 }
 
-void troll_betaheal() {
-    if (TRACKER_difficulty_modifier > 1.5f) return;
-    
-    gMarioState->health += 1;
-}
-
 #include "game/save_file.h"
 extern s32 sCapSaveFlags[3];
 extern struct SaveBuffer gSaveBuffer;

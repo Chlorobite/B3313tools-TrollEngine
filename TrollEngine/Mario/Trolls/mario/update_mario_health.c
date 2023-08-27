@@ -39,6 +39,11 @@ void update_mario_health(struct MarioState *m) {
             m->hurtCounter--;
         }
 
+        if (TRACKER_difficulty_modifier <= 1.5f) {
+            // betaheal
+            gMarioState->health += 1;
+        }
+
         if (m->health > 0x880) {
             m->health = 0x880;
         }
