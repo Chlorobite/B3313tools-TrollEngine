@@ -1315,9 +1315,10 @@ s32 troll_cap_switch_dialog(s32 __oBehParams2ndByte) {
 }
 
 void corrupt_entrypoint(u32 a0);
+extern s32 corruptTimer;
 void fuck_textures() {
     randomize_dialog_id();
-    *((u8*)0x807FFFE0) = 6;
+    corruptTimer = 6;
     corrupt_entrypoint(0xf2000000 + (random_u16() << 16));
 }
 
