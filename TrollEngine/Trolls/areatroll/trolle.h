@@ -24,4 +24,4 @@
 
 extern struct Area gAreaDataNew[]; // defined in AI/personalization_helpers.c
 
-#define AREA_COUNT 34
+#define AREA_COUNT 24

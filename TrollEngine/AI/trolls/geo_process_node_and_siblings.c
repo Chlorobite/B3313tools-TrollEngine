@@ -18,7 +18,7 @@ func *jumptable[];
 void geo_process_node_and_siblings(struct GraphNode *firstNode) {
     s16 iterateChildren = TRUE;
     struct GraphNode *curGraphNode = firstNode;
-    //if (!is_pointer_valid(curGraphNode)) return;
+    if (!is_pointer_valid(curGraphNode)) return;
 
     // In the case of a switch node, exactly one of the children of the node is
     // processed instead of all children like usual
@@ -27,7 +27,7 @@ void geo_process_node_and_siblings(struct GraphNode *firstNode) {
     }
 
     do {
-        //if (!is_pointer_valid(curGraphNode)) return;
+        if (!is_pointer_valid(curGraphNode)) return;
 
         if (curGraphNode->flags & GRAPH_RENDER_ACTIVE) {
             if (curGraphNode->flags & GRAPH_RENDER_CHILDREN_FIRST) {

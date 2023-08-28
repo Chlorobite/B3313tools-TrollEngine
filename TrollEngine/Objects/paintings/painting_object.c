@@ -11,6 +11,7 @@
 #include "game/paintings.h"
 #include "game/interaction.h"
 #include "game/level_update.h"
+#include "game/save_file.h"
 #include "game/memory.h"
 #include "game/object_list_processor.h"
 
@@ -98,9 +99,7 @@ void painting_collision_test_lmao(register struct Painting *painting) {
 				obj->oInteractStatus = 0;
 				obj->oIntangibleTimer = 0;
 
-				// 0.7 mode check
-				// this unused save flag may be set by yellow switch
-				if (!(save_file_get_flags() & 0x00200000)) {
+				if (!(save_file_get_flags() & SAVE_FLAG_YS_DISABLE_FIXED_WARPS)) {
 					gLastPaintingId = (u8)painting->id;
 					gLastArea = (u16)gCurrLevelArea;
 				}

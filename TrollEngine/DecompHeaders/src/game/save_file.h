@@ -92,6 +92,8 @@ extern s32 debug_save_file_status;
 #define SAVE_FLAG_CAP_ON_UKIKI           /* 0x00040000 */ (1 << 18)
 #define SAVE_FLAG_CAP_ON_MR_BLIZZARD     /* 0x00080000 */ (1 << 19)
 #define SAVE_FLAG_UNLOCKED_50_STAR_DOOR  /* 0x00100000 */ (1 << 20)
+#define SAVE_FLAG_YS_DISABLE_FIXED_WARPS /* 0x00200000 */ (1 << 21)
+#define SAVE_FLAG_YS_POKEMON_MOON_MODE   /* 0x00400000 */ (1 << 22)
 #define SAVE_FLAG_COLLECTED_TOAD_STAR_1  /* 0x01000000 */ (1 << 24)
 #define SAVE_FLAG_COLLECTED_TOAD_STAR_2  /* 0x02000000 */ (1 << 25)
 #define SAVE_FLAG_COLLECTED_TOAD_STAR_3  /* 0x04000000 */ (1 << 26)

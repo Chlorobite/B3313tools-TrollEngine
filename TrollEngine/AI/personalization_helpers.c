@@ -26,6 +26,7 @@
 #include "game/object_list_processor.h"
 #include "game/obj_behaviors_2.h"
 #include "game/paintings.h"
+#include "game/save_file.h"
 #include "surface_terrains.h"
 #include "moving_texture_macros.h"
 #include "level_misc_macros.h"
@@ -47,7 +48,7 @@
 
 
 
-struct Area gAreaDataNew[34];
+struct Area gAreaDataNew[24];
 
 char levelType = 0;
 char goombaType = 0, bobombType = 0, ampType = 0;
@@ -528,6 +529,10 @@ void updateRTC() {
         rtcHour = (nightModeSetting == 1 || nightModeSetting == 2) ? 0 : 12;
         rtcMinute = 0;
         rtcSecond = 0;
+    }
+
+    if (save_file_get_flags() & SAVE_FLAG_YS_POKEMON_MOON_MODE) {
+        rtcHour = (rtcHour + 12) % 24;
     }
 
     nightTimeButReal = nightTime = rtcHour <= 4 || rtcHour >= 20;
