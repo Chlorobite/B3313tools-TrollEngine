@@ -1585,3 +1585,5 @@
 .definelabel geo_process_generated_list, 0x8027C7A4
 .definelabel geo_process_background, 0x8027C858
 .definelabel geo_process_held_object, 0x8027DA84
+
+.definelabel get_mario_cap_flag, 0x8024bff0

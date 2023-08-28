@@ -248,6 +248,11 @@ NOP
 J       troll_interact_door
 NOP
 
+.org 0x8024FB30
+.area 0x8024FD2C-0x8024FB30
+.importobj "AI/trolls/interact_cap.o"
+.endarea
+
 .org 0x8024FF04
 .area 0x80250098-0x8024FF04
 .importobj "AI/trolls/check_read_sign.o"
