@@ -1529,7 +1529,7 @@ LUI A0, 0x5464
 JAL 0x802CA1E0		// Sound Magic
 ADDIU A0, A0, 0xFF81
 LW AT, 0x184 (S0)	// Load damage counter
-ADDIU AT, AT, 0x2	// 2 damage
+ADDIU AT, AT, 0x3	// 3 damage
 SW AT, 0x184 (S0)	// Store damage counter
 ADDIU AT, R0, 0x3C	// 60 i-frames
 SW AT, 0x9C (S0)	// Store collision timer
@@ -1546,7 +1546,7 @@ LUI A0, 0x5463
 JAL 0x802CA1E0		// Sound Magic
 ADDIU A0, A0, 0xFF81
 LW AT, 0x184 (S0)	// Load damage counter
-ADDIU AT, AT, 0x1	// 1 damage
+ADDIU AT, AT, 0x2	// 2 damage
 SW AT, 0x184 (S0)	// Store damage counter
 ADDIU AT, R0, 0x64	// 100 i-frames
 BEQZ R0, cavin_mega_flyguy_end
@@ -1557,7 +1557,7 @@ LUI A0, 0x5464
 JAL 0x802CA1E0		// Sound Magic
 ADDIU A0, A0, 0xFF81
 LW AT, 0x184 (S0)	// Load damage counter
-ADDIU AT, AT, 0x2	// 2 damage
+ADDIU AT, AT, 0x3	// 3 damage
 SW AT, 0x184 (S0)	// Store damage counter
 ADDIU AT, R0, 0x14	// 20 i-frames
 BEQZ R0, cavin_mega_flyguy_end
@@ -1572,7 +1572,7 @@ BEQ T1, T2, cavin_mega_flyguy_end_2
 SW AT, 0x148 (S0)	// Store action timer
 SW R0, 0x148 (S0)	// Reset action timer
 cavin_mega_flyguy_end_2:
-SUBIU AT, S1, 0x11	// Max damage to die
+SUBIU AT, S1, 15    // Max damage to die
 BLTZ AT, cavin_mega_flyguy_end_3
 ORI AT, R0, 0x4		// Set action to 4
 SW AT, 0x14C (S0)	// Store action
