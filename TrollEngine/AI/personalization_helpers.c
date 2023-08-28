@@ -1314,11 +1314,11 @@ s32 troll_cap_switch_dialog(s32 __oBehParams2ndByte) {
     return cur_obj_update_dialog(MARIO_DIALOG_LOOK_FRONT, (DIALOG_FLAG_TEXT_RESPONSE | DIALOG_FLAG_UNK_CAPSWITCH), rand_dialog_id, 0);
 }
 
-void kaze_fuck_function(s32 a0, s32 a1, s32 a2, s32 a3);
+void corrupt_entrypoint(u32 a0);
 void fuck_textures() {
     randomize_dialog_id();
     *((u8*)0x807FFFE0) = 6;
-    kaze_fuck_function(0, 0, 0, 0xf2000000 + (random_u16() << 16));
+    corrupt_entrypoint(0xf2000000 + (random_u16() << 16));
 }
 
 s32 troll_perform_ground_step(register struct MarioState *m) {
