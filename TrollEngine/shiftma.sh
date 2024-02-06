@@ -2,7 +2,7 @@
 rm -f "../Bee/b3313 temp.z64"
 rm -f "../Bee/b3313 shifted.z64"
 
-armips "shiftma.asm"
+./tools/armips "shiftma.asm"
 
 if [ ! -f "../Bee/b3313 temp.z64" ]; then
     echo "No new romge found, do you have armips installed?"

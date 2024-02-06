@@ -10,12 +10,7 @@ LDFLAGS      := -lm
 ALL_PROGRAMS := armips n64graphics n64graphics_ci mio0 n64cksum textconv patch_elf_32bit aifc_decode aiff_extract_codebook vadpcm_enc tabledesign extract_data_for_mio skyconv
 LIBAUDIOFILE := audiofile/libaudiofile.a
 
-# Only build armips from tools if it is not found on the system
-ifeq ($(call find-command,armips),)
-  BUILD_PROGRAMS := $(ALL_PROGRAMS)
-else
-  BUILD_PROGRAMS := $(filter-out armips,$(ALL_PROGRAMS))
-endif
+BUILD_PROGRAMS := $(ALL_PROGRAMS)
 
 default: all
 
