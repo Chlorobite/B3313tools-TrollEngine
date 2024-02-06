@@ -1,4 +1,12 @@
 #!/bin/bash
+compile_cc() {
+	printf '\033[0;31mBuilding compiler\033[0m\n'
+	cd "tools/ido5.3_recomp"
+	make -j$(nproc)
+	cd ../../
+}
+[ ! -f "tools/ido5.3_recomp/cc" ] && compile_cc
+
 build_c() {
 	echo "Building $1 -> ${1::-2}.o"
 	tools/ido5.3_recomp/cc -c -G 0 -O2 -Wo,-loopunroll,0 -nostdinc -DTARGET_N64 -D_LANGUAGE_C -mips2 -IDecompHeaders/include -IDecompHeaders/src -IDecompHeaders/. -I. -IDecompHeaders/include/libc -IDecompHeaders/src/game -DVERSION_US=1 -DF3D_OLD=1 -non_shared -Wab,-r4300_mul -Xcpluscomm -Xfullwarn -signed -32 -o ${1::-2}.o $1
