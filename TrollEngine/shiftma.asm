@@ -9,8 +9,4 @@
 .importobj "AI/trolls/osPiStartDma.o"
 .endarea
 
-; overcock in the rom header
-.orga 4
-.word 0x059682FF
-
 .close
