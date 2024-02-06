@@ -443,9 +443,6 @@ void save_file_clear_flags(u32 flags) {
 }
 
 u32 save_file_get_flags(void) {
-    if (gCurrCreditsEntry != NULL || gCurrDemoInput != NULL) {
-        return 0;
-    }
     return gSaveBuffer.files[gCurrSaveFileNum - 1].flags;
 }
 

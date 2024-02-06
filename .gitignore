@@ -4,3 +4,6 @@
 *.zip
 *.7z
 sym.txt
+
+# microsoft software shame
+.vscode/
