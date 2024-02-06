@@ -1,5 +1,5 @@
 #!/bin/bash
-armips "apply deez balls in your mouth eediot.asm" -sym "sym.txt"
+wine64 ./armips.exe "apply deez balls in your mouth eediot.asm" -sym "sym.txt"
 
 if [ ! -f "../Bee/b3313 new.z64" ]; then
     echo "No new romge found, do you have armips installed?"
