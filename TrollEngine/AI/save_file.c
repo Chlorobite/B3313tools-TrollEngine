@@ -356,13 +356,7 @@ void save_file_collect_star_or_key(register s16 coinScore, register s16 starInde
     gLastCompletedCourseNum = courseIndex + 1;
     gLastCompletedStarNum = starIndex + 1;
 
-    switch (gCurrLevelNum) {
-        case LEVEL_BOWSER_3:
-            break;
-        default:
-            save_file_set_star_flags(fileIndex, courseIndex, starFlag);
-            break;
-    }
+    save_file_set_star_flags(fileIndex, courseIndex, starFlag);
 }
 
 s32 save_file_exists(s32 fileIndex) {
