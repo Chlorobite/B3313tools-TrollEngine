@@ -1,9 +1,9 @@
 #include <PR/ultratypes.h>
 #include "sm64.h"
-#include "ai/stats_tracking.h"
-#include "ai/audio_trolls.h"
-#include "ai/personalization_helpers.h"
-#include "ai/post_object_load_pass.h"
+#include "AI/stats_tracking.h"
+#include "AI/audio_trolls.h"
+#include "AI/personalization_helpers.h"
+#include "AI/post_object_load_pass.h"
 #include "game/interaction.h"
 #include "game/level_update.h"
 #include "game/memory.h"
