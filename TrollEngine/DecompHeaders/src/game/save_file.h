@@ -100,7 +100,7 @@ extern s32 debug_save_file_status;
 #define SAVE_FLAG_COLLECTED_MIPS_STAR_1  /* 0x08000000 */ (1 << 27)
 #define SAVE_FLAG_COLLECTED_MIPS_STAR_2  /* 0x10000000 */ (1 << 28)
 
-#define SAVE_FLAG_TO_STAR_FLAG(cmd) (((cmd) >> 24) & 0x7F)
+#define SAVE_FLAG_TO_STAR_FLAG(cmd) ((cmd) >> 24)
 #define STAR_FLAG_TO_SAVE_FLAG(cmd) ((cmd) << 24)
 
 // Variable for setting a warp checkpoint.
