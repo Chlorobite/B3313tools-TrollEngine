@@ -1,3 +1,4 @@
+#!/bin/bash
 bash build_o2.sh
 
 bash build_ai.sh

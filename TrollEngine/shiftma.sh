@@ -1,3 +1,4 @@
+#!/bin/bash
 rm -f "../Bee/b3313 temp.z64"
 rm -f "../Bee/b3313 shifted.z64"
 
