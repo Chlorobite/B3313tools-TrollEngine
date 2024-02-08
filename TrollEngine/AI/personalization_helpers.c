@@ -1495,10 +1495,10 @@ void troll_door_animation_and_reset(s32 sp18) {
 }
 
 extern struct PlayerCameraState *sMarioCamState;
+void marioluigiswap();
 void troll_swap_mario() {
     if (funnyMarioDupe != NULL) {
         register struct GraphNodeObject *mirrorMario = (struct GraphNodeObject *)(&funnyMarioDupe->header);
-        void (*tol) ();
         
         gMarioState->usedObj = funnyMarioDupeUseDoor;
         sMarioCamState->pos[0] =       mirrorMario->pos[0];
@@ -1506,10 +1506,8 @@ void troll_swap_mario() {
         sMarioCamState->pos[2] =       mirrorMario->pos[2];
         sMarioCamState->faceAngle[1] += 0x8000;
         
-        // swapma
         if (funnyMarioSwapma) {
-            tol = (void*)0x8029ADA8;
-            tol();
+            marioluigiswap();
         }
     }
 }

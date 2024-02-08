@@ -101,23 +101,50 @@ JAL     0x8028EEB0
 J       troll_lvl_init_or_update
 NOP
 
-; unfuck my shit code (mario luigi swap), so that it can be called by the troll double doors
-.org 0x8029AD90
-; first check the L
+; mario luigi swap code
+.org 0x8029AD80
+; area check
+LUI     V1, 0x8033
+LW      V1, 0xDF38 (V1)
+ADDIU   V0, R0, 0x00D1
+BEQ     V1, V0, ACCEPTED
+ADDIU   V0, R0, 0x0052
+BNE     V1, V0, JRRA
+; L button check
+ACCEPTED:
 LUI     A0, 0x8033
 LW      A0, 0xD5E4 (A0)
 LHU     A0, 0x0012 (A0)
 ANDI    A0, 0x0020
-BEQ     A0, R0, 0x8029ADF8
-NOP
-; THEN push RA
+BEQ     A0, R0, JRRA
+.definelabel marioluigiswap, org()
 LUI     AT, 0x8080
+; push RA
 ADDIU   SP, SP, -0x18
 SW      RA, 0x0014 (SP)
 ; playma?
 LUI     A0, 0x701E
 JAL     0x802CA190
 ORI     A0, A0, 0xFF81
+; set luigi value
+LUI     AT, 0x8080
+LBU     A0, 0xFFED (AT)
+XORI    A0, A0, 0x0001
+SB      A0, 0xFFED (AT)
+LUI     T0, 0x8033
+LW      T0, 0xDDC4 (T0)
+SLL     T1, A0, 2
+ADDU    T0, T0, T1
+LW      T0, 0x0004 (T0)
+LUI     T1, 0x8036
+LW      T1, 0x1158 (T1)
+SW      T0, 0x0014 (T1)
+; pop RA
+LW      RA, 0x0014 (SP)
+ADDIU   SP, SP, 0x18
+JRRA:
+JR      RA
+NOP
 
 ; door warp stuff
 .org 0x8024AD00
