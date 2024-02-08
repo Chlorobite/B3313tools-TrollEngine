@@ -320,7 +320,7 @@ void TRACKER_record_mario_state(struct MarioState *m) {
 		if (unlockDynamicDifficulty)
 			TRACKER_difficulty_modifier = __max(
 				moveTo(
-					(((TRACKER_speed - 24.0f) / 16.0f) + TRACKER_accum_stars / 4.0f - TRACKER_accum_deaths) / 6.0f + __max(TRACKER_accum_murder / 6.0f, 0.4f) + 0.5f + TRACKER_boss_performance / 20.0f
+					(((TRACKER_speed - 24.0f) / 16.0f) + TRACKER_accum_stars / 8.0f - TRACKER_accum_deaths) / 6.0f + __max(TRACKER_accum_murder / 6.0f, 0.4f) + 0.5f + TRACKER_boss_performance / 20.0f
 				, 1.0f, 0.1f)
 			, 0.0f);
 		else

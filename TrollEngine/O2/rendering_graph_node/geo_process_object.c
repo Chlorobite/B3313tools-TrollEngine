@@ -23,7 +23,7 @@ void geo_process_object(struct Object *node) {
         node->header.gfx.cameraToObject[2] = gMatStack[gMatStackIndex][3][2];
 
         // FIXME: correct types
-        if (node->header.gfx.animInfo.curAnim != NULL) {
+        if (is_pointer_valid(node->header.gfx.animInfo.curAnim)) {
             geo_set_animation_globals(&node->header.gfx.animInfo, (node->header.gfx.node.flags & GRAPH_RENDER_HAS_ANIMATION) != 0);
         }
         if (obj_is_in_view(&node->header.gfx, gMatStack[gMatStackIndex])) {

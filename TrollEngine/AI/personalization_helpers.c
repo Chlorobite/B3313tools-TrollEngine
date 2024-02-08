@@ -890,6 +890,7 @@ void on_collected_star(struct Object *starObj) {
     }
     if (bparams & 0x02) {
         TRACKER_accum_stars_prefer_free += 1.0f;
+        TRACKER_accum_stars -= 1.0f; // counteract += 1.0f below
     }
     if (bparams & 0x04) {
         TRACKER_accum_stars_prefer_murder += 1.0f;
@@ -903,6 +904,7 @@ void on_collected_star(struct Object *starObj) {
     
     if (starObj->oBooTurningSpeed & 0x01) {
         TRACKER_accum_stars_prefer_boss += 1.0f;
+        TRACKER_accum_stars += 1.0f;
     }
     if (starObj->oBooTurningSpeed & 0x02) {
         TRACKER_accum_stars_prefer_collect += 1.0f;
@@ -1289,6 +1291,7 @@ void troll_yellow_switch_or_set_flags(s32 __oBehParams2ndByte) {
     // completely randomize the save flags
     save_file_clear_flags(0xFFFFFFFF);
     save_file_set_flags(((random_u16() << 16) | random_u16()) ^ (u32)osGetTime());
+    save_file_clear_flags(SAVE_FLAG_CAP_ON_GROUND); // make cap always possible to obtain
     
     // fuck the AI too
     fuck = (u16*)&gSaveBuffer.menuData.aiData;

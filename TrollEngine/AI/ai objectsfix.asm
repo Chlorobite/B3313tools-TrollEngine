@@ -1,6 +1,6 @@
 ; Fix objects' collision and stuff
 ; FIND SEGMENT 13 AND SET THE ROM ADDRESS BELOW BEFORE INCLUDING THIS FILE! OTHERWISE SHIT JUST FUCKING BREAKS
-.headersize 0x13000000-0x396D250
+.headersize 0x13000000-0x4E02190
 
 .org 0x13000000+0x0C ; bhvStarDoor
 .word inside_castle_seg7_collision_star_door & 0x00FFFFFF
@@ -19,7 +19,7 @@
 .org 0x130006A4+0x0C ; bhvTowerDoor
 .word wf_seg7_collision_tower_door & 0x00FFFFFF
 .org 0x130006E0+0x0C ; bhvWfRotatingWoodenPlatform
-.word wf_seg7_collision.ocklike_rotation & 0x00FFFFFF
+.word wf_seg7_collision_clocklike_rotation & 0x00FFFFFF
 .org 0x13000720+0x18 ; bhvExitPodiumWarp
 .word ttm_seg7_collision_podium_warp & 0x00FFFFFF
 .org 0x13000B58+0x0C ; bhvGrindel
@@ -174,17 +174,17 @@
 .org 0x13004400+0x0C ; bhvJrbFloatingBox
 .word jrb_seg7_collision_floating_box & 0x00FFFFFF
 .org 0x13004868+0x08 ; bhvChainChompGate
-.word bob_seg7_collision_chain.omp_gate & 0x00FFFFFF
+.word bob_seg7_collision_chain_chomp_gate & 0x00FFFFFF
 .org 0x13004C24+0x08 ; bhvTTCPendulum
-.word ttc_seg7_collision.ock_pendulum & 0x00FFFFFF
+.word ttc_seg7_collision_clock_pendulum & 0x00FFFFFF
 .org 0x13004C94+0x08 ; bhvTTCMovingBar
 .word ttc_seg7_collision_sliding_surface & 0x00FFFFFF
 .org 0x13004D28+0x08 ; bhvTTCElevator
-.word ttc_seg7_collision.ock_platform & 0x00FFFFFF
+.word ttc_seg7_collision_clock_platform & 0x00FFFFFF
 .org 0x13004D64+0x08 ; bhvTTC2DRotator
-.word ttc_seg7_collision.ock_main_rotation & 0x00FFFFFF
+.word ttc_seg7_collision_clock_main_rotation & 0x00FFFFFF
 .org 0x13004D90+0x08 ; bhvTTCSpinner
-.word ttc_seg7_collision_rotating.ock_platform2 & 0x00FFFFFF
+.word ttc_seg7_collision_rotating_clock_platform2 & 0x00FFFFFF
 .org 0x1300525C+0x08 ; bhvHorizontalGrindel
 .word ssl_seg7_collision_grindel & 0x00FFFFFF
 .org 0x13005414+0x08 ; bhvCoffin
@@ -194,13 +194,13 @@
 .org 0x13005504+0x08 ; bhvDonutPlatform
 .word rr_seg7_collision_donut_platform & 0x00FFFFFF
 ; custom objects radius
-.org 0x13005A10+0x08 ; smol block platform
-.word (0x0E430000 | 1000)
-.org 0x13005A48+0x08 ; larg sand platform
-.word (0x0E430000 | 4000)
-.org 0x13005A80+0x08 ; larg cube platform
-.word 0x09004480
-.org 0x13005A80+0x10 ; larg cube platform
-.word (0x0E430000 | 1500)
-.org 0x13005B0C+0x08 ; spinny star platform
-.word 0x2A000000
+;.org 0x13005A10+0x08 ; smol block platform
+;.word (0x0E430000 | 1000)
+;.org 0x13005A48+0x08 ; larg sand platform
+;.word (0x0E430000 | 4000)
+;.org 0x13005A80+0x08 ; larg cube platform
+;.word 0x09004480
+;.org 0x13005A80+0x10 ; larg cube platform
+;.word (0x0E430000 | 1500)
+;.org 0x13005B0C+0x08 ; spinny star platform
+;.word 0x2A000000
