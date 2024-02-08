@@ -751,6 +751,69 @@ s32 is_star(struct Object *obj) {
 		obj->behavior == segmented_to_virtual(bhvHiddenSilverStarStar);
 }
 
+void personalize_stars() {
+	register s32 act;
+	register s32 i;
+	register struct Object *obj;
+	register f32 starMax, currentStarValue;
+	register s32 delete;
+	register s32 foundMax;
+
+	for (act = 0; act <= 7; act++) {
+		starMax = 0.0f;
+		delete = FALSE;
+
+		// first we find the most favorable star's value
+		obj = &gObjectPool[0];
+		for (i = 0; i < 240; i++) {
+			if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && is_star(obj) && (obj->oBehParams >> 24) == act) {
+				currentStarValue = AI_star_get_preference_by_bparams(obj);
+
+				if (currentStarValue > starMax) {
+					starMax = currentStarValue;
+				}
+			}
+
+			obj++;
+		}
+
+		// then do a little trolling
+		foundMax = FALSE;
+		obj = &gObjectPool[0];
+		for (i = 0; i < 240; i++) {
+			if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED)) {
+				if (is_star(obj) && (obj->oBehParams >> 24) == act) {
+					delete = FALSE;
+
+					if (obj->oPosX == 0.0f && obj->oPosY == -3313.0f && obj->oPosZ == 0.0f) {
+						// unload stars at 0,-3313,0 which are used purely to designate the end of an object sequence
+						obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE;
+					}
+					else {
+						currentStarValue = AI_star_get_preference_by_bparams(obj);
+
+						// allow a margin so personalization is less likely
+						if (!foundMax && currentStarValue >= starMax * 0.8f) {
+							foundMax = TRUE;
+						}
+						else {
+							// go delete mode
+							obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE;
+							delete = TRUE;
+						}
+					}
+				}
+				else if (delete) {
+					// unload the object
+					obj->activeFlags &= ~ACTIVE_FLAG_ACTIVE;
+				}
+			}
+
+			obj++;
+		}
+	}
+}
+
 extern const BehaviorScript bhvMusicModifier[];
 void postObjectLoadPass() {
 	register s32 i;
@@ -1058,6 +1121,7 @@ void postObjectLoadPass() {
 	}
 	
 	if (!PERSONALIZATION_FLAG_DISABLE_OBJECTS) {
+		personalize_stars();
 		trollWarps(); // trol
 	}
 	set_hud_type(hud_type_param);
