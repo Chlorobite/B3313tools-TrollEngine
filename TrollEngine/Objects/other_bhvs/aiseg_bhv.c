@@ -235,9 +235,7 @@ void bhv_silver_star_init() {
 
 void bhv_silver_star_loop() {
     o->oFaceAngleYaw += 0x800;
-    if (o->oFaceAngleYaw & 0x800) {
-        o->oAnimState++;
-    }
+    o->oAnimState++;
     
     if (o->oAction == 1) {
         o->oGravity = -1.f;
