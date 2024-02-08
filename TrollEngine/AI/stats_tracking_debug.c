@@ -487,11 +487,3 @@ void stats_tracking_debug_display() {
 	}
 }
 
-
-void set_cur_obj_debug_information() {
-}
-
-#define ALIGN16(val) (((val) + 0xF) & ~0xF)
-void intercept_dma(u8 *dest, u8 *srcStart, u8 *srcEnd) {
-}
-

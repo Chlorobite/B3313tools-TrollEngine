@@ -1,5 +1,6 @@
 #include <PR/ultratypes.h>
 
+#include "!debug_mode.h"
 #include "sm64.h"
 #include "game/ingame_menu.h"
 #include "engine/graph_node.h"
@@ -18,5 +19,3 @@ struct SurfaceNode *alloc_surface_node(void);
 struct Surface *read_surface_data(s16 *vertexData, s16 **vertexIndices);
 
 extern s32 dynamicSurfaceTris;
-
-#define SURFACE_DEBUG

@@ -1,0 +1,1 @@
+.definelabel TROLLDEBUG,0

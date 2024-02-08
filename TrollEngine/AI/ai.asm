@@ -601,7 +601,7 @@ NOP
 
 ; debug object
 .org 0x80385CD8
-JAL     set_cur_obj_debug_information
+NOP
 NOP
 LUI     AT, 0x8036
 LW      T2, 0x1160 (AT)

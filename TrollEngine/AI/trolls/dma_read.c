@@ -55,9 +55,6 @@ extern struct MainPoolBlock *sPoolListHeadR;
 void dma_read(register u8 *dest, register u8 *srcStart, register u8 *srcEnd) {
     register u32 size = ALIGN16(srcEnd - srcStart);
 
-    if (*((u32*)0x807EF4D0) != 0)
-        intercept_dma(dest, srcStart, srcEnd);
-
     osInvalDCache(dest, size);
     while (size != 0) {
         register u32 copySize = (size >= 0x1000) ? 0x1000 : size;

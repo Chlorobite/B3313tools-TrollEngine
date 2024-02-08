@@ -23,7 +23,7 @@ void add_surface_to_cell(s32 dynamic, s16 cellX, s16 cellZ, struct Surface *surf
     newNode->surface = surface;
 
     if (dynamic) {
-#ifdef SURFACE_DEBUG
+#ifdef TROLLDEBUG
         dynamicSurfaceTris++;
 #endif
         list = &gDynamicSurfacePartition[cellZ][cellX][listIndex];

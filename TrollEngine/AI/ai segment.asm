@@ -15,7 +15,9 @@ CVT.S.W    F0, F0
 .importobj "AI/objects_collision.o"
 .importobj "AI/personalization_helpers.o"
 .importobj "AI/post_object_load_pass.o"
-.importobj "AI/stats_tracking_debug.o"
+.ifdef TROLLDEBUG
+    .importobj "AI/stats_tracking_debug.o"
+.endif
 .endarea
 
 ; part 2 (0x807E0000-0x807EC000)

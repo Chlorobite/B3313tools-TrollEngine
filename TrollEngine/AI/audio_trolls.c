@@ -1,6 +1,7 @@
 #include <PR/ultratypes.h>
 #include <ultra64.h>
 
+#include "!debug_mode.h"
 #include "audio/data.h"
 #include "audio/effects.h"
 #include "audio/external.h"
@@ -26,9 +27,11 @@ void sequence_channel_process_script(struct SequenceChannel *seqChannel);
 u8 get_instrument(struct SequenceChannel *seqChannel, u8 instId, struct Instrument **instOut,
                   struct AdsrSettings *adsr);
 
+#ifdef TROLLDEBUG
 extern int nowPlaying_seqId;
 extern int nowPlaying_nlst;
 extern int nowPlaying_tempo;
+#endif
 extern u8 lsd_textures;
 
 
@@ -100,8 +103,10 @@ void troll_sequence_player_process_sequence(register struct SequencePlayer *seqP
         seqPlayer->tempoAcc += trotempo * (seqPlayer == &gSequencePlayers[SEQ_PLAYER_LEVEL] ?
             (nightMode ? 0.75f : 1.0f)
         : 1.0f);
+#ifdef TROLLDEBUG
         if (seqPlayer == &gSequencePlayers[SEQ_PLAYER_LEVEL])
             nowPlaying_tempo = trotempo / TEMPO_SCALE;
+#endif
     }
     
     if (seqPlayer->tempoAcc < gTempoInternalToExternal) {
@@ -717,7 +722,9 @@ struct AudioBank *troll_load_banks_immediate(s32 seqId, u8 *outDefaultBank) {
     u16 offset;
     register s32 i;
 
+#ifdef TROLLDEBUG
     nowPlaying_seqId = seqId;
+#endif
 
     offset = ((u16 *) gAlBankSets)[seqId];
     for (i = gAlBankSets[offset++]; i != 0; i--) {
@@ -738,7 +745,9 @@ struct AudioBank *troll_load_banks_immediate(s32 seqId, u8 *outDefaultBank) {
                 while (bankId > 37);
             }
             
+#ifdef TROLLDEBUG
             nowPlaying_nlst = bankId;
+#endif
         }
 
         if (IS_BANK_LOAD_COMPLETE(bankId)) {

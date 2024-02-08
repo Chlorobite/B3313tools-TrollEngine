@@ -1,6 +1,7 @@
 #include <ultra64.h>
 #include <PR/rcp.h>
 
+#include "!debug_mode.h"
 #include "sm64.h"
 #include "gfx_dimensions.h"
 #include "audio/external.h"
@@ -103,7 +104,9 @@ s32 troll_lvl_init_or_update(s16 initOrUpdate) {
         }
     }
 
+#ifdef TROLLDEBUG
     stats_tracking_debug_display();
+#endif
 
     // Make RNG more random
     gRandomSeed16 ^= gControllers[0].buttonDown;
