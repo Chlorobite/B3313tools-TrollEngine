@@ -9,6 +9,7 @@ struct Surface *find_floor_from_list(struct SurfaceNode *surfaceNode, s32 x, s32
     register f32 x_f = x;
     register f32 y_f = y;
     register f32 z_f = z;
+    register f32 negative_level_scale_v = -levelScaleV;
     register struct Surface *floor = NULL;
 
     // Iterate through the list of floors until there are no more floors.
@@ -47,7 +48,7 @@ struct Surface *find_floor_from_list(struct SurfaceNode *surfaceNode, s32 x, s32
         else if (surf->flags & SURFACE_FLAG_NO_CAM_COLLISION) continue;
         
         // Find the height of the floor at a given location.
-        height = -(x_f * surf->normal.x + z_f * surf->normal.z + surf->originOffset) / surf->normal.y * levelScaleV;
+        height = (x_f * surf->normal.x + z_f * surf->normal.z + surf->originOffset) / surf->normal.y * negative_level_scale_v;
         // Checks for floor interaction with a 78 unit buffer.
         if (y_f - height < -78.f || height < *pheight) continue;
 

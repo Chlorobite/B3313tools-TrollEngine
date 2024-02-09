@@ -163,3 +163,14 @@ B       0x802CE0B4
 .area 0x8027DA10-0x8027D6FC
 .importobj "O2/rendering_graph_node/geo_process_object.o"
 .endarea
+
+; libultra
+.org 0x80329450               
+.area 0x80329550-0x80329450
+.importobj "O2/math/guMtxF2L.o"
+.endarea
+
+.org 0x80329550                
+.area 0x803295d8-0x80329550
+.importobj "O2/math/guMtxIdentF.o"
+.endarea

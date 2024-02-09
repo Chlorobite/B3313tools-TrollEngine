@@ -77,9 +77,11 @@ static void crawlDisplayList(u32 *ptr) {
 							case 2:
 								invertRGBA16((u16*)trollptr, ((*(ptr + 1) >> 12) & 0xFFF) + 1, lsd_textures);
 								break;
+#ifdef RGBA32_TEX_SUPPORT
 							case 3:
 								invertRGBA32(trollptr, ((*(ptr + 1) >> 12) & 0xFFF) + 1, lsd_textures);
 								break;
+#endif
 						}
 					}
 					if (flip_textures) {
@@ -87,9 +89,11 @@ static void crawlDisplayList(u32 *ptr) {
 							case 2:
 								rotateRGBA16((u16*)trollptr, ((*(ptr + 1) >> 12) & 0xFFF) + 1);
 								break;
+#ifdef RGBA32_TEX_SUPPORT
 							case 3:
 								rotateRGBA32(trollptr, ((*(ptr + 1) >> 12) & 0xFFF) + 1);
 								break;
+#endif
 						}
 					}
 					if (normalize_textures) {
@@ -97,9 +101,11 @@ static void crawlDisplayList(u32 *ptr) {
 							case 2:
 								normalizeRGBA16((u16*)trollptr, ((*(ptr + 1) >> 12) & 0xFFF) + 1);
 								break;
+#ifdef RGBA32_TEX_SUPPORT
 							case 3:
 								normalizeRGBA32(trollptr, ((*(ptr + 1) >> 12) & 0xFFF) + 1);
 								break;
+#endif
 						}
 					}
 					if (nightMode) {
@@ -107,9 +113,11 @@ static void crawlDisplayList(u32 *ptr) {
 							case 2:
 								darkenRGBA16((u16*)trollptr, ((*(ptr + 1) >> 12) & 0xFFF) + 1);
 								break;
+#ifdef RGBA32_TEX_SUPPORT
 							case 3:
 								darkenRGBA32(trollptr, ((*(ptr + 1) >> 12) & 0xFFF) + 1);
 								break;
+#endif
 						}
 					}
 					

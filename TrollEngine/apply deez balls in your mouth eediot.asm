@@ -88,6 +88,24 @@ LW      S0, 0x0018 (SP)
 JR      RA
 ADDIU   SP, SP, 0x28
 
+; setup_game_memory: new buffer for vblank messages (size 2 instead of 1)
+.org 0x8024898C
+LI      A0, 0x8033B010
+
+LI      A1, vsyncMesgBuf
+
+JAL     0x803225A0
+ORI     A2, R0, 2
+J       0x802DB1D0
+NOP
+ORI     AT, AT, 0xFFFF
+ADDIU   T6, T6, 0x0400
+AND     T7, T6, AT
+LUI     T0, 0x8034
+SW      T7, 0xB05C (T0)
+LUI     T8, 0x8039
+NOP
+
 ; fix setup_game_memory not setting A3=0 (side) for load_segment for segment 2, causing random crashes on start
 .org 0x80248A8C
 LUI     A1, 0x0011

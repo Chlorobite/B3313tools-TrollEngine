@@ -22,6 +22,12 @@
 .importobj "Objects/paintings/geo_painting_update.o"
 .endarea
 
+; O2 optimization
+.org 0x802D4EDC
+.area 0x802D50DC-0x802D4EDC
+.importobj "Objects/paintings/painting_model_view_transform.o"
+.endarea
+
 
 ; Engine v2: gTrollWarpDestination code patches
 .headersize 0x80245000

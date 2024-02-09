@@ -67,7 +67,7 @@ void painting_collision_test_lmao(register struct Painting *painting) {
 	// Map Mario's position to the painting's local space
 	_tmp = -painting->yaw / 57.29577951308232f;
 	_cos = cosf(_tmp);
-	_sin = sinf(_tmp);
+	_sin = sin_from_cos(_tmp, _cos);
 	marioRelativePos[0] = gPaintingMarioXPos - obj->oPosX;
 	marioRelativePos[1] = gPaintingMarioYPos - painting->posY;
 	marioRelativePos[2] = gPaintingMarioZPos - obj->oPosZ;
@@ -135,25 +135,24 @@ Gfx *painting_normal_dl(register struct Painting *painting) {
 	register Gfx *dlist;
 	register Gfx *gfx;
 	
-	dlist = alloc_display_list(16 * sizeof(Gfx));
+	dlist = alloc_display_list(15 * sizeof(Gfx));
 
 	if (dlist != NULL) {
 		gSPDisplayList(dlist, non_ripple_dl);
-		gSPVertex(dlist + 1, static_painting_vertices, 8, 0);
-		gDPSetTextureImage(dlist + 2, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, painting->textureArray[0]);
-		gDPLoadSync(dlist + 3);
-		gDPLoadBlock(dlist + 4, G_TX_LOADTILE, 0, 0, 64 * 32 - 1, CALC_DXT(64, G_IM_SIZ_16b_BYTES));
-		gfx = dlist + 5;
+		gDPSetTextureImage(dlist + 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, painting->textureArray[0]);
+		gDPLoadSync(dlist + 2);
+		gDPLoadBlock(dlist + 3, G_TX_LOADTILE, 0, 0, 64 * 32 - 1, CALC_DXT(64, G_IM_SIZ_16b_BYTES));
+		gfx = dlist + 4;
 		gSP2Triangles(gfx++, 0,  1,  2, 0x0,  0,  2,  3, 0x0);
-		gDPSetTextureImage(dlist + 7, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, painting->textureArray[1]);
-		gDPLoadSync(dlist + 8);
-		gDPLoadBlock(dlist + 9, G_TX_LOADTILE, 0, 0, 64 * 32 - 1, CALC_DXT(64, G_IM_SIZ_16b_BYTES));
-		gfx = dlist + 10;
+		gDPSetTextureImage(dlist + 6, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, painting->textureArray[1]);
+		gDPLoadSync(dlist + 7);
+		gDPLoadBlock(dlist + 8, G_TX_LOADTILE, 0, 0, 64 * 32 - 1, CALC_DXT(64, G_IM_SIZ_16b_BYTES));
+		gfx = dlist + 9;
 		gSP2Triangles(gfx++, 4,  5,  6, 0x0,  4,  6,  7, 0x0);
-		gSPTexture(dlist + 12, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
-		gDPPipeSync(dlist + 13);
-		gDPSetCombineMode(dlist + 14, G_CC_SHADE, G_CC_SHADE);
-		gSPEndDisplayList(dlist + 15);
+		gSPTexture(dlist + 11, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
+		gDPPipeSync(dlist + 12);
+		gDPSetCombineMode(dlist + 13, G_CC_SHADE, G_CC_SHADE);
+		gSPEndDisplayList(dlist + 14);
 	}
 	
 	return dlist;

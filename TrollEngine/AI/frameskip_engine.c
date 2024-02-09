@@ -43,6 +43,9 @@ static OSTime _gLastOSTime = 0;
 static float _gFrameTime = 0.0f;
 float _gLastFrameTime = 0.0f;
 
+OSMesg vsyncMesgBuf[2];
+
+
 static void _calculate_frameTime_from_OSTime(OSTime diff) {
     _gLastFrameTime = diff * SECONDS_PER_CYCLE;
     _gFrameTime += diff * SECONDS_PER_CYCLE;

@@ -1183,7 +1183,7 @@
 .definelabel gPaintingMarioYPos, 0x80361308            
 .definelabel gPaintingMarioZPos, 0x8036130C      
 .definelabel interact_warp, 0x8024df10                   
-.definelabel painting_model_view_transform, 0x802d4edc                
+;.definelabel painting_model_view_transform, 0x802d4edc                
 .definelabel display_painting_rippling, 0x802d556c                
 .definelabel gPaintingUpdateCounter, 0x80331358                  
 .definelabel gLastPaintingUpdateCounter, 0x8033135C
@@ -1523,7 +1523,6 @@
 .definelabel hurt_and_set_mario_action, 0x802531C4
 
 .definelabel sPowerMeterHUD, 0x803325f0
-.definelabel guTranslate, 0x80325688
 .definelabel dl_power_meter_base, 0x03029480
 .definelabel dl_power_meter_health_segments_begin, 0x03029570
 .definelabel dl_power_meter_health_segments_end, 0x030295A0
@@ -1587,3 +1586,7 @@
 .definelabel geo_process_held_object, 0x8027DA84
 
 .definelabel get_mario_cap_flag, 0x8024bff0
+
+.definelabel guTranslate, 0x80325688                
+.definelabel guRotate, 0x80325874                
+.definelabel guScale, 0x80325924                

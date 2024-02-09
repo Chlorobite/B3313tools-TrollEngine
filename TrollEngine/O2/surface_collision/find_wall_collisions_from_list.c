@@ -7,6 +7,7 @@ s32 find_wall_collisions_from_list(register struct SurfaceNode *surfaceNode,
     register struct Surface *surf;
     register f32 offset;
     register f32 radius = data->radius;
+    register s32 gost = can_pass_through_walls();
     register f32 x_f = data->x;
     register f32 y_f = data->y + data->offsetY;
     register f32 z_f = data->z;
@@ -70,13 +71,7 @@ s32 find_wall_collisions_from_list(register struct SurfaceNode *surfaceNode,
             if (surf->type == SURFACE_CAMERA_BOUNDARY) continue;
 
             // If an object can pass through a vanish cap wall, pass through.
-            if (surf->type == SURFACE_VANISH_CAP_WALLS && gCurrentObject != NULL) {
-                // If an object can pass through a vanish cap wall, pass through.
-                if (gCurrentObject->activeFlags & ACTIVE_FLAG_MOVE_THROUGH_GRATE) continue;
-
-                // If Mario has a vanish cap, pass through the vanish cap wall.
-                if (gCurrentObject == gMarioObject && (gMarioState->flags & MARIO_VANISH_CAP)) continue;
-            }
+            if (surf->type == SURFACE_VANISH_CAP_WALLS && gost) continue;
         }
         else if (surf->flags & SURFACE_FLAG_NO_CAM_COLLISION) continue;
 

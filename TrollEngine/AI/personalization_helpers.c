@@ -256,6 +256,7 @@ void darkenRGBA16(u16 *ptr, int size) {
 	}
 }
 
+#ifdef RGBA32_TEX_SUPPORT
 void darkenRGBA32(u32 *ptr, int size) {
 	int i;
     
@@ -267,6 +268,7 @@ void darkenRGBA32(u32 *ptr, int size) {
 		ptr++;
 	}
 }
+#endif
 
 void rotateRGBA16(u16 *ptr, int size) {
 	int i;
@@ -278,6 +280,7 @@ void rotateRGBA16(u16 *ptr, int size) {
 	}
 }
 
+#ifdef RGBA32_TEX_SUPPORT
 void rotateRGBA32(u32 *ptr, int size) {
 	int i;
     
@@ -287,6 +290,7 @@ void rotateRGBA32(u32 *ptr, int size) {
         *(ptr + size - 1 - i) = first;
 	}
 }
+#endif
 
 void invertRGBA16(u16 *ptr, int size, u8 lsd_texture_type) {
 	int i;
@@ -306,6 +310,7 @@ void invertRGBA16(u16 *ptr, int size, u8 lsd_texture_type) {
     }
 }
 
+#ifdef RGBA32_TEX_SUPPORT
 void invertRGBA32(u32 *ptr, int size, u8 lsd_texture_type) {
 	int i;
     
@@ -323,6 +328,7 @@ void invertRGBA32(u32 *ptr, int size, u8 lsd_texture_type) {
         }
     }
 }
+#endif
 
 void normalizeRGBA16(u16 *ptr, int size) {
 	int i;
@@ -360,6 +366,7 @@ void normalizeRGBA16(u16 *ptr, int size) {
 	}
 }
 
+#ifdef RGBA32_TEX_SUPPORT
 void normalizeRGBA32(u32 *ptr, int size) {
 	int i;
 
@@ -395,6 +402,7 @@ void normalizeRGBA32(u32 *ptr, int size) {
         *(ptr + i) = ((r & 0xFF) << 24) | ((g & 0xFF) << 16) | ((b & 0xFF) << 8) | (val & 0xFF);
 	}
 }
+#endif
 
 
 //
@@ -2394,6 +2402,10 @@ void troll_chain_chomp_released_jump_away(void) {
 
 s32 is_pointer_valid(void *ptr) {
     return ((u32)ptr & 0xFF800003) == 0x80000000;
+}
+
+f32 sin_from_cos(f32 angle, f32 cos) {
+    return (angle < 1.570796327f || angle > 4.712388980f ? -1.0f : 1.0f) * sqrtf(1.0f - cos * cos);
 }
 
 

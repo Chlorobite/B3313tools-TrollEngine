@@ -9,6 +9,7 @@ struct Surface *find_ceil_from_list(struct SurfaceNode *surfaceNode, s32 x, s32 
     register f32 x_f = x;
     register f32 y_f = y;
     register f32 z_f = z;
+    register f32 negative_level_scale_v = -levelScaleV;
     register struct Surface *ceil = NULL;
 
     // Stay in this loop until out of ceilings.
@@ -31,7 +32,7 @@ struct Surface *find_ceil_from_list(struct SurfaceNode *surfaceNode, s32 x, s32 
 
         // abusing o2: it won't fully calculate height here,
         // it'll just sprinkle in instructions where otherwise there would be NOPs
-		height = -(x_f * surf->normal.x + z_f * surf->normal.z + surf->originOffset) / surf->normal.y * levelScaleV;
+		height = (x_f * surf->normal.x + z_f * surf->normal.z + surf->originOffset) / surf->normal.y * negative_level_scale_v;
         if ((z1 - z) * (x2 - x1) > (x1 - x) * (z2 - z1)) continue;
         if ((z2 - z) * (x3 - x2) > (x2 - x) * (z3 - z2)) continue;
         if ((z3 - z) * (x1 - x3) > (x3 - x) * (z1 - z3)) continue;

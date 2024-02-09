@@ -3,6 +3,8 @@
 #include "geo_commands.h"
 #include "geo_commands_leek.h"
 
+extern Vtx static_painting_vertices[];
+
 // 0x07021AE0 - 0x07021FFA
 const PaintingData painting_texture_map_bottom[] = {
     85, // num mappings
@@ -490,6 +492,7 @@ Gfx non_ripple_dl[] = {
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 0, G_TX_RENDERTILE, 0, G_TX_CLAMP, 5, G_TX_NOLOD, G_TX_CLAMP, 6, G_TX_NOLOD),
     gsDPSetTileSize(0, 0, 0, (64 - 1) << G_TEXTURE_IMAGE_FRAC, (32 - 1) << G_TEXTURE_IMAGE_FRAC),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
+    gsSPVertex(static_painting_vertices, 8, 0),
     gsSPEndDisplayList(),
 };
 

@@ -38,17 +38,21 @@ extern u8 personalizationFlags;
 #define PERSONALIZATION_FLAG_HUE_SHIFT_STAR        (personalizationFlags&0x40)
 #define PERSONALIZATION_FLAG_TROLL_FAST_TRAVEL     (personalizationFlags&0x80)
 
+//#define RGBA32_TEX_SUPPORT
+
 void hueRotateRGBA5551(u16 *ptr, int size, int hue);
 void rgbMultiplyRGBA16(u16 *ptr, int size, float _r, float _g, float _b);
 void texCopyRGBA16(u16 *ptrFrom, u16 *ptrTo, int size);
 void darkenRGBA16(u16 *ptr, int size);
-void darkenRGBA32(u32 *ptr, int size);
 void rotateRGBA16(u16 *ptr, int size);
-void rotateRGBA32(u32 *ptr, int size);
 void invertRGBA16(u16 *ptr, int size, u8 lsd_texture_type);
-void invertRGBA32(u32 *ptr, int size, u8 lsd_texture_type);
 void normalizeRGBA16(u16 *ptr, int size);
+#ifdef RGBA32_TEX_SUPPORT
+void darkenRGBA32(u32 *ptr, int size);
+void rotateRGBA32(u32 *ptr, int size);
+void invertRGBA32(u32 *ptr, int size, u8 lsd_texture_type);
 void normalizeRGBA32(u32 *ptr, int size);
+#endif
 void unfuckSegment(u8 segment);
 void updateRTC();
 
@@ -114,5 +118,6 @@ struct Object *troll_spawn_star_bypass_magnets(struct Object *sp30, f32 sp34, f3
 s32 is_object_star_spawner(struct Object *obj);
 
 s32 is_pointer_valid(void *ptr);
+f32 sin_from_cos(f32 angle, f32 cos);
 
 #endif
