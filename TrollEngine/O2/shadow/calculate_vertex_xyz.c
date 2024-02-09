@@ -6,6 +6,8 @@ void calculate_vertex_xyz(s8 index, struct Shadow s, f32 *xPosVtx, f32 *yPosVtx,
     register s32 downwardAngle = (s32)(s.floorDownwardAngle * 182.044f);
     register f32 halfScale;
     register f32 halfTiltedScale;
+    register f32 sinAngle = sins(downwardAngle);
+    register f32 cosAngle = coss(downwardAngle);
     s8 xCoordUnit, zCoordUnit;
 
     // This makes xCoordUnit and yCoordUnit each one of -1, 0, or 1.
@@ -14,8 +16,8 @@ void calculate_vertex_xyz(s8 index, struct Shadow s, f32 *xPosVtx, f32 *yPosVtx,
     halfScale = xCoordUnit * s.shadowScale;
     halfTiltedScale = zCoordUnit * tiltedScale;
 
-    *xPosVtx = ((halfTiltedScale * sins(downwardAngle)) + (halfScale * coss(downwardAngle))) / 2.f + s.parentX;
-    *zPosVtx = ((halfTiltedScale * coss(downwardAngle)) - (halfScale * sins(downwardAngle))) / 2.f + s.parentZ;
+    *xPosVtx = ((halfTiltedScale * sinAngle) + (halfScale * cosAngle)) * 0.5f + s.parentX;
+    *zPosVtx = ((halfTiltedScale * cosAngle) - (halfScale * sinAngle)) * 0.5f + s.parentZ;
 
     if (gShadowAboveWaterOrLava) {
         *yPosVtx = s.floorHeight;

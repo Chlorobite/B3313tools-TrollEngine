@@ -2405,7 +2405,8 @@ s32 is_pointer_valid(void *ptr) {
 }
 
 f32 sin_from_cos(f32 angle, f32 cos) {
-    return (angle < 1.570796327f || angle > 4.712388980f ? -1.0f : 1.0f) * sqrtf(1.0f - cos * cos);
+    s32 waveSegment = (s32)(angle / 3.1415926535f);
+    return ((waveSegment & 1) ? -1.0f : 1.0f) * sqrtf(1.0f - cos * cos);
 }
 
 

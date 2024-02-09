@@ -61,7 +61,7 @@ void offload_init_mario_after_warp(u32 marioSpawnType, struct Painting *exitPain
 	// Set the position relative to the painting
 	_tmp = exitPainting->yaw / 57.29577951308232f;
 	_cos = cosf(_tmp);
-	_sin = sinf(_tmp);
+	_sin = sin_from_cos(_tmp, _cos);
 	_halfsize = exitPainting->size / 2.0f;
 
 	gPlayerSpawnInfos[0].startPos[0] = (s16) ((exitPainting->posX + _cos * _halfsize - _sin * 149.0f));

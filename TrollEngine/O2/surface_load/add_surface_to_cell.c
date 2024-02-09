@@ -9,8 +9,8 @@ void add_surface_to_cell(s32 dynamic, s16 cellX, s16 cellZ, struct Surface *surf
     register s32 sortDir;
     register s32 listIndex = SPATIAL_PARTITION_FLOORS;
 
-    if (surface->normal.y <= 0.01f) {
-        if (surface->normal.y < -0.01f) {
+    if (surface->normal.y <= 0.05f) {
+        if (surface->normal.y < -0.05f) {
             listIndex = SPATIAL_PARTITION_CEILS;
         } else {
             listIndex = SPATIAL_PARTITION_WALLS;
