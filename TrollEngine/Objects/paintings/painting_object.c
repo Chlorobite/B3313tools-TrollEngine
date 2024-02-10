@@ -67,7 +67,7 @@ void painting_collision_test_lmao(register struct Painting *painting) {
 	// Map Mario's position to the painting's local space
 	_tmp = -painting->yaw / 57.29577951308232f;
 	_cos = cosf(_tmp);
-	_sin = -sin_from_cos(_tmp, _cos);
+	_sin = sin_from_cos(_tmp, _cos);
 	marioRelativePos[0] = gPaintingMarioXPos - obj->oPosX;
 	marioRelativePos[1] = gPaintingMarioYPos - painting->posY;
 	marioRelativePos[2] = gPaintingMarioZPos - obj->oPosZ;
