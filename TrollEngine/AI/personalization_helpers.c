@@ -868,28 +868,16 @@ void on_collected_star(struct Object *starObj) {
 	struct ObjectNode *listHead = &gObjectLists[get_object_list_from_behavior(segmented_to_virtual(bhvCapSwitch))];
 	u8 bparams = starObj->oBehParams & 0xFF;
     
-	if ((bparams & 0xE0) == 0) {
-        if ((u32)listHead >= 0x80000000) {
-            obj = (struct Object *) listHead->next;
-            
-            while (obj != (struct Object *) listHead) {
-                if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual(bhvCapSwitch)) {
-                    *(&TRACKER_accum_stars_prefer_wing_cap + obj->oBehParams2ndByte) += 1.0f;
-                }
-                
-                obj = (struct Object *) obj->header.next;
+    // Scan for cap switches
+    if ((u32)listHead >= 0x80000000) {
+        obj = (struct Object *) listHead->next;
+        
+        while (obj != (struct Object *) listHead) {
+            if (!(obj->activeFlags & ACTIVE_FLAG_DEACTIVATED) && obj->behavior == segmented_to_virtual(bhvCapSwitch)) {
+                bparams |= 0x20 << obj->oBehParams2ndByte;
             }
-        }
-	}
-	else {
-        if (bparams & 0x20) {
-            TRACKER_accum_stars_prefer_wing_cap += 1.0f;
-        }
-        if (bparams & 0x40) {
-            TRACKER_accum_stars_prefer_vanish_cap += 1.0f;
-        }
-        if (bparams & 0x80) {
-            TRACKER_accum_stars_prefer_metal_cap += 1.0f;
+            
+            obj = (struct Object *) obj->header.next;
         }
     }
     
@@ -898,7 +886,6 @@ void on_collected_star(struct Object *starObj) {
     }
     if (bparams & 0x02) {
         TRACKER_accum_stars_prefer_free += 1.0f;
-        TRACKER_accum_stars -= 1.0f; // counteract += 1.0f below
     }
     if (bparams & 0x04) {
         TRACKER_accum_stars_prefer_murder += 1.0f;
@@ -908,6 +895,15 @@ void on_collected_star(struct Object *starObj) {
     }
     if (bparams & 0x10) {
         TRACKER_accum_stars_prefer_slide += 1.0f;
+    }
+    if (bparams & 0x20) {
+        TRACKER_accum_stars_prefer_wing_cap += 1.0f;
+    }
+    if (bparams & 0x40) {
+        TRACKER_accum_stars_prefer_vanish_cap += 1.0f;
+    }
+    if (bparams & 0x80) {
+        TRACKER_accum_stars_prefer_metal_cap += 1.0f;
     }
     
     if (starObj->oBooTurningSpeed & 0x01) {
@@ -1299,7 +1295,6 @@ void troll_yellow_switch_or_set_flags(s32 __oBehParams2ndByte) {
     // completely randomize the save flags
     save_file_clear_flags(0xFFFFFFFF);
     save_file_set_flags(((random_u16() << 16) | random_u16()) ^ (u32)osGetTime());
-    save_file_clear_flags(SAVE_FLAG_CAP_ON_GROUND); // make cap always possible to obtain
     
     // fuck the AI too
     fuck = (u16*)&gSaveBuffer.menuData.aiData;

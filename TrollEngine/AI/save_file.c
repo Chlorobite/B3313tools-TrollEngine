@@ -431,6 +431,11 @@ void save_file_set_flags(u32 flags) {
 }
 
 void save_file_clear_flags(u32 flags) {
+    u32 capFlags = SAVE_FLAG_CAP_ON_GROUND | SAVE_FLAG_CAP_ON_KLEPTO | SAVE_FLAG_CAP_ON_UKIKI | SAVE_FLAG_CAP_ON_MR_BLIZZARD;
+    
+    if (flags & capFlags)
+        flags |= capFlags;
+    
     gSaveBuffer.files[gCurrSaveFileNum - 1].flags &= ~flags;
     gSaveBuffer.files[gCurrSaveFileNum - 1].flags |= SAVE_FLAG_FILE_EXISTS;
     gSaveFileModified = TRUE;
