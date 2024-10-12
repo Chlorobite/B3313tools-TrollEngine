@@ -1,3 +1,10 @@
+.definelabel rmseg13, readu8("../Bee/b3313 silved.z64", 0x2ABCD7) + \
+                     (readu8("../Bee/b3313 silved.z64", 0x2ABCD6) << 8) + \
+                     (readu8("../Bee/b3313 silved.z64", 0x2ABCD5) << 16) + \
+                     (readu8("../Bee/b3313 silved.z64", 0x2ABCD4) << 24) ; when the little endian ???
+
+.notice "segment 13 address " + tohex(rmseg13)
+
 .definelabel memcpy, 0x803273f0
 .definelabel _Printf, 0x80326260
 .definelabel sprintf, 0x803224f0
@@ -87,13 +94,13 @@
 .definelabel scale_along_line, 0x8028a834
 .definelabel get_dialog_id, 0x802d8c6c      
 .definelabel calc_avoid_yaw, 0x8028a080
-.definelabel is_surf_within_bounding_box, 0x8028a0f4 
+;.definelabel is_surf_within_bounding_box, 0x8028a0f4 
 .definelabel is_mario_behind_surface, 0x8028a7ec  
 
 .definelabel sSurfacePool, 0x8038ee9c
 .definelabel sSurfacePoolSize, 0x8038eea0
 .definelabel gSurfacesAllocated, 0x80361170
-.definelabel alloc_surface, 0x803824F8
+;.definelabel alloc_surface, 0x803824F8
 
 .definelabel gCurrentObject, 0x80361160
 .definelabel gMarioObject, 0x80361158
@@ -102,7 +109,7 @@
 
 .definelabel bhv_moving_blue_coin_init, 0x802e6098
 .definelabel bhv_moving_yellow_coin_loop, 0x802e5f64
-;	.definelabel common_a.or_mario_behavior, 0x802a958c
+;.definelabel common_a.or_mario_behavior, 0x802a958c
 .definelabel cur_obj_forward_vel_approach_upward, 0x8029e398                
 .definelabel cur_obj_init_animation_with_sound, 0x8029f4b4
 .definelabel cur_obj_check_if_near_animation_end, 0x8029ff04                
@@ -163,7 +170,7 @@
 
 .definelabel mario_cap_seg3_dl_03022f48, 0x03022f48
 
-.definelabel sDelayInvincTimer, 0x8033b270                
+;.definelabel sDelayInvincTimer, 0x8033b270                
 .definelabel sInvulnerable, 0x8033b272                    
 .definelabel sInteractionHandlers, 0x8032d950
 .definelabel sDisplayingDoorText, 0x8032da90
@@ -185,12 +192,12 @@
 .definelabel sFloorGeo, 0x8038be30                
 
 .definelabel obj_build_transform_from_pos_and_angle, 0x802a2930
-.definelabel add_surface, 0x80382A2C
+;.definelabel add_surface, 0x80382A2C
 .definelabel surf_has_no_cam_collision, 0x80382FEC
 .definelabel obj_apply_scale_to_matrix, 0x8029dda8                
 .definelabel surface_has_force, 0x80382F84
-.definelabel rotate_camera_around_walls, 0x8028f914                
-.definelabel set_camera_height, 0x8027fff8                
+;.definelabel rotate_camera_around_walls, 0x8028f914                
+;.definelabel set_camera_height, 0x8027fff8                
 
 .definelabel sMarioOnFlyingCarpet, 0x803612b0          
 .definelabel sSurfaceTypeBelowShadow, 0x803612b2                
@@ -856,7 +863,7 @@
 
 .definelabel mario_reset_bodystate, 0x80254338                
 .definelabel update_mario_inputs, 0x80253d58                
-.definelabel mario_handle_special_floors, 0x802507fc                
+;.definelabel mario_handle_special_floors, 0x802507fc                
 .definelabel sink_mario_in_quicksand, 0x80254390                
 .definelabel squish_mario_model, 0x80253588                
 .definelabel set_submerged_cam_preset_and_spawn_bubbles, 0x80253ec0
@@ -1090,7 +1097,7 @@
 .definelabel object_step, 0x802E4E90
 .definelabel obj_return_home_if_safe, 0x802E53F4
 .definelabel obj_check_if_facing_toward_angle, 0x802E55D0
-.definelabel obj_check_floor_death, 0x802E5A80
+;.definelabel obj_check_floor_death, 0x802E5A80
 .definelabel cur_obj_init_animation, 0x8029F464
 .definelabel cur_obj_set_pos_relative, 0x8029F6E0
 .definelabel obj_check_if_collided_with_object, 0x802A1424
@@ -1263,8 +1270,8 @@
 .definelabel play_step_sound, 0x80263EE4
 .definelabel set_mario_anim_with_accel, 0x80250B04
 .definelabel find_floor_slope, 0x80252000
-.definelabel perform_ground_quarter_step, 0x80255B04
-.definelabel mario_get_terrain_sound_addend, 0x802518A8
+;.definelabel perform_ground_quarter_step, 0x80255B04
+;.definelabel mario_get_terrain_sound_addend, 0x802518A8
 .definelabel print_text_fmt_int, 0x802D62D8
 .definelabel gHudFlash, 0x803316d4
 
@@ -1399,10 +1406,10 @@
 .definelabel act_climbing_pole, 0x8025E5A8
 .definelabel act_top_of_pole_transition, 0x8025E930
 .definelabel act_top_of_pole, 0x8025EA30
-.definelabel act_start_hanging, 0x8025EF58
-.definelabel act_hanging, 0x8025F0B4
-.definelabel act_hang_moving, 0x8025F1E4
-.definelabel act_ledge_grab, 0x8025F6C0
+;.definelabel act_start_hanging, 0x8025EF58
+;.definelabel act_hanging, 0x8025F0B4
+;.definelabel act_hang_moving, 0x8025F1E4
+;.definelabel act_ledge_grab, 0x8025F6C0
 .definelabel act_ledge_climb_slow, 0x8025F970
 .definelabel act_ledge_climb_down, 0x8025FA64
 .definelabel act_ledge_climb_fast, 0x8025FAE8
@@ -1410,8 +1417,8 @@
 .definelabel act_in_cannon, 0x8025FC6C
 .definelabel act_tornado_twirling, 0x80260154
 .definelabel update_air_without_turn, 0x8026AA48
-.definelabel mario_bonk_reflection, 0x802552FC
-.definelabel lava_boost_on_wall, 0x8026A12C
+;.definelabel mario_bonk_reflection, 0x802552FC
+;.definelabel lava_boost_on_wall, 0x8026A12C
 
 .definelabel osaisetfrequency, 0x80325970
 .definelabel gtatumsperbeat, 0x80334FF4
@@ -1432,10 +1439,10 @@
 .definelabel gaibuffers, 0x80226C40
 
 .definelabel set_camera_shake_from_hit, 0x8027F590
-.definelabel check_common_idle_cancels, 0x802608B0
+;.definelabel check_common_idle_cancels, 0x802608B0
 .definelabel find_floor_height_relative_polar, 0x80251F24
 .definelabel check_common_stationary_cancels, 0x80263784
-.definelabel mario_update_quicksand, 0x80255414
+;.definelabel mario_update_quicksand, 0x80255414
 .definelabel act_start_sleeping, 0x80261000
 .definelabel act_sleeping, 0x80261268
 .definelabel act_waking_up, 0x802614FC
@@ -1452,7 +1459,7 @@
 .definelabel act_stop_crawling, 0x80262890
 .definelabel act_slide_kick_slide_stop, 0x80262490
 .definelabel act_shockwave_bounce, 0x80262980
-.definelabel act_first_person, 0x802635E8
+;.definelabel act_first_person, 0x802635E8
 .definelabel act_jump_land_stop, 0x80262D68
 .definelabel act_double_jump_land_stop, 0x80262DC4
 .definelabel act_freefall_land_stop, 0x80262E94
@@ -1471,7 +1478,7 @@
 .definelabel act_hold_butt_slide_stop, 0x80262398
 .definelabel find_floor_height, 0x80381794
 
-.definelabel check_common_airborne_cancels, 0x8026FA18
+;.definelabel check_common_airborne_cancels, 0x8026FA18
 .definelabel play_far_fall_sound, 0x80269FC0
 .definelabel act_jump, 0x8026B6A0
 .definelabel act_double_jump, 0x8026B740
@@ -1488,7 +1495,7 @@
 .definelabel act_burning_fall, 0x8026CE50
 .definelabel act_triple_jump, 0x8026B814
 .definelabel act_backflip, 0x8026B90C
-.definelabel act_long_jump, 0x8026BE78
+;.definelabel act_long_jump, 0x8026BE78
 .definelabel act_riding_shell_air, 0x8026BF40
 .definelabel act_dive, 0x8026C1E0
 .definelabel act_air_throw, 0x8026C4B8
@@ -1500,9 +1507,9 @@
 .definelabel act_air_hit_wall, 0x8026D988
 .definelabel act_forward_rollout, 0x8026DB54
 .definelabel act_shot_from_cannon, 0x8026E968
-.definelabel act_butt_slide_air, 0x8026DE98
-.definelabel act_hold_butt_slide_air, 0x8026E088
-.definelabel act_lava_boost, 0x8026E2B4
+;.definelabel act_butt_slide_air, 0x8026DE98
+;.definelabel act_hold_butt_slide_air, 0x8026E088
+;.definelabel act_lava_boost, 0x8026E2B4
 .definelabel act_getting_blown, 0x8026D770
 .definelabel act_backward_rollout, 0x8026DCF4
 .definelabel act_crazy_box_bounce, 0x8026CF28
@@ -1590,3 +1597,154 @@
 .definelabel guTranslate, 0x80325688                
 .definelabel guRotate, 0x80325874                
 .definelabel guScale, 0x80325924                
+
+.definelabel unload_object, 0x802c9b68                
+
+.definelabel spawn_object_rel_with_rot, 0x8029ea24
+.definelabel gPlayer3Controller, 0x8032d5ec
+.definelabel create_dl_translation_matrix, 0x802d7070
+.definelabel print_hud_lut_string, 0x802d7b84
+.definelabel int_to_str, 0x802d8b34
+.definelabel get_str_x_pos_from_center, 0x802d8844
+.definelabel print_menu_generic_string, 0x802d7e88
+.definelabel save_file_get_max_coin_score, 0x80279E80
+.definelabel create_dl_ortho_matrix, 0x802D7384
+.definelabel create_dl_scale_matrix, 0x802d7280
+.definelabel create_dl_rotation_matrix, 0x802d7174
+.definelabel area_update_objects, 0x8027B164
+.definelabel get_string_width, 0x802d8934
+.definelabel gMenuTextAlpha, 0x803613f8
+.definelabel gMenuHoldKeyIndex, 0x80331498
+.definelabel gMenuHoldKeyTimer, 0x8033149c
+
+.definelabel dl_menu_idle_hand, 0x070073A0
+.definelabel dl_menu_grabbing_hand, 0x070073B8
+.definelabel dl_rgba16_text_begin, 0x02011B60
+.definelabel dl_rgba16_text_end, 0x02011BC8
+.definelabel dl_draw_text_bg_box, 0x02011C48
+.definelabel dl_ia_text_begin, 0x02011CC8
+.definelabel dl_ia_text_end, 0x02011D50
+.definelabel dl_draw_triangle, 0x02011DC0
+
+.definelabel gDialogID, 0x80331484
+.definelabel sDialogSpeakerVoice, 0x80332f04
+
+.definelabel chain_chomp_restore_normal_chain_lengths, 0x8030009C
+.definelabel spawn_mist_particles_with_sound, 0x802a37dc
+.definelabel set_camera_shake_from_point, 0x8027f9f0
+
+.definelabel print_intro_text, 0x8027a8b0
+.definelabel gDebugLevelSelect, 0x8032d58c
+.definelabel sPlayMarioGreeting, 0x801A7C34
+
+.definelabel play_mode_change_level, 0x8024b880
+.definelabel D_80339ECA, 0x8033b23a
+.definelabel sTransitionTimer, 0x8033b23c
+.definelabel sTransitionUpdate, 0x8033b240
+.definelabel D_80339EE0, 0x8033b250
+
+.definelabel gDialogBoxAngle, 0x80331474
+.definelabel gDialogBoxScale, 0x80331478
+.definelabel gDialogBoxType, 0x80331480
+.definelabel gMenuState, 0x80331470
+.definelabel gMenuLineNum, 0x80331490
+.definelabel gMenuMode, 0x803314f8
+.definelabel render_dialog_box_type, 0x802d8e2c
+.definelabel handle_dialog_text_and_pages, 0x802d982c
+.definelabel render_dialog_triangle_choice, 0x802d9cb0
+.definelabel render_pause_course_options, 0x802dbe68
+
+.definelabel cutscene_object_with_dialog, 0x8028ff04
+.definelabel is_point_close_to_object, 0x802e52b8
+
+.definelabel set_flag_post_door, 0x80290b54
+.definelabel update_camera_yaw, 0x80290098
+
+.definelabel seq_player_unlower_volume, 0x80320ec4
+
+.definelabel sCurrPlayMode, 0x8033b238
+
+.definelabel sTimerRunning, 0x8033b25e
+
+.definelabel seq_player_fade_to_percentage_of_volume, 0x8031E60C
+
+.definelabel s8DirModeYawOffset, 0x8033c778
+.definelabel set_camera_mode_fixed, 0x8028d44c
+.definelabel sFOVState, 0x8033c5a0
+
+.definelabel envfx_update_snow, 0x802df748
+.definelabel envfx_cleanup_snow, 0x802de0bc
+.definelabel gEnvFxBuffer, 0x80361400
+.definelabel gEnvFxMode, 0x80331750
+.definelabel envfx_update_bubbles, 0x802e1f48
+
+.definelabel tiny_bubble_gray_dl_begin, 0x0B006A50
+.definelabel tiny_bubble_dl_end, 0x0B006AB0
+.definelabel append_snowflake_vertex_buffer, 0x802df334
+.definelabel gSnowParticleCount, 0x80361414
+.definelabel gSnowCylinderLastPos, 0x80361408
+.definelabel gSnowFlakeVertex1, 0x80331788
+.definelabel gSnowFlakeVertex2, 0x80331790
+.definelabel gSnowFlakeVertex3, 0x80331798
+.definelabel rotate_triangle_vertices, 0x802def2c
+.definelabel pos_from_orbit, 0x802de23c
+.definelabel orbit_from_positions, 0x802de114
+.definelabel envfx_is_snowflake_alive, 0x802de360
+.definelabel gSnowParticleMaxCount, 0x80361416
+.definelabel mem_pool_alloc, 0x80278c58
+.definelabel gEffectsMemoryPool, 0x8033b494
+
+.definelabel override_viewport_and_clip, 0x8027a7d0
+.definelabel fade_into_special_warp, 0x802497b8
+
+.definelabel linear_mtxf_mul_vec3f, 0x8029f200
+.definelabel sskullslidingboxhitbox, 0x80330c38
+
+;.definelabel mario_get_floor_class, 0x8025177c
+;.definelabel mario_floor_is_slippery, 0x80251bd4
+
+.definelabel gttcspeedsetting, 0x80361258
+.definelabel cur_obj_rotate_face_angle_using_vel, 0x802A2BC4
+.definelabel skoopashellhitbox, 0x80330840
+.definelabel koopa_shell_spawn_sparkles, 0x802BD62C
+.definelabel cur_obj_update_floor_height_and_get_floor, 0x802A064C
+.definelabel koopa_shell_spawn_water_drop, 0x802BD3E4
+.definelabel bhv_koopa_shell_flame_spawn, 0x802BD5DC
+.definelabel bowser_set_goal_invisible, 0x802B611C
+.definelabel bowser_land, 0x802B5444
+.definelabel bowser_spawn_shockwave, 0x802B4184
+.definelabel mario_facing_downhill, 0x80251B54
+.definelabel f32_find_wall_collision, 0x80380DE8
+.definelabel vec3f_find_ceil, 0x80251AFC
+.definelabel resolve_and_return_wall_collisions, 0x80251A48
+.definelabel mario_update_windy_ground, 0x8025580C
+.definelabel mario_drop_held_object, 0x8024C6C0
+.definelabel mario_stop_riding_object, 0x8024C618
+.definelabel perform_ground_step, 0x80255D88
+.definelabel tilt_body_ground_shell, 0x802661CC
+.definelabel adjust_sound_for_speed, 0x80251274
+.definelabel align_with_floor, 0x80264024
+.definelabel slide_bonk, 0x802642B4
+.definelabel apply_landing_accel, 0x80264D80
+.definelabel apply_slope_decel, 0x80265080
+.definelabel play_mario_landing_sound_once, 0x80251510
+.definelabel mario_push_off_steep_floor, 0x80255654
+.definelabel should_begin_sliding, 0x80265458
+.definelabel update_air_with_turn, 0x8026A818
+.definelabel update_lava_boost_or_twirling, 0x8026ACD8
+.definelabel play_mario_heavy_landing_sound, 0x80251574
+.definelabel set_water_plunge_action, 0x80253488
+.definelabel update_hang_stationary, 0x8025EED0
+.definelabel let_go_of_ledge, 0x8025F384
+.definelabel lower_background_noise, 0x80248C58
+.definelabel set_camera_mode, 0x80286188
+.definelabel raise_background_noise, 0x80248CE8
+.definelabel swatercurrentspeeds, 0x8032dd38
+.definelabel turn_obj_away_from_surface, 0x802E3FAC
+.definelabel obj_orient_graph, 0x802E42E0
+.definelabel calc_obj_friction, 0x802E43E4
+.definelabel gmarioplatform, 0x80330E34
+.definelabel pss_begin_slide, 0x80250724
+.definelabel pss_end_slide, 0x80250778
+.definelabel check_lava_boost, 0x8025065C
+.definelabel check_death_barrier, 0x802505C8

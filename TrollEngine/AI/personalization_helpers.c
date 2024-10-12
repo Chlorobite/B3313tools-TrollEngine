@@ -900,10 +900,10 @@ void on_collected_star(struct Object *starObj) {
         TRACKER_accum_stars_prefer_wing_cap += 1.0f;
     }
     if (bparams & 0x40) {
-        TRACKER_accum_stars_prefer_vanish_cap += 1.0f;
+        TRACKER_accum_stars_prefer_metal_cap += 1.0f;
     }
     if (bparams & 0x80) {
-        TRACKER_accum_stars_prefer_metal_cap += 1.0f;
+        TRACKER_accum_stars_prefer_vanish_cap += 1.0f;
     }
     
     if (starObj->oBooTurningSpeed & 0x01) {
@@ -992,38 +992,38 @@ f32 AI_star_get_preference_by_bparams(struct Object *starObj) {
     f32 result = 1.0f;
     
     if (bparams & 0x01) {
-        result *= TRACKER_accum_stars_prefer_cannon;
+        result *= PV_GAMEPLAY_CANNON;
     }
     if (bparams & 0x02) {
-        result *= TRACKER_accum_stars_prefer_free;
+        result *= PV_GAMEPLAY_FREE;
     }
     if (bparams & 0x04) {
-        result *= TRACKER_accum_stars_prefer_murder;
+        result *= PV_GAMEPLAY_MURDER;
     }
     if (bparams & 0x08) {
-        result *= TRACKER_accum_stars_prefer_platform;
+        result *= PV_GAMEPLAY_PLATFORM;
     }
     if (bparams & 0x10) {
-        result *= TRACKER_accum_stars_prefer_slide;
+        result *= PV_GAMEPLAY_SLIDE;
     }
     if (bparams & 0x20) {
-        result *= TRACKER_accum_stars_prefer_wing_cap;
+        result *= PV_CAP_WING;
     }
     if (bparams & 0x40) {
-        result *= TRACKER_accum_stars_prefer_vanish_cap;
+        result *= PV_CAP_METAL;
     }
     if (bparams & 0x80) {
-        result *= TRACKER_accum_stars_prefer_metal_cap;
+        result *= PV_CAP_VANISH;
     }
     
     if (starObj->oBooTurningSpeed & 0x01) {
-        result *= TRACKER_accum_stars_prefer_boss;
+        result *= PV_GAMEPLAY_BOSS;
     }
     if (starObj->oBooTurningSpeed & 0x02) {
-        result *= TRACKER_accum_stars_prefer_collect;
+        result *= PV_GAMEPLAY_COLLECT;
     }
     if (starObj->oBooTurningSpeed & 0x04) {
-        result *= TRACKER_accum_stars_prefer_timed;
+        result *= PV_GAMEPLAY_TIMED;
     }
     
     return result;
@@ -1700,6 +1700,8 @@ struct Object *troll_spawn_star(struct Object *sp30, f32 sp34, f32 sp38, f32 sp3
 
 void troll_spawn_bowser_star() {
     register struct Object *obj;
+    
+    spawningBossStar = TRUE;
     
     if (((gCurrentObject->oBehParams) & 0x01FF) >= 0x01FE)
         // key

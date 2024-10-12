@@ -58,17 +58,17 @@ struct Surface *read_surface_data(s16 *vertexData, s16 **vertexIndices) {
 
     surface = alloc_surface();
 
-    surface->vertex1[0] = x1;
-    surface->vertex2[0] = x2;
-    surface->vertex3[0] = x3;
+    surface->vertexX[0] = x1;
+    surface->vertexX[1] = x2;
+    surface->vertexX[2] = x3;
 
-    surface->vertex1[1] = y1;
-    surface->vertex2[1] = y2;
-    surface->vertex3[1] = y3;
+    surface->vertexY[0] = y1;
+    surface->vertexY[1] = y2;
+    surface->vertexY[2] = y3;
 
-    surface->vertex1[2] = z1;
-    surface->vertex2[2] = z2;
-    surface->vertex3[2] = z3;
+    surface->vertexZ[0] = z1;
+    surface->vertexZ[1] = z2;
+    surface->vertexZ[2] = z3;
 
     surface->normal.x = nx;
     surface->normal.y = ny;

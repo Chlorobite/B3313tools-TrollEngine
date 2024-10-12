@@ -216,22 +216,25 @@ struct Waypoint {
 };
 
 struct Surface {
+    // cache line 1: low priority for the collision math code
     /*0x00*/ s16 type;
     /*0x02*/ s16 force;
     /*0x04*/ s8 flags;
     /*0x05*/ s8 room;
-    /*0x06*/ s16 lowerY;
-    /*0x08*/ s16 upperY;
-    /*0x0A*/ Vec3s vertex1;
-    /*0x10*/ Vec3s vertex2;
-    /*0x16*/ Vec3s vertex3;
-    /*0x1C*/ struct {
+    /*0x06*/ Vec3s vertexY;
+    /*0x0C*/ struct Object *object;
+    // cache line 2: the floats (wall collision check runs through this)
+    /*0x10*/ struct {
         f32 x;
         f32 y;
         f32 z;
     } normal;
-    /*0x28*/ f32 originOffset;
-    /*0x2C*/ struct Object *object;
+    /*0x1C*/ f32 originOffset;
+    // cache line 3: the vertices (floor collision check runs through this)
+    /*0x20*/ Vec3s vertexX;
+    /*0x26*/ Vec3s vertexZ;
+    /*0x2C*/ s16 lowerY;
+    /*0x2E*/ s16 upperY;
 };
 
 struct MarioBodyState {

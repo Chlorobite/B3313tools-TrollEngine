@@ -1,5 +1,7 @@
 ; The purpose of O2 
 
+.include "O2/surface_struct_recomp/surface_struct_recomp.asm"
+
 ; Engine segment
 .headersize 0x80283280
 

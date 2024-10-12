@@ -1,6 +1,8 @@
 ; Fix objects' collision and stuff
-; FIND SEGMENT 13 AND SET THE ROM ADDRESS BELOW BEFORE INCLUDING THIS FILE! OTHERWISE SHIT JUST FUCKING BREAKS
-.headersize 0x13000000-0x4E02190
+.headersize 0x13000000-rmseg13
+
+.org 0x13001714+0x0c
+.word 0x00001000 // INTERACT_STAR_OR_KEY
 
 .org 0x13000000+0x0C ; bhvStarDoor
 .word inside_castle_seg7_collision_star_door & 0x00FFFFFF

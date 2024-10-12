@@ -17,16 +17,16 @@ struct Surface *find_floor_from_list(struct SurfaceNode *surfaceNode, s32 x, s32
         surf = surfaceNode->surface;
         surfaceNode = surfaceNode->next;
 
-        x1 = surf->vertex1[0];
-        x2 = surf->vertex2[0];
-        x3 = surf->vertex3[0];
+        x1 = surf->vertexX[0];
+        x2 = surf->vertexX[1];
+        x3 = surf->vertexX[2];
         
         // Check that the point is within the triangle bounds.
         if ((x1 < x) == (x2 < x) && (x1 < x) == (x3 < x)) continue;
         
-        z1 = surf->vertex1[2];
-        z2 = surf->vertex2[2];
-        z3 = surf->vertex3[2];
+        z1 = surf->vertexZ[0];
+        z2 = surf->vertexZ[1];
+        z3 = surf->vertexZ[2];
         
         if ((z1 < z) == (z2 < z) && (z1 < z) == (z3 < z)) continue;
         

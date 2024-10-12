@@ -36,11 +36,11 @@ s32 find_wall_collisions_from_list(register struct SurfaceNode *surfaceNode,
         //! (Quantum Tunneling) Due to issues with the vertices walls choose and
         //  the fact they are floating point, certain floating point positions
         //  along the seam of two walls may collide with neither wall or both walls.
-        y1 = surf->vertex1[1];
-        y2 = surf->vertex2[1];
-        y3 = surf->vertex3[1];
+        y1 = surf->vertexY[0];
+        y2 = surf->vertexY[1];
+        y3 = surf->vertexY[2];
         if (surf->flags & SURFACE_FLAG_X_PROJECTION) {
-            w1 = -surf->vertex1[2];            w2 = -surf->vertex2[2];            w3 = -surf->vertex3[2];
+            w1 = -surf->vertexZ[0];            w2 = -surf->vertexZ[1];            w3 = -surf->vertexZ[2];
 
             if (surf->normal.x > 0.0f) {
                 if ((y1 - y_i) * (w2 - w1) > (w1 + z_i) * (y2 - y1)) continue;
@@ -52,7 +52,7 @@ s32 find_wall_collisions_from_list(register struct SurfaceNode *surfaceNode,
                 if ((y3 - y_i) * (w1 - w3) < (w3 + z_i) * (y1 - y3)) continue;
             }
         } else {
-            w1 = surf->vertex1[0];            w2 = surf->vertex2[0];            w3 = surf->vertex3[0];
+            w1 = surf->vertexX[0];            w2 = surf->vertexX[1];            w3 = surf->vertexX[2];
 
             if (surf->normal.z > 0.0f) {
                 if ((y1 - y_i) * (w2 - w1) > (w1 - x_i) * (y2 - y1)) continue;

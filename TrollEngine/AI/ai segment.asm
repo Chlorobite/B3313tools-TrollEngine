@@ -62,8 +62,7 @@ CVT.S.W    F0, F0
 
 
 ; Fix objects' collision and stuff
-; FIND SEGMENT 13 AND SET THE ROM ADDRESS IN THE FILE BEFORE INCLUDING! OTHERWISE SHIT JUST FUCKING BREAKS
-;.include "AI/ai objectsfix.asm"
+.include "AI/ai objectsfix.asm"
 
 
 .headersize 0x80245000

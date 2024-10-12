@@ -116,4 +116,18 @@ void TRACKER_on_npc_talk(register struct Object *o);
 void TRACKER_inject_save();
 void TRACKER_read_save();
 
+
+#define PV_GAMEPLAY_BOSS     (TRACKER_star_preferences_gameplay[0])
+#define PV_GAMEPLAY_CANNON   (TRACKER_star_preferences_gameplay[1])
+#define PV_GAMEPLAY_COLLECT  (TRACKER_star_preferences_gameplay[2])
+#define PV_GAMEPLAY_FREE     (TRACKER_star_preferences_gameplay[3])
+#define PV_GAMEPLAY_MURDER   (TRACKER_star_preferences_gameplay[4])
+#define PV_GAMEPLAY_PLATFORM (TRACKER_star_preferences_gameplay[5])
+#define PV_GAMEPLAY_SLIDE    (TRACKER_star_preferences_gameplay[6])
+#define PV_GAMEPLAY_TIMED    (TRACKER_star_preferences_gameplay[7])
+
+#define PV_CAP_WING   (TRACKER_star_preferences_cap[0])
+#define PV_CAP_METAL  (TRACKER_star_preferences_cap[1])
+#define PV_CAP_VANISH (TRACKER_star_preferences_cap[2])
+
 #endif

@@ -1,0 +1,18 @@
+#include <PR/ultratypes.h>
+
+#include "sm64.h"
+#include "area.h"
+#include "audio/external.h"
+#include "behavior_data.h"
+#include "camera.h"
+#include "engine/math_util.h"
+#include "interaction.h"
+#include "level_update.h"
+#include "mario.h"
+#include "mario_actions_stationary.h"
+#include "mario_step.h"
+#include "memory.h"
+#include "save_file.h"
+#include "sound_init.h"
+#include "surface_terrains.h"
+#include "rumble_init.h"

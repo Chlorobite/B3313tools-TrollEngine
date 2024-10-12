@@ -4,15 +4,15 @@ s32 is_behind_surface(Vec3f pos, struct Surface *surf) {
     register f32 normX, normY, normZ, dirX, dirY, dirZ;
     
     // Surface normal
-    normX = (surf->vertex2[1] - surf->vertex1[1]) * (surf->vertex3[2] - surf->vertex2[2]) -
-                (surf->vertex3[1] - surf->vertex2[1]) * (surf->vertex2[2] - surf->vertex1[2]);
-    normY = (surf->vertex2[2] - surf->vertex1[2]) * (surf->vertex3[0] - surf->vertex2[0]) -
-                (surf->vertex3[2] - surf->vertex2[2]) * (surf->vertex2[0] - surf->vertex1[0]);
-    normZ = (surf->vertex2[0] - surf->vertex1[0]) * (surf->vertex3[1] - surf->vertex2[1]) -
-                (surf->vertex3[0] - surf->vertex2[0]) * (surf->vertex2[1] - surf->vertex1[1]);
-    dirX = surf->vertex1[0] - pos[0];
-    dirY = surf->vertex1[1] - pos[1];
-    dirZ = surf->vertex1[2] - pos[2];
+    normX = (surf->vertexY[1] - surf->vertexY[0]) * (surf->vertexZ[2] - surf->vertexZ[1]) -
+                (surf->vertexY[2] - surf->vertexY[1]) * (surf->vertexZ[1] - surf->vertexZ[0]);
+    normY = (surf->vertexZ[1] - surf->vertexZ[0]) * (surf->vertexX[2] - surf->vertexX[1]) -
+                (surf->vertexZ[2] - surf->vertexZ[1]) * (surf->vertexX[1] - surf->vertexX[0]);
+    normZ = (surf->vertexX[1] - surf->vertexX[0]) * (surf->vertexY[2] - surf->vertexY[1]) -
+                (surf->vertexX[2] - surf->vertexX[1]) * (surf->vertexY[1] - surf->vertexY[0]);
+    dirX = surf->vertexX[0] - pos[0];
+    dirY = surf->vertexY[0] - pos[1];
+    dirZ = surf->vertexZ[0] - pos[2];
 
     if (dirX * normX + dirY * normY + dirZ * normZ < 0) {
         return 1;

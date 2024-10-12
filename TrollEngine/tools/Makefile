@@ -47,7 +47,7 @@ skyconv_SOURCES := skyconv.c n64graphics.c utils.c
 
 armips: CC := $(CXX)
 armips_SOURCES := armips.cpp
-armips_CFLAGS  := -std=c++11 -fno-exceptions -fno-rtti -pipe
+armips_CFLAGS  := -std=gnu++11 -fno-exceptions -fno-rtti -pipe
 armips_LDFLAGS := -pthread
 ifeq ($(HOST_ENV),MinGW)
   armips_LDFLAGS += -municode

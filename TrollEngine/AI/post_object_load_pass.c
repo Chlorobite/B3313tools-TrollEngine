@@ -37,6 +37,7 @@ extern u8 *moto_bhv_start;
 extern u8 *moto_model_normal_start;
 extern u8 *moto_model_ice_start;
 extern const BehaviorScript bhvHiddenSilverStarStar[];
+extern const BehaviorScript bhvStarMagnet[];
 extern void *powermeter_last_romstart;
 
 static void crawlVertices(u8 *ptr, u16 count) {
@@ -756,7 +757,8 @@ s32 is_star(struct Object *obj) {
 	return obj->behavior == segmented_to_virtual(bhvStar) ||
 		obj->behavior == segmented_to_virtual(bhvHiddenRedCoinStar) ||
 		obj->behavior == segmented_to_virtual(bhvHiddenStar) || // secret
-		obj->behavior == segmented_to_virtual(bhvHiddenSilverStarStar);
+		obj->behavior == segmented_to_virtual(bhvHiddenSilverStarStar) ||
+		obj->behavior == segmented_to_virtual(bhvStarMagnet);
 }
 
 void personalize_stars() {
@@ -767,7 +769,7 @@ void personalize_stars() {
 	register s32 delete;
 	register s32 foundMax;
 
-	for (act = 0; act <= 7; act++) {
+	for (act = 0; act <= 255; act++) {
 		starMax = 0.0f;
 		delete = FALSE;
 
@@ -1129,7 +1131,7 @@ void postObjectLoadPass() {
 	}
 	
 	if (!PERSONALIZATION_FLAG_DISABLE_OBJECTS) {
-		personalize_stars();
+		//personalize_stars();
 		trollWarps(); // trol
 	}
 	set_hud_type(hud_type_param);
