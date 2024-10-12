@@ -212,6 +212,11 @@ NOP
 .importobj "Trolls/bhv/celebration_star.c__celeb_star_act_face_camera.o"
 .endarea
 
+.org 0x8030059C
+.area 0x80300778-0x8030059C
+.importobj "Trolls/bhv/chain_chomp.inc.c__chain_chomp_released_lunge_around.o"
+.endarea
+
 .org 0x80300778
 .area 0x803008A8-0x80300778
 .importobj "Trolls/bhv/chain_chomp.inc.c__chain_chomp_released_break_gate.o"
@@ -220,6 +225,12 @@ NOP
 .org 0x803008A8
 .area 0x803008EC-0x803008A8
 J       troll_chain_chomp_released_jump_away
+NOP
+.endarea
+
+.org 0x80301180
+.area 0x80301210-0x80301180
+J       troll_bhv_chain_chomp_gate_update
 NOP
 .endarea
 

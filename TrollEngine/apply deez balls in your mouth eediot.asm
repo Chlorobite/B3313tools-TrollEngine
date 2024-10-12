@@ -127,6 +127,11 @@ OR      A3, R0, R0
 LW      T6, 0xDF60 (T6)
 LUI     T7, 0x8034
 
+; fix the power star economy
+.orga 0x1208048
+.word 0x15040000, 0x00407E78
+.word 0x15040000, 0x00407E78
+
 ; browser level fix
 .org 0x8028752C
 ; Instead of demo, check for browser's existence, and skip the entire thing if no browser

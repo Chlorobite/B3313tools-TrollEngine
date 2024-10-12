@@ -2397,6 +2397,24 @@ void troll_chain_chomp_released_jump_away(void) {
     }
 }
 
+void troll_bhv_chain_chomp_gate_update(void) {
+    register struct Object *o = gCurrentObject;
+    if (o->parentObj->oChainChompNumLunges == 4) {
+        // Chain chomp about to lunge at a gate,
+        // set its home position to ours to tell it where to lunge at.
+        o->parentObj->oHomeX = o->oPosX;
+        o->parentObj->oHomeZ = o->oPosZ;
+    }
+    if (o->parentObj->oChainChompHitGate) {
+        spawn_mist_particles_with_sound(SOUND_GENERAL_WALL_EXPLOSION);
+        set_camera_shake_from_point(SHAKE_POS_SMALL, o->oPosX, o->oPosY, o->oPosZ);
+        spawn_mist_particles_variable(0, 0x7F, 200.0f);
+        spawn_triangle_break_particles(30, MODEL_DIRT_ANIMATION, 3.0f, 4);
+        obj_mark_for_deletion(o);
+    }
+}
+
+
 s32 is_pointer_valid(void *ptr) {
     return ((u32)ptr & 0xFF800003) == 0x80000000;
 }
