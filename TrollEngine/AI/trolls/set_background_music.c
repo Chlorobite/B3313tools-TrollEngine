@@ -19,10 +19,12 @@
 #define MUSIC_NONE 0xFFFF
 
 extern u16 sCurrentMusic;
+extern u8 hudType;
 
 void set_background_music(u16 a, u16 seqArgs, s16 fadeTimer) {
-	// REMOVE: check for the same bgm to not restart it
-	// since we could still have e.g. NLST changes that wouldn't be applied immediately
+	// REMOVE: check for the same bgm to not restart it, but only for beta.
+    if (hudType >= 2 && sCurrentMusic == seqArgs) return; // vanillma balls
+    
     if (gResetTimer == 0) {
 	// END REMOVE
         if (gCurrCreditsEntry != NULL) {

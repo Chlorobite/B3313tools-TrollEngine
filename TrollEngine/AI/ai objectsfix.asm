@@ -1,8 +1,9 @@
 ; Fix objects' collision and stuff
 .headersize 0x13000000-rmseg13
 
+; the grand star
 .org 0x13001714+0x0c
-.word 0x00001000 // INTERACT_STAR_OR_KEY
+.word 0x00002000 // INTERACT_WARP
 
 .org 0x13000000+0x0C ; bhvStarDoor
 .word inside_castle_seg7_collision_star_door & 0x00FFFFFF
