@@ -1928,15 +1928,13 @@ s32 troll_act_crouching(struct MarioState *m) {
         return set_mario_action(m, ACT_STOP_CROUCHING, 0);
     }
 
-    if (get_red_star_count(gCurrSaveFileNum - 1) >= 2) {
-        if (m->input & INPUT_NONZERO_ANALOG) {
-            return set_mario_action(m, ACT_START_CRAWLING, 0);
-        }
+    if (m->input & INPUT_NONZERO_ANALOG) {
+        return set_mario_action(m, ACT_START_CRAWLING, 0);
+    }
 
-        if (get_red_star_count(gCurrSaveFileNum - 1) >= 3) {
-            if (m->input & INPUT_B_PRESSED) {
-                return set_mario_action(m, ACT_PUNCHING, 9);
-            }
+    if (get_red_star_count(gCurrSaveFileNum - 1) >= 3) {
+        if (m->input & INPUT_B_PRESSED) {
+            return set_mario_action(m, ACT_PUNCHING, 9);
         }
     }
 

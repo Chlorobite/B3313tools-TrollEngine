@@ -216,7 +216,7 @@ s32 update_behind_mario_camera(struct Camera *c, Vec3f focus, Vec3f pos) {
         pitchInc = 0x800;
     }
 
-    camera_approach_s16_symmetric_bool(&yaw, marioYaw + goalYawOff, 0x80);
+    camera_approach_s16_symmetric_bool(&yaw, marioYaw + goalYawOff, 200); // the beta footage seems ever so slightly faster than 0xC0=192
     if (dist < 300.f) {
         dist = 300.f;
     }
