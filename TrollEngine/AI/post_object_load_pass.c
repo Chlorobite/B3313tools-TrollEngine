@@ -27,6 +27,9 @@ u8 normalize_textures = FALSE;
 u8 lava_skeeter = FALSE;
 u32 *foundTextures[256];
 u32 foundTextureSamples[256];
+u16 goombaSample = 0xFFFE;
+u16 bobombSample = 0xFFFE;
+u32 ampSample = 0xFFFEFFFE;
 
 extern struct AllocOnlyPool *sLevelPool;
 //extern const GeoLayout personalized_skeeter_geo[];
@@ -930,53 +933,58 @@ void postObjectLoadPass() {
 		// check if gomba are loaded, and set gomba type, trolling the texture accordingly
 
 		// TODO: Tweak the pixel check and the hues on B3313
-		vaddr = (void*)segmented_to_virtual((void*)0x08019D30);
-		if (*((u16*)vaddr) == 0xA201) {
-			goombaType = 0;
+		if (get_model_loaded(MODEL_GOOMBA)) {
+			vaddr = (void*)segmented_to_virtual((void*)0x08019D30);
+			if (goombaSample == 0xFFFE)
+				goombaSample = *((u16*)vaddr);
 			
-			if (levelType == 6) {
-				// fire type level
-				goombaType = (TRACKER_difficulty_modifier < 1.0f ? 0 : 6);
-			}
-			else if (levelType == 4) {
-				// cave type level
-				goombaType = (TRACKER_difficulty_modifier > 2.0f ? 3 : 1);
-			}
-			else {
-				// other levels
-				if (TRACKER_difficulty_modifier < 0.5f) {
-					// yellow goombas (easier)
-					goombaType = 4;
+			if (*((u16*)vaddr) == goombaSample) {
+				goombaType = 0;
+				
+				if (levelType == 6) {
+					// fire type level
+					goombaType = (TRACKER_difficulty_modifier < 1.0f ? 0 : 6);
 				}
-				else if (TRACKER_accum_murder * 0.5f > 1.0f + sqrtf(goombaCount) * TRACKER_difficulty_modifier) {
-					// the player doing a little too much killing
-					goombaType = 5; // FUCKFUCK RUN
+				else if (levelType == 4) {
+					// cave type level
+					goombaType = (TRACKER_difficulty_modifier > 2.0f ? 3 : 1);
 				}
-				else if (TRACKER_difficulty_modifier > 1.5f) {
-					// red goombas (harder)
-					goombaType = 2;
+				else {
+					// other levels
+					if (TRACKER_difficulty_modifier < 0.5f) {
+						// yellow goombas (easier)
+						goombaType = 4;
+					}
+					else if (TRACKER_accum_murder * 0.5f > 1.0f + sqrtf(goombaCount) * TRACKER_difficulty_modifier) {
+						// the player doing a little too much killing
+						goombaType = 5; // FUCKFUCK RUN
+					}
+					else if (TRACKER_difficulty_modifier > 1.5f) {
+						// red goombas (harder)
+						goombaType = 2;
+					}
 				}
-			}
-			
-			switch (goombaType) {
-				case 1: // blue
-					hueRotateRGBA5551((u16*)vaddr, 32*32 * 2, 128);
-					break;
-				case 2: // red
-					hueRotateRGBA5551((u16*)vaddr, 32*32 * 2, -17);
-					break;
-				case 3: // teal
-					hueRotateRGBA5551((u16*)vaddr, 32*32 * 2, 106);
-					break;
-				case 4: // yellow
-					hueRotateRGBA5551((u16*)vaddr, 32*32 * 2, 20);
-					break;
-				case 5: // purple
-					hueRotateRGBA5551((u16*)vaddr, 32*32 * 2, -80);
-					break;
-				case 6: // orange
-					hueRotateRGBA5551((u16*)vaddr, 32*32 * 2, 12);
-					break;
+				
+				switch (goombaType) {
+					case 1: // blue
+						hueRotateRGBA5551((u16*)vaddr, 32*32 * 2, 128);
+						break;
+					case 2: // red
+						hueRotateRGBA5551((u16*)vaddr, 32*32 * 2, -17);
+						break;
+					case 3: // teal
+						hueRotateRGBA5551((u16*)vaddr, 32*32 * 2, 106);
+						break;
+					case 4: // yellow
+						hueRotateRGBA5551((u16*)vaddr, 32*32 * 2, 20);
+						break;
+					case 5: // purple
+						hueRotateRGBA5551((u16*)vaddr, 32*32 * 2, -80);
+						break;
+					case 6: // orange
+						hueRotateRGBA5551((u16*)vaddr, 32*32 * 2, 12);
+						break;
+				}
 			}
 		}
 		
@@ -984,33 +992,38 @@ void postObjectLoadPass() {
 		// check if bom are loaded, and set bom type, trolling the texture accordingly
 
 		// TODO: Tweak the pixel check and the hues on B3313
-		vaddr = (void*)segmented_to_virtual((void*)0x0801DA60);
-		if (*((u16*)vaddr + 331) == 0x0001) {
-			bobombType = 0;
+		if (get_model_loaded(MODEL_BLACK_BOBOMB)) {
+			vaddr = (void*)segmented_to_virtual((void*)0x0801DA60);
+			if (bobombSample == 0xFFFE)
+				bobombSample = *((u16*)vaddr + 331);
 			
-			if (levelType == 6) {
-				// fire type level
-				bobombType = 2;
-			}
-			else {
-				// other levels
-				if (TRACKER_difficulty_modifier > 2.0f) {
-					// red bobombs (harder)
-					bobombType = 1;
+			if (*((u16*)vaddr + 331) == bobombSample) {
+				bobombType = 0;
+				
+				if (levelType == 6) {
+					// fire type level
+					bobombType = 2;
 				}
-			}
-			
-			switch (bobombType) {
-				case 1: // red (insta explode)
-					texCopyRGBA16((u16*)vaddr + 64*32 * 2, (u16*)vaddr, 64*32 * 2);
-					hueRotateRGBA5551((u16*)vaddr, 64*32 * 2, -36);
-					rgbMultiplyRGBA16((u16*)vaddr, 64*32 * 2, 0.7f, 0.7f, 0.7f);
-					break;
-				case 2: // orange
-					texCopyRGBA16((u16*)vaddr + 64*32 * 2, (u16*)vaddr, 64*32 * 2);
-					hueRotateRGBA5551((u16*)vaddr, 64*32 * 2, -12);
-					rgbMultiplyRGBA16((u16*)vaddr, 64*32 * 2, 0.7f, 0.7f, 0.7f);
-					break;
+				else {
+					// other levels
+					if (TRACKER_difficulty_modifier > 2.0f) {
+						// red bobombs (harder)
+						bobombType = 1;
+					}
+				}
+				
+				switch (bobombType) {
+					case 1: // red (insta explode)
+						texCopyRGBA16((u16*)vaddr + 64*32 * 2, (u16*)vaddr, 64*32 * 2);
+						hueRotateRGBA5551((u16*)vaddr, 64*32 * 2, -36);
+						rgbMultiplyRGBA16((u16*)vaddr, 64*32 * 2, 0.7f, 0.7f, 0.7f);
+						break;
+					case 2: // orange
+						texCopyRGBA16((u16*)vaddr + 64*32 * 2, (u16*)vaddr, 64*32 * 2);
+						hueRotateRGBA5551((u16*)vaddr, 64*32 * 2, -12);
+						rgbMultiplyRGBA16((u16*)vaddr, 64*32 * 2, 0.7f, 0.7f, 0.7f);
+						break;
+				}
 			}
 		}
 		
@@ -1018,22 +1031,27 @@ void postObjectLoadPass() {
 		// check if amp are loaded, and set amp type, trolling the lights (color) accordingly
 
 		// TODO: Tweak the pixel check and the hues on B3313
-		vaddr = (void*)segmented_to_virtual((void*)0x08002320);
-		if (*((u32*)vaddr) == 0x333F0000) {
-			ampType = 0;
+		if (get_model_loaded(MODEL_AMP)) {
+			vaddr = (void*)segmented_to_virtual((void*)0x08002320);
+			if (ampSample == 0xFFFEFFFE)
+				ampSample = *((u32*)vaddr);
 			
-			if (TRACKER_difficulty_modifier > 2.0f) {
-				// blue amps (harder)
-				ampType = 1;
-			}
-			
-			switch (ampType) {
-				case 1: // blue
-					*((u32*)vaddr) = 0x00333F00;
-					*((u32*)vaddr + 1) = 0x00333F00;
-					*((u32*)vaddr + 2) = 0x00CFFF00;
-					*((u32*)vaddr + 3) = 0x00CFFF00;
-					break;
+			if (*((u32*)vaddr) == ampSample) {
+				ampType = 0;
+				
+				if (TRACKER_difficulty_modifier > 2.0f) {
+					// blue amps (harder)
+					ampType = 1;
+				}
+				
+				switch (ampType) {
+					case 1: // blue
+						*((u32*)vaddr) = 0x00333F00;
+						*((u32*)vaddr + 1) = 0x00333F00;
+						*((u32*)vaddr + 2) = 0x00CFFF00;
+						*((u32*)vaddr + 3) = 0x00CFFF00;
+						break;
+				}
 			}
 		}
 	}
