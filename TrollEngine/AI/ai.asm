@@ -96,6 +96,13 @@ NOP
 .org 0x80286AD8
 JAL     0x8028EEB0
 
+; fixma trapdoor balls (n64 NaN crash fix)
+.org 0x802C61EC
+ADDIU   A1, T6, 0x0054
+LUI     A0, 0x300E
+JAL     0x8031EB00
+ORI     A0, A0, 0x8081
+
 ; lvl_init_or_update moment
 .org 0x8024BCD8
 J       troll_lvl_init_or_update
