@@ -88,6 +88,12 @@ LW      S0, 0x0018 (SP)
 JR      RA
 ADDIU   SP, SP, 0x28
 
+; eyerok_hand_act_sleep SHAM
+.org 0x8030ECF8
+ADDIU   SP, SP, -0x30
+.org 0x8030EEB0
+ADDIU   SP, SP, 0x30
+
 ; setup_game_memory: new buffer for vblank messages (size 2 instead of 1)
 .org 0x8024898C
 LI      A0, 0x8033B010
