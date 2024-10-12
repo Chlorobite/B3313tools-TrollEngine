@@ -244,8 +244,8 @@ ORI A1, R0, 0x10
 LWC1 F0, 0x30 (S0)	// Load scale Y
 LUI AT, 0x3F81
 ORI AT, AT, 0x0625	// 1.008f
-MTC1 AT, F1
-MUL.S F2, F1, F0
+MTC1 AT, F2
+MUL.S F2, F2, F0
 SWC1 F2, 0x2C (S0)
 SWC1 F2, 0x30 (S0)
 BEQZ V0, cavin_goomboss_common
@@ -256,24 +256,24 @@ SRL AT, T1, 1
 ADDU T1, T1, AT
 SW T1, 0x1A8 (S0)
 LUI AT, 0x3FC0		// 1.5f
-MTC1 AT, F1
+MTC1 AT, F2
 LWC1 F0, 0xB8 (S0)
-MUL.S F2, F1, F0
+MUL.S F2, F2, F0
 SWC1 F2, 0xB8 (S0)
 
 LUI AT, 0x3FA0		// 1.25f
 MTC1 AT, F0
-LWC1 F1, 0x1F8 (S0)
+LWC1 F6, 0x1F8 (S0)
+MUL.S F6, F6, F0
 LWC1 F2, 0x1FC (S0)
-LWC1 F3, 0x200 (S0)
-LWC1 F4, 0x204 (S0)
-MUL.S F1, F1, F0
 MUL.S F2, F2, F0
-MUL.S F3, F3, F0
+LWC1 F8, 0x200 (S0)
+MUL.S F8, F8, F0
+LWC1 F4, 0x204 (S0)
 MUL.S F4, F4, F0
-SWC1 F1, 0x1F8 (S0)
+SWC1 F6, 0x1F8 (S0)
 SWC1 F2, 0x1FC (S0)
-SWC1 F3, 0x200 (S0)
+SWC1 F8, 0x200 (S0)
 SWC1 F4, 0x204 (S0)
 
 ORI AT, R0, 0x3
@@ -361,9 +361,9 @@ SW AT, 0xF8 (S0)	// Store interaction flags
 cavin_goomboss_minion_squish:
 LWC1 F0, 0x30 (S0)	// Load Y scale
 LUI AT, 0x3E50		// 0.203125f
-MTC1 AT, F1
-SUB.S F0, F1
-C.LT.S F0, F1
+MTC1 AT, F2
+SUB.S F0, F2
+C.LT.S F0, F2
 BC1F cavin_goomba_minion_end
 SWC1 F0, 0x30 (S0)	// Store Y scale
 BEQZ R0, cavin_goomba_minion_die
@@ -390,8 +390,8 @@ BEQZ R0, cavin_goomba_minion_die
 SW AT, 0x184 (T0)	// Store parent's damage
 @@logic_branch_1:
 LWC1 F0, 0xA4 (S0)	// Load posY
-LWC1 F1, 0xE8 (S0)	// Load floor height
-C.LE.S F0, F1
+LWC1 F2, 0xE8 (S0)	// Load floor height
+C.LE.S F0, F2
 BC1F cavin_goomba_minion_end
 NOP
 BEQZ R0, cavin_goomba_minion_die
@@ -401,11 +401,11 @@ cavin_goomboss_minion_wander:
 JAL 0x802A2644		// cur obj move using fvel and gravity
 NOP
 LWC1 F0, 0xA4 (S0)	// Load posY
-LWC1 F1, 0xE8 (S0)	// Load floor height
-C.LE.S F0, F1
+LWC1 F2, 0xE8 (S0)	// Load floor height
+C.LE.S F0, F2
 BC1F @@logic_branch_1
 OR A0, R0, S0
-SWC1 F1, 0xA4 (S0)	// Set posY to floor height
+SWC1 F2, 0xA4 (S0)	// Set posY to floor height
 SW R0, 0xB0 (S0)	// Reset velY
 @@logic_branch_1:
 LW A1, 0x68 (S0)
@@ -473,29 +473,29 @@ SRL AT, AT, 4
 SLL AT, AT, 2
 LUI T5, 0x8038		// Trig table
 ADDU T6, T5, AT
-LWC1 F11, 0x6000 (T6)	// Get Sine Ratio
+LWC1 F10, 0x6000 (T6)	// Get Sine Ratio
+ABS.S F10, F10
 LWC1 F12, 0x7000 (T6)	// Get Cosine Ratio
-ABS.S F11, F11
 ABS.S F12, F12
 LWC1 F0, 0xB1C4 (T9)	// Load Mario's H speed
 LUI AT, 0x4120		// 10.0f	// ADJUST THIS???
-MTC1 AT, F1
-ADD.S F0, F0, F1
-LWC1 F5, 0xB1C8 (T9)	// Load Mario's X sliding speed
+MTC1 AT, F2
+ADD.S F0, F0, F2
+LWC1 F8, 0xB1C8 (T9)	// Load Mario's X sliding speed
+MUL.S F4, F0, F10
 LWC1 F6, 0xB1CC (T9)	// Load Mario's Z sliding speed
-MUL.S F4, F0, F11
-MUL.S F5, F5, F11
-MUL.S F6, F6, F11
-SUB.S F2, F0, F4
+MUL.S F8, F8, F10
 SWC1 F4, 0xB1C4 (T9)	// Store Mario's H speed
-SWC1 F5, 0xB1C8 (T9)	// Store Mario's X sliding speed
+MUL.S F6, F6, F10
+SWC1 F8, 0xB1C8 (T9)	// Store Mario's X sliding speed
+SUB.S F2, F0, F4
 SWC1 F6, 0xB1CC (T9)	// Store Mario's Z sliding speed
 SWC1 F2, 0xB8 (S0)	// Store velH
 LUI AT, 0x4000		// 2.0f
-MTC1 AT, F1
-DIV.S F1, F2, F1
-SWC1 F1, 0xB0 (S0)	// Store velY
+MTC1 AT, F10
+DIV.S F10, F2, F10
 LUI AT, 0xBF40		// 0.75f
+SWC1 F10, 0xB0 (S0)	// Store velY
 //SW AT, 0xE4 (S0)	// Store gravity
 ORI AT, R0, 0x2		// Set action to 2
 BEQZ R0, cavin_goomba_minion_end
@@ -509,8 +509,8 @@ SB AT, 0xFC (S0)	// Store action
 cavin_goomba_minion_end:
 LUI AT, 0xC4FA		// -2000.0f
 MTC1 AT, F0
-LWC1 F1, 0xA4 (S0)	// Load posY
-C.LT.S F1, F0
+LWC1 F2, 0xA4 (S0)	// Load posY
+C.LT.S F2, F0
 BC1F cavin_goomba_minion_end_2
 NOP
 BEQZ R0, cavin_goomba_minion_die
@@ -612,9 +612,9 @@ LUI T0, 0x8036
 LW T0, 0x1160 (T0)
 LHU T2, 0x188 (T0)	// Load B Param 1&2
 LWC1 F0, 0x15C (T0)	// Load distance to Mario
-MTC1 T2, F1
-CVT.S.W F1, F1
-c.LE.S F0, F1
+MTC1 T2, F2
+CVT.S.W F2, F2
+c.LE.S F0, F2
 BC1F cavin_stop_music_end
 NOP
 J 0x8024927C		// Fadeout level music
@@ -811,7 +811,7 @@ A0: Velocity as float
 vec3f_to at 0x100, 0x104, 0x108 from S0
 Output:
 Stores velX, velY, velZ, and velH to 0xAC, 0xB0, 0xB4, and 0xB8
-Also stores them as F1, F2, F3 and F0.
+Also stores them as F4, F2, F6 and F0.
 */
 cavin_get_boss_vel_start: // FIX
 ADDIU SP, SP, 0xFFE0
@@ -827,23 +827,23 @@ LHU AT, 0x10 (SP)	// Pitch
 SRL AT, AT, 4
 SLL AT, AT, 2
 ADDU AT, T5, AT
-LWC1 F11, 0x6000 (AT)	// Get Sine Ratio (Y)
+LWC1 F10, 0x6000 (AT)	// Get Sine Ratio (Y)
 LWC1 F12, 0x7000 (AT)	// Get Cosine Ratio (XZ)
 LHU AT, 0x14 (SP)	// Yaw
 SRL AT, AT, 4
 SLL AT, AT, 2
 ADDU AT, T5, AT
-LWC1 F13, 0x6000 (AT)	// Get Sine Ratio (X)
-LWC1 F14, 0x7000 (AT)	// Get Cosine Ratio (Z)
 LWC1 F0, 0x18 (SP)	// Load velH
-MUL.S F2, F0, F11
-MUL.S F5, F0, F12
-MUL.S F3, F5, F14
-MUL.S F1, F5, F13
-SWC1 F1, 0xAC (S0)	// Store velX
-SWC1 F2, 0xB0 (S0)	// Store velY
-SWC1 F3, 0xB4 (S0)	// Store velZ
+MUL.S F2, F0, F10
+LWC1 F14, 0x7000 (AT)	// Get Cosine Ratio (Z)
+MUL.S F8, F0, F12
+LWC1 F16, 0x6000 (AT)	// Get Sine Ratio (X)
+MUL.S F6, F8, F14
 SWC1 F0, 0xB8 (S0)	// Store velH
+MUL.S F4, F8, F16
+SWC1 F4, 0xAC (S0)	// Store velX
+SWC1 F2, 0xB0 (S0)	// Store velY
+SWC1 F6, 0xB4 (S0)	// Store velZ
 LW RA, 0x1C (SP)
 JR RA
 ADDIU SP, SP, 0x20
@@ -859,8 +859,8 @@ SW RA, 0x14 (SP)
 ADDIU A0, S0, 0xA0
 JAL 0x8028AC28		// Calc abs dist
 ADDIU A1, S0, 0x100
-LWC1 F1, 0xB8 (S0)
-C.LE.S F0, F1		// Compare if dist is less than velH
+LWC1 F2, 0xB8 (S0)
+C.LE.S F0, F2		// Compare if dist is less than velH
 BC1F cavin_boss_reach_target_end
 OR V0, R0, R0
 SW R0, 0xAC (S0)
@@ -961,8 +961,8 @@ SW A0, 0x10 (SP)
 LWC1 F2, 0x10 (SP)	// Load %
 CVT.S.W F2, F2
 LUI AT, 0x42C8		// 100.0f
-MTC1 AT, F1
-DIV.S F2, F2, F1
+MTC1 AT, F0
+DIV.S F2, F2, F0
 C.LT.S F0, F2
 BC1F cavin_random_chance_end
 OR V0, R0, R0
@@ -1013,47 +1013,47 @@ cavin_mega_flyguy_action:
 LW T0, 0x14C (S0)	// Load action
 ADDIU AT, R0, 0x1
 BEQ T0, AT, cavin_mega_flyguy_track_start
-ADDIU AT, AT, 0x1
+ADDIU AT, AT, 0x1 ; 2
 BEQ T0, AT, cavin_mega_flyguy_dive_start
-ADDIU AT, AT, 0x1
+ADDIU AT, AT, 0x1 ; 3
 BEQ T0, AT, cavin_mega_flyguy_lunge_start
-ADDIU AT, AT, 0x1
+ADDIU AT, AT, 0x1 ; 4
 BEQ T0, AT, cavin_mega_flyguy_die_start
-ADDIU AT, AT, 0x1
+ADDIU AT, AT, 0x1 ; 5
 BEQ T0, AT, cavin_mega_flyguy_wander_start
-ADDIU AT, AT, 0x1
+ADDIU AT, AT, 0x1 ; 6
 BEQ T0, AT, cavin_mega_flyguy_damaged_start
 
 LW AT, 0x1F8 (S0)
 SW AT, 0x200 (S0)	// Fix hurtbox
 LW AT, 0x1FC (S0)
 SW AT, 0x204 (S0)	// Fix hurtbox
-LWC1 F1, 0xE8 (S0)	// Load floor height
+LWC1 F2, 0xE8 (S0)	// Load floor height
 LUI T1, 0x43FA		// 500.0f units
 MTC1 T1, F0
-ADD.S F0, F0, F1
+ADD.S F0, F0, F2
 SWC1 F0, 0xA4 (S0)	// Store posY
 SWC1 F0, 0x168 (S0)	// Store homeY
-LWC1 F1, 0xA0 (S0)	// Load posX
-LWC1 F3, 0xA8 (S0)	// Load posZ
-SWC1 F1, 0x164 (S0)	// Store homeX
-SWC1 F3, 0x16C (S0)	// Store homeZ
+LWC1 F2, 0xA0 (S0)	// Load posX
+LWC1 F4, 0xA8 (S0)	// Load posZ
+SWC1 F2, 0x164 (S0)	// Store homeX
+SWC1 F4, 0x16C (S0)	// Store homeZ
 ORI AT, R0, 0x5		// Set action to 5
 SW AT, 0x14C (S0)	// Store action
 BEQZ R0, cavin_mega_flyguy_end_3
-SW R0, 0x184 (S0)	// Reset damage counter
+SW AT, 0x184 (S0)	// Set damage counter to 5
 
 
 cavin_mega_flyguy_track_start:
 LUI AT, 0x0420
 SW AT, 0xF8 (S0)	// Store interaction flags
 LUI T0, 0x8034
-LWC1 F1, 0xB1AC (T0)	// Load Mario's posX
+LWC1 F0, 0xB1AC (T0)	// Load Mario's posX
 LWC1 F2, 0xA4 (S0)	// Load obj posY
-LWC1 F3, 0xB1B4 (T0)	// Load Mario's posZ
-SWC1 F1, 0x100 (S0)	// Store Target X
+LWC1 F4, 0xB1B4 (T0)	// Load Mario's posZ
+SWC1 F0, 0x100 (S0)	// Store Target X
 SWC1 F2, 0x104 (S0)	// Store Target Y
-SWC1 F3, 0x108 (S0)	// Store Target Z
+SWC1 F4, 0x108 (S0)	// Store Target Z
 ADDIU AT, S1, 0xC	// 12 speed + damage
 MTC1 AT, F0
 CVT.S.W F0, F0
@@ -1093,13 +1093,13 @@ BGTZ S2, cavin_mega_flyguy_dive_sub_1
 ORI AT, R0, 0x1		// Set subaction to 1
 SW AT, 0x150 (S0)	// Store subaction
 LUI T0, 0x8034
-LWC1 F1, 0xB1AC (T0)	// Load Mario's posX
+LWC1 F4, 0xB1AC (T0)	// Load Mario's posX
 LWC1 F2, 0xB1B0 (T0)	// Load Mario's posY
-LWC1 F3, 0xB1B4 (T0)	// Load Mario's posZ
-SWC1 F1, 0x100 (S0)	// Store Target X
+LWC1 F6, 0xB1B4 (T0)	// Load Mario's posZ
+SWC1 F4, 0x100 (S0)	// Store Target X
 SWC1 F2, 0x104 (S0)	// Store Target Y
 JAL 0x80405220		// cavin_boss_get_yaw_to_target // FIX
-SWC1 F3, 0x108 (S0)	// Store Target Z
+SWC1 F6, 0x108 (S0)	// Store Target Z
 
 cavin_mega_flyguy_dive_sub_1:
 SUBIU AT, S2, 0x1	// Subtract 1
@@ -1122,20 +1122,20 @@ LW T4, 0x148 (S0)	// Load action timer
 SLL AT, T4, 7
 LUI T5, 0x8038		// Trig table
 ADDU T6, T5, AT
-LWC1 F11, 0x6000 (T6)	// Get Sine Ratio (XZ)
+LWC1 F10, 0x6000 (T6)	// Get Sine Ratio (XZ)
 LWC1 F12, 0x7000 (T6)	// Get Cosine Ratio (Y)
 LW AT, 0x184 (S0)	// Load damage counter
 SRL AT, AT, 1
 ADDIU AT, AT, 0xF	// Add 15 speed
-MTC1 AT, F1
-CVT.S.W F3, F1
+MTC1 AT, F4
+CVT.S.W F4, F4
 LUI AT, 0xC130		// -13.0f
 MTC1 AT, F2
 MUL.S F2, F2, F12
-MUL.S F3, F3, F11
 SWC1 F2, 0xB0 (S0)	// Store velY
+MUL.S F4, F4, F10
 JAL 0x8029F070		// cur obj move using vel
-SWC1 F3, 0xB8 (S0)	// Store velH
+SWC1 F4, 0xB8 (S0)	// Store velH
 JAL 0x802E5160		// Move using fvel and yaw
 OR A0, R0, S0
 LW T4, 0x148 (S0)	// Load action timer
@@ -1202,15 +1202,15 @@ SUBIU AT, S2, 0x2
 BGTZ AT, cavin_mega_flyguy_lunge_sub_3
 LW AT, 0x160 (S0)	// Load angle to Mario
 SW AT, 0x10C (S0)	// Store target yaw
-LWC1 F1, 0xA0 (S0)	// Load posX
+LWC1 F4, 0xA0 (S0)	// Load posX
 LWC1 F2, 0x168 (S0)	// Load homeY
-LWC1 F3, 0xA8 (S0)	// Load posZ
+LWC1 F6, 0xA8 (S0)	// Load posZ
 LUI AT, 0x43C8		// 400.0f
 MTC1 AT, F4
 SUB.S F2, F2, F4
-SWC1 F1, 0x100 (S0)	// Store Target X
+SWC1 F4, 0x100 (S0)	// Store Target X
 SWC1 F2, 0x104 (S0)	// Store Target Y
-SWC1 F3, 0x108 (S0)	// Store Target Z
+SWC1 F6, 0x108 (S0)	// Store Target Z
 LW A0, 0x10C (S0)	// Load target yaw
 JAL 0x8029E5EC		// Rotate to face point
 ADDIU A1, R0, 0x800	// Rotation increment
@@ -1242,9 +1242,9 @@ LUI AT, 0x42C8		// 100.0f
 MTC1 AT, F0
 LBU AT, 0xFE (S0)	// Load dive / lunge count
 SLL AT, AT, 4
-MTC1 AT, F1
-CVT.S.W F1, F1
-ADD.S F0, F0, F1
+MTC1 AT, F2
+CVT.S.W F2, F2
+ADD.S F0, F0, F2
 SWC1 F0, 0xB8 (S0)	// Store velHv
 JAL 0x802E5160		// Move using fvel and yaw
 OR A0, R0, S0
@@ -1299,12 +1299,12 @@ SW AT, 0xF8 (S0)	// Store interaction flags
 LUI AT, 0x4360		// 224.0f
 SW AT, 0x1FC (S0)	// Store col_cyl_height
 SW AT, 0x204 (S0)
-LWC1 F1, 0xA0 (S0)	// Load posX
+LWC1 F4, 0xA0 (S0)	// Load posX
 LWC1 F2, 0x168 (S0)	// Load homeY
-LWC1 F3, 0xA8 (S0)	// Load posZ
-SWC1 F1, 0x100 (S0)	// Store Target X
+LWC1 F6, 0xA8 (S0)	// Load posZ
+SWC1 F4, 0x100 (S0)	// Store Target X
 SWC1 F2, 0x104 (S0)	// Store Target Y
-SWC1 F3, 0x108 (S0)	// Store Target Z
+SWC1 F6, 0x108 (S0)	// Store Target Z
 ADDIU A0, R0, 0x0000
 JAL 0x802FA6D4		// Rotate face pitch
 ADDIU A1, R0, 0x580	// Rotation increment
@@ -1332,8 +1332,8 @@ cavin_mega_flyguy_die_loop:
 ADDU T0, S0, T1
 LWC1 F0, 0xAC (T0)	// Load vel
 DIV.S F0, F0, F4
-SWC1 F0, 0xAC (T0)	// Store vel
 ORI AT, R0, 0xC
+SWC1 F0, 0xAC (T0)	// Store vel
 BNE AT, T1, cavin_mega_flyguy_die_loop
 ADDIU T1, T1, 0x4
 LW T2, 0x148 (S0)	// Load action timer
@@ -1410,14 +1410,14 @@ SW AT, 0x14C (S0)	// Store action
 
 
 cavin_mega_flyguy_damaged_start:
-LWC1 F1, 0xA0 (S0)	// Load posX
+LWC1 F6, 0xA0 (S0)	// Load posX
 LWC1 F2, 0x168 (S0)	// Load homeY
-LWC1 F3, 0xA8 (S0)	// Load posZ
+LWC1 F8, 0xA8 (S0)	// Load posZ
 LWC1 F4, 0x1A4 (S0)	// Load Bob Offset
 ADD.S F2, F4, F2
-SWC1 F1, 0x100 (S0)	// Store Target X
+SWC1 F6, 0x100 (S0)	// Store Target X
 SWC1 F2, 0x104 (S0)	// Store Target Y
-SWC1 F3, 0x108 (S0)	// Store Target Z
+SWC1 F8, 0x108 (S0)	// Store Target Z
 JAL 0x80405200		// cavin_get_boss_vel
 LUI A0, 0x41A0		// 20.0f
 JAL 0x8029F070		// cur obj move using vel
@@ -1453,24 +1453,24 @@ SRL AT, AT, 4
 SLL AT, AT, 2
 LUI T5, 0x8038		// Trig table
 ADDU T6, T5, AT
-LWC1 F11, 0x6000 (T6)	// Get Sine Ratio (X)
+LWC1 F10, 0x6000 (T6)	// Get Sine Ratio (X)
 LWC1 F12, 0x7000 (T6)	// Get Cosine Ratio (Z)
 LUI AT, 0x4258		// 54.0f
 MTC1 AT, F0
 LWC1 F4, 0xB8 (S0)	// Load velH
 ADD.S F0, F0, F4	// Add velH to offset
-MUL.S F1, F0, F11
-MUL.S F3, F0, F12
+MUL.S F14, F0, F10
 LWC1 F4, 0xA0 (V0)
-LWC1 F5, 0xA4 (V0)
+MUL.S F16, F0, F12
+LWC1 F8, 0xA4 (V0)
 LWC1 F6, 0xA8 (V0)
 LUI AT, 0x428C		// 70.0f
 MTC1 AT, F2
-ADD.S F4, F4, F1
-ADD.S F5, F5, F2
-ADD.S F6, F6, F3
+ADD.S F4, F4, F14
+ADD.S F8, F8, F2
+ADD.S F6, F6, F16
 SWC1 F4, 0xA0 (V0)
-SWC1 F5, 0xA4 (V0)
+SWC1 F8, 0xA4 (V0)
 BEQZ R0, cavin_mega_flyguy_common
 SWC1 F6, 0xA8 (V0)
 
@@ -1486,15 +1486,15 @@ SB T1, 0xFF (S0)	// Store Bob timer
 SLL AT, T2, 7
 LUI T5, 0x8038		// Trig table
 ADDU T6, T5, AT
-LWC1 F11, 0x7000 (T6)	// Get Cosine Ratio
+LWC1 F10, 0x7000 (T6)	// Get Cosine Ratio
 LUI AT, 0xC040		// -3.0f
 MTC1 AT, F2
-MUL.S F2, F2, F11
+MUL.S F2, F2, F10
 LWC1 F4, 0x1A4 (S0)	// Load Bob Offset
 ADD.S F4, F4, F2
 SWC1 F4, 0x1A4 (S0)	// Store Bob Offset
-LWC1 F1, 0xA4 (S0)	// Load posY
-ADD.S F2, F1, F2
+LWC1 F0, 0xA4 (S0)	// Load posY
+ADD.S F2, F0, F2
 BEQZ R0, cavin_mega_flyguy_common
 SWC1 F2, 0xA4 (S0)	// Store vposY
 
@@ -1529,7 +1529,7 @@ LUI A0, 0x5464
 JAL 0x802CA1E0		// Sound Magic
 ADDIU A0, A0, 0xFF81
 LW AT, 0x184 (S0)	// Load damage counter
-ADDIU AT, AT, 0x3	// 3 damage
+ADDIU AT, AT, 0x7	// 7 damage
 SW AT, 0x184 (S0)	// Store damage counter
 ADDIU AT, R0, 0x3C	// 60 i-frames
 SW AT, 0x9C (S0)	// Store collision timer
@@ -1546,9 +1546,9 @@ LUI A0, 0x5463
 JAL 0x802CA1E0		// Sound Magic
 ADDIU A0, A0, 0xFF81
 LW AT, 0x184 (S0)	// Load damage counter
-ADDIU AT, AT, 0x2	// 2 damage
+ADDIU AT, AT, 0x7	// 7 damage
 SW AT, 0x184 (S0)	// Store damage counter
-ADDIU AT, R0, 0x64	// 100 i-frames
+ADDIU AT, R0, 0x3C	// 60 i-frames
 BEQZ R0, cavin_mega_flyguy_end
 SW AT, 0x9C (S0)	// Store collision timer
 
@@ -1557,9 +1557,9 @@ LUI A0, 0x5464
 JAL 0x802CA1E0		// Sound Magic
 ADDIU A0, A0, 0xFF81
 LW AT, 0x184 (S0)	// Load damage counter
-ADDIU AT, AT, 0x3	// 3 damage
+ADDIU AT, AT, 0x7	// 7 damage
 SW AT, 0x184 (S0)	// Store damage counter
-ADDIU AT, R0, 0x14	// 20 i-frames
+ADDIU AT, R0, 0x3C	// 60 i-frames
 BEQZ R0, cavin_mega_flyguy_end
 SW AT, 0x9C (S0)	// Store collision timer
 
@@ -1572,7 +1572,7 @@ BEQ T1, T2, cavin_mega_flyguy_end_2
 SW AT, 0x148 (S0)	// Store action timer
 SW R0, 0x148 (S0)	// Reset action timer
 cavin_mega_flyguy_end_2:
-SUBIU AT, S1, 15    // Max damage to die
+SUBIU AT, S1, 25    // Max damage to die
 BLTZ AT, cavin_mega_flyguy_end_3
 ORI AT, R0, 0x4		// Set action to 4
 SW AT, 0x14C (S0)	// Store action
@@ -1600,19 +1600,19 @@ LW S0, 0x1160 (S0)
 SW V0, 0x1C0 (S0)	// Store floor struct
 
 LUI T0, 0x8034
-LWC1 F1, 0xB1AC (T0)	// Load Mario's posX
+LWC1 F4, 0xB1AC (T0)	// Load Mario's posX
 LWC1 F2, 0xA4 (S0)	// Load obj posY
-LWC1 F3, 0xB1B4 (T0)	// Load Mario's posZ
-SWC1 F1, 0x100 (S0)	// Store Target X
+LWC1 F6, 0xB1B4 (T0)	// Load Mario's posZ
+SWC1 F4, 0x100 (S0)	// Store Target X
 SWC1 F2, 0x104 (S0)	// Store Target Y
 JAL 0x80405220		// cavin_boss_get_yaw_to_target // FIX
-SWC1 F3, 0x108 (S0)	// Store Target Z
+SWC1 F6, 0x108 (S0)	// Store Target Z
 
 LW AT, 0xFC (S0)	// Load parant damage count /2
 ADDIU AT, AT, 0xA	// Add 10 speed
-MTC1 AT, F5
-CVT.S.W F5, F5
-SWC1 F5, 0xB8 (S0)	// Store velH
+MTC1 AT, F8
+CVT.S.W F8, F8
+SWC1 F8, 0xB8 (S0)	// Store velH
 LW A0, 0x10C (S0)	// Get target yaw
 JAL 0x8029E5EC		// Rotate to face point
 ADDIU A1, R0, 0x300	// Rotation increment
@@ -1714,9 +1714,9 @@ LUI T0, 0x8036
 LW T0, 0x1160 (T0)
 LHU T2, 0x188 (T0)	// Load B Param 1&2
 LBU T3, 0x18B (T0)	// Load B Param 4
-MTC1 T2, F1
-CVT.S.W F1, F1
-c.LE.S F0, F1
+MTC1 T2, F2
+CVT.S.W F2, F2
+c.LE.S F0, F2
 BC1F cavin_SORC_end
 LW T9, 0x1A4 (T0)	// Load target obj ptr
 LW AT, 0x20C (T9)	// Load original obj behav
