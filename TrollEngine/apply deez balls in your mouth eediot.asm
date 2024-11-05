@@ -184,7 +184,7 @@ BNE     T0, R0, @nodma
 SLT     T0, A1, A2
 BEQ     T0, R0, @nodma
 NOP
-JAL     0x80278504
+JAL     dma_read_decompress_if_mio0
 NOP
 @nodma:
 ;the function sets T6 for load_area, but load_area doesn't need it anymore

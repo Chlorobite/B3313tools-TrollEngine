@@ -199,3 +199,25 @@ s32 troll_cur_obj_check_if_near_animation_end(void) {
 
     return FALSE;
 }
+
+
+
+
+
+void dma_read_decompress_if_mio0(register u8 *dest, register u8 *srcStart, register u8 *srcEnd) {
+    dma_read(dest, srcStart, srcEnd);
+    if (((u32)dest & 3) == 0) {
+        if (*((u32*)dest) == 0x4D494F30) { // MIO0
+            u32 *copyFrom = (u32*)dest;
+            u32 *copyTo = (u32*)0x806A0000;
+            u32 length = ((u32)srcEnd - (u32)srcStart) / 4;
+            u32 i = 0;
+            
+            for (; i < length; i++) {
+                *(copyTo++) = *(copyFrom++);
+            }
+            
+            decompress((u8*)0x806A0000, dest);
+        }
+    }
+}
