@@ -2417,6 +2417,10 @@ s32 is_pointer_valid(void *ptr) {
     return ((u32)ptr & 0xFF800003) == 0x80000000;
 }
 
+s32 is_segmented_pointer_valid(void *ptr) {
+    return is_pointer_valid(ptr) || ((u32)ptr & 0xE0800003) == 0x00000000;
+}
+
 f32 sin_from_cos(f32 angle, f32 cos) {
     s32 waveSegment = (s32)(angle / 3.1415926535f);
     if (angle < 0.0f) waveSegment ^= 1;

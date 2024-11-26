@@ -1748,3 +1748,4 @@
 .definelabel pss_end_slide, 0x80250778
 .definelabel check_lava_boost, 0x8025065C
 .definelabel check_death_barrier, 0x802505C8
+.definelabel gShowProfiler, 0x8032D594

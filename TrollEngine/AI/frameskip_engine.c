@@ -68,7 +68,7 @@ void get_frame_count() {
     }
     
     // prevent weird spikes
-    if (_gLastFrameTime <= FRAME_SKIP_THRESHOLD) {
+    if (_gLastFrameTime <= FRAME_SKIP_THRESHOLD || render_frame_count < 1) {
         render_frame_count = 1;
     }
     
@@ -80,6 +80,15 @@ s32 troll_lvl_init_or_update(s16 initOrUpdate) {
     register s32 result = 0;
     register s32 i = 0;
     register s32 j = 0;
+    register u32 buttonPressed[2];
+
+    for (j = 0; j < 2; j++) {
+        struct Controller *controller = &gControllers[j];
+
+        if (controller->controllerData != NULL) {
+            buttonPressed[j] = controller->buttonPressed;
+        }
+    }
     
     for (i = 0; i < render_frame_count; i++) {
         if (i == 1) {
@@ -104,6 +113,14 @@ s32 troll_lvl_init_or_update(s16 initOrUpdate) {
                     render_frame_count = i + 1;
                     return result;
                 }
+        }
+    }
+
+    for (j = 0; j < 2; j++) {
+        struct Controller *controller = &gControllers[j];
+
+        if (controller->controllerData != NULL) {
+            controller->buttonPressed = buttonPressed[j];
         }
     }
 

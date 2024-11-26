@@ -28,6 +28,12 @@
 .importobj "Objects/paintings/painting_model_view_transform.o"
 .endarea
 
+; stop_other_paintings fix
+.org 0x802D29C0
+.area 0x802D2A74-0x802D29C0
+.importobj "Objects/paintings/stop_other_paintings.o"
+.endarea
+
 
 ; Engine v2: gTrollWarpDestination code patches
 .headersize 0x80245000
