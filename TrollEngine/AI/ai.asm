@@ -655,6 +655,12 @@ NOP
 .org 0x80385D24
 BEQ     T1, R0, 0x80385CF0
 
+; graph_node.c
+.org 0x8037C658
+.area 0x8037C708-0x8037C658
+.importobj "AI/trolls/geo_obj_init_animation.o"
+.endarea
+
 ; geo_layout.c
 .org 0x8037DE94
 .area 0x8037DEF8-0x8037DE94
