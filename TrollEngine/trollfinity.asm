@@ -1208,7 +1208,7 @@
 .definelabel sound_banks_enable, 0x8032180c                
 .definelabel gCurrCreditsEntry, 0x8032ddd0                
 .definelabel sCreditsSequence, 0x8032d7cc                
-.definelabel initiate_warp, 0x8024a700                
+;.definelabel initiate_warp, 0x8024a700                
 .definelabel gCurrActNum, 0x8033bac8                
 .definelabel sSourceWarpNodeId, 0x8033b256                
 .definelabel sDelayedWarpArg, 0x8033b258
@@ -1749,3 +1749,7 @@
 .definelabel check_lava_boost, 0x8025065C
 .definelabel check_death_barrier, 0x802505C8
 .definelabel gShowProfiler, 0x8032D594
+
+.definelabel reset_pan_distance, 0x8029051C
+.definelabel update_fixed_camera, 0x80282280
+.definelabel update_parallel_tracking_camera, 0x80281904

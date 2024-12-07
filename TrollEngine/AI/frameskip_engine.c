@@ -76,6 +76,7 @@ void get_frame_count() {
 }
 
 
+extern s32 camera_troll_signal;
 s32 troll_lvl_init_or_update(s16 initOrUpdate) {
     register s32 result = 0;
     register s32 i = 0;
@@ -89,6 +90,8 @@ s32 troll_lvl_init_or_update(s16 initOrUpdate) {
             buttonPressed[j] = controller->buttonPressed;
         }
     }
+    
+    camera_troll_signal = 0;
     
     for (i = 0; i < render_frame_count; i++) {
         if (i == 1) {

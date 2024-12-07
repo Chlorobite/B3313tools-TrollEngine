@@ -30,6 +30,10 @@
 .area 0x80299404-0x80299360,0x00
 .importobj "AI/trolls/cutscene_door_end.o"
 .endarea
+.org 0x80299404
+.area 0x802994E8-0x80299404,0x00
+.importobj "AI/trolls/cutscene_door_mode.o"
+.endarea
 
 ; init_camera
 .org 0x80287660 ; i fucking hate this stupif sfucking gam
@@ -264,6 +268,11 @@ SW      V0, 0x0024 (SP)
 .org 0x8024A374
 J       troll_check_instant_warp
 NOP
+
+.org 0x8024a700
+.area 0x8024a7b4-0x8024a700
+.importobj "AI/trolls/initiate_warp.o"
+.endarea
 
 .org 0x8024B13C
 .area 0x8024B390-0x8024B13C

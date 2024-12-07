@@ -103,6 +103,7 @@ void print_level_information() {
 
 extern float _gLastFrameTime;
 extern s32 render_frame_count, last_render_frame_count;
+extern s32 camera_troll_signal;
 void print_performance_information() {
 	u32 bparams = 0xFFFFFFFF;
 	
@@ -138,6 +139,9 @@ void print_performance_information() {
 	
 	sprintf_decimal(loadedObjectCount);
 	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 64, "OBJ", float_buffer);
+	
+	sprintf_decimal(camera_troll_signal);
+	print_text_value_helper(HUD_LEFT_X + 80, HUD_TOP_Y - 80, "BAHBAH", float_buffer);
 }
 
 void print_general_stats() {

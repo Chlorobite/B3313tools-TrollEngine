@@ -36,6 +36,7 @@ extern u8 sObjectCutscene;
 extern struct PlayerCameraState *sMarioCamState;
 extern s32 gCurrLevelArea;
 extern u32 gPrevLevel;
+extern s32 camera_troll_signal;
 
 
 // BAD NAME, rename to get_cutscene_from_mario_status, and remove from trollfinity.asm if it conflicts
@@ -51,7 +52,7 @@ u8 troll_get_cutscene_from_mario_status(struct Camera *c) {
 				// REMOVE: case AREA_CASTLE_LOBBY, handled by default case now
                 case AREA_BBH:
                     //! Castle Lobby uses 0 to mean 'no special modes', but BBH uses 1...
-                    if (c->doorStatus == DOOR_LEAVING_SPECIAL) {
+                    if (c->doorStatus == DOOR_LEAVING_SPECIAL || camera_troll_signal == 1) {
                         cutscene = open_door_cutscene(CUTSCENE_DOOR_PULL, CUTSCENE_DOOR_PUSH);
                     } else {
                         cutscene = open_door_cutscene(CUTSCENE_DOOR_PULL_MODE, CUTSCENE_DOOR_PUSH_MODE);
@@ -59,7 +60,7 @@ u8 troll_get_cutscene_from_mario_status(struct Camera *c) {
                     break;
                 default:
 					// EDIT: make doors check for camera triggers in areas that were set up for real camera
-                    if (c->doorStatus == DOOR_LEAVING_SPECIAL) {
+                    if (c->doorStatus == DOOR_LEAVING_SPECIAL || camera_troll_signal == 1) {
                         cutscene = open_door_cutscene(CUTSCENE_DOOR_PULL_MODE, CUTSCENE_DOOR_PUSH_MODE);
                     } else {
                         cutscene = open_door_cutscene(CUTSCENE_DOOR_PULL, CUTSCENE_DOOR_PUSH);
