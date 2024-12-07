@@ -36,14 +36,13 @@ CVT.S.W    F0, F0
 .orga 0x188440+0xB000
 .area 0x9000,0x01
 
+.importobj "Trolls/cameratroll/camtrollobj.o"
 .importobj "AI/stats_tracking.o"
 .importobj "AI/audio_trolls.o"
 .importobj "AI/frameskip_engine.o"
 .importobj "AI/troll_hud.o"
 .importobj "AI/yellow_coin_geo.o"
 .importobj "AI/save_file.o"
-
-.importobj "Trolls/cameratroll/sCamBeyta.o"
 
 .importobj "AI/extra_dl_pools.o"
 

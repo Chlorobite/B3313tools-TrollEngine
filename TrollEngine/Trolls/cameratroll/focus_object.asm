@@ -1,5 +1,7 @@
 .headersize 0x8018F240
 .orga 0x3D0DC0+0x500
+.area 0x100,0x00
+
 
 @beh:
 .word 0x00040000
@@ -39,39 +41,13 @@ ORI   T9, R0, 0x0002
 BNE   T2, T9, @endif2
 NOP
 ; inside castle mode
-; mario range checks
-LUI   T8, 0x8033
-LW    T8, 0xD93C (T8) ; gMarioState
-LUI   AT, 0x44D1      ; 1672.f
-MTC1  AT, F16
-LWC1  F4, 0x003C (T8) ; posX
-ABS.S F6, F4          ; abs(posX)
-C.LT.S F6, F16        ; abs(posX) < 1672 ?
-LUI   AT, 0xC3F0      ; -480.f
-BC1F  @endif2
-MTC1  AT, F16
-LWC1  F4, 0x0044 (T8) ; posZ
-C.LT.S F4, F16        ; posZ < -480 ?
-ORI   T9, R0, 0x0010 ; load mode CAMERA_MODE_FREE_ROAM
-BC1T  @endif2
-;NOP
-; set mode to CAMERA_MODE_FIXED if CAMERA_MODE_FREE_ROAM
-LUI   AT, 0x8034
-LBU   T8, 0xC6D4 (AT)
-BNE   T8, T9, @endif2
-ORI   T9, R0, 0x000D
-SB    T9, 0xC6D4 (AT)
-; set sFixedModeBasePosition
-LUI   AT, 0x8033
-LW    T9, 0x00A0 (T1) ; oPosX...
-SW    T9, 0xDF6C (AT) ; ...to sFixedModeBasePosition[0]
-LW    T9, 0x00A4 (T1) ; oPosY...
-SW    T9, 0xDF70 (AT) ; ...to sFixedModeBasePosition[1]
-LW    T9, 0x00A8 (T1) ; oPosZ...
-SW    T9, 0xDF74 (AT) ; ...to sFixedModeBasePosition[2]
+J bhv_camtrollobj_insidecastle
+NOP
 @endif2:
 JR    RA
 NOP
+
+.endarea
 
 ; sCameraTriggers
 .orga 0xE9CB0
@@ -79,7 +55,7 @@ NOP
 .word 0, 0, 0, 0
 .word 0, 0, 0, 0
 .word 0, 0, 0, 0
-.word sCamBeytaLobby, 0, 0, 0
+.word 0, 0, 0, 0
 .word 0, 0, 0, 0
 .word 0, 0, 0, 0
 .word 0, 0, 0, 0
@@ -95,6 +71,9 @@ NOP
 .org 0x80282520
 .word 0x11C00008 ; restores a branch that was presumably missing
 
-; beta 60 fov in inside castle
-.org 0x8029A910
-LUI     AT, 0x4270
+; beta 60 fov in inside castle\
+.headersize 0x80245000
+.org 0x8029a8d0
+.area 0x8029a9a4-0x8029a8d0,0x00
+.importobj "Trolls/cameratroll/approach_fov_45.o"
+.endarea

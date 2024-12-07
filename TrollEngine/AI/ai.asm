@@ -25,7 +25,15 @@
 ; Game segment
 .headersize 0x80245000
 
+; dont fuck the camera after door
+.org 0x80299360
+.area 0x80299404-0x80299360,0x00
+.importobj "AI/trolls/cutscene_door_end.o"
+.endarea
+
 ; init_camera
+.org 0x80287660 ; i fucking hate this stupif sfucking gam
+NOP
 .org 0x80287728
 BEQ     S0, AT, 0x802875A0 ; huh, c4a2 was on the list already for some reason? ez
 
