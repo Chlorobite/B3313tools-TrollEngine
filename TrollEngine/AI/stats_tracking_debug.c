@@ -428,7 +428,6 @@ void stats_tracking_debug_display(register u32 buttonPressed) {
 		case 0:
 			switch (tab) {
 				case 0:
-					print_text(HUD_LEFT_X, HUD_TOP_Y - 96, "ligma balls");
 					break;
 				case 1:
 					print_level_information();

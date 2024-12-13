@@ -71,6 +71,10 @@ OR      A2, T7, R0
 .word 0x8000 ; permanent note partition
 .word 0xB000 ; temporary note partition
 
+; troll the race sound so it doesn't play for the water land textbox
+.orga 0xEC4DC
+.halfword 0x0005
+
 
 
 .headersize 0x80245000
