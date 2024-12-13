@@ -25,7 +25,7 @@ void stop_other_paintings(s16 *idptr, struct Painting *paintingGroup[]) {
     while (paintingGroup[index] != NULL) {
         struct Painting *painting = segmented_to_virtual(paintingGroup[index]);
         // data validity check, these pointers are required for the painting to even function
-        if (is_segmented_pointer_valid((void*)painting->normalDisplayList)) {
+        if (is_segmented_pointer_valid((void*)painting->normalDisplayList) && is_segmented_pointer_valid((void*)painting->textureArray)) {
             // stop all rippling except for the selected painting
             if (painting->id != id) {
                 painting->state = 0;

@@ -437,6 +437,10 @@ NOP
 J       troll_cur_obj_check_if_near_animation_end
 NOP
 
+.org 0x8029FFA4
+J       troll_cur_obj_check_if_at_animation_end
+NOP
+
 .org 0x802A0008
 J       troll_cur_obj_check_anim_frame
 NOP

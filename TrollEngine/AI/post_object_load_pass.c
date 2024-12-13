@@ -218,6 +218,9 @@ void area_geo_load_intercept(u8 areaId, u32 *areaGeoLayout) {
 
 extern u8 *gMovtexIdToTexture[8];
 extern uintptr_t sSegmentTable[32];
+#include "game_init.h"
+extern u16 sRenderedFramebuffer;
+extern u16 sRenderingFramebuffer;
 void troll_geo_layout(u32 *areaGeoLayout) {
 	register s32 i, j;
 	register struct ObjectNode *listHead;
@@ -310,6 +313,48 @@ void troll_geo_layout(u32 *areaGeoLayout) {
 			}
 		}
 	}
+	
+	/* testma image
+	{
+		// Generate a test pattern covering as much of the RGBA16 color space as possible
+		// Constants for RGBA16 color component shifts
+		#define R_SHIFT 12
+		#define G_SHIFT 7
+		#define B_SHIFT 2
+		#define A_SHIFT 0  // Alpha ignored for this test
+		#define COLOR_COUNT (1 << 12)  // 4096 colors
+
+		// Fill the framebuffer with the test pattern
+		for(;;) {
+			u16 *framebuffer = (u16 *) PHYSICAL_TO_VIRTUAL(gPhysicalFramebuffers[sRenderingFramebuffer]);
+
+			int y, x;
+			for (y = 10; y < 230; y++) {
+				for (x = 0; x < 320; x++) {
+					int pixel_idx = y * 320 + x;
+					int pixel_color_idx = ((y - 10) / 4 * 320 + x / 2) / 4;
+
+					// Compute a color index wrapping over the color space
+					int color_idx = pixel_color_idx % COLOR_COUNT;
+
+					// Decompose the color index into RGBA16 components
+					u16 red = (color_idx >> 8) & 0x1F;  // Top 5 bits for Red
+					u16 green = (color_idx >> 4) & 0x1F; // Middle 5 bits for Green
+					u16 blue = color_idx & 0x1F;        // Bottom 5 bits for Blue
+					u16 alpha = 1;                      // Alpha set to 1 (ignored)
+
+					// Pack RGBA16 into a single 16-bit value
+					u16 rgba16_pixel = (red << R_SHIFT) | (green << G_SHIFT) | (blue << B_SHIFT) | (alpha << A_SHIFT);
+
+					// Write to the framebuffer
+					framebuffer[pixel_idx] = rgba16_pixel;
+				}
+			}
+
+			// Display the generated framebuffer and wait for the next frame
+			display_and_vsync();
+		}
+	}*/
 }
 
 

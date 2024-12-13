@@ -81,17 +81,16 @@ s32 troll_lvl_init_or_update(s16 initOrUpdate) {
     register s32 result = 0;
     register s32 i = 0;
     register s32 j = 0;
-    register u32 buttonPressed[2];
-
-    for (j = 0; j < 2; j++) {
+#ifdef TROLLDEBUG
+    register u32 debugButtonsPressed;
+    for (j = 0; j < 1; j++) {
         struct Controller *controller = &gControllers[j];
 
-        if (controller->controllerData != NULL) {
-            buttonPressed[j] = controller->buttonPressed;
+        if (is_pointer_valid(controller->controllerData)) {
+            debugButtonsPressed = controller->buttonPressed;
         }
     }
-    
-    camera_troll_signal = 0;
+#endif
     
     for (i = 0; i < render_frame_count; i++) {
         if (i == 1) {
@@ -104,7 +103,9 @@ s32 troll_lvl_init_or_update(s16 initOrUpdate) {
                 }
             }
         }
-        
+
+        camera_troll_signal = 0;
+
         switch (initOrUpdate) {
             case 0:
                 render_frame_count = i + 1;
@@ -119,16 +120,8 @@ s32 troll_lvl_init_or_update(s16 initOrUpdate) {
         }
     }
 
-    for (j = 0; j < 2; j++) {
-        struct Controller *controller = &gControllers[j];
-
-        if (controller->controllerData != NULL) {
-            controller->buttonPressed = buttonPressed[j];
-        }
-    }
-
 #ifdef TROLLDEBUG
-    stats_tracking_debug_display();
+    stats_tracking_debug_display(debugButtonsPressed);
 #endif
 
     // Make RNG more random
@@ -142,82 +135,102 @@ s32 troll_lvl_init_or_update(s16 initOrUpdate) {
 
 
 s32 troll_cur_obj_check_anim_frame(s32 frame) {
-    s32 animFrame = gCurrentObject->header.gfx.animInfo.animFrame;
-    struct Animation *anim = gCurrentObject->header.gfx.animInfo.curAnim;
-    s32 i;
+    if (gCurrentObject->header.gfx.animInfo.curAnim == NULL) return TRUE;
+    else {
+        s32 animFrame = gCurrentObject->header.gfx.animInfo.animFrame;
+        struct Animation *anim = gCurrentObject->header.gfx.animInfo.curAnim;
+        s32 i;
 
-    for (i = 0; i < render_frame_count; i++) {
-        if (animFrame == frame) {
-            return TRUE;
+        for (i = 0; i < render_frame_count; i++) {
+            if (animFrame == frame) {
+                return TRUE;
+            }
+
+            // Approximation of the animation frame update function to iterate frames
+            if (anim->flags & ANIM_FLAG_FORWARD) {
+                frame--;
+
+                if (frame < anim->loopStart) {
+                    if (anim->flags & ANIM_FLAG_NOLOOP) {
+                        frame = anim->loopStart;
+                    } else {
+                        frame = anim->loopEnd - 1;
+                    }
+                }
+            } else {
+                frame++;
+
+                if (frame >= anim->loopEnd) {
+                    if (anim->flags & ANIM_FLAG_NOLOOP) {
+                        frame = anim->loopEnd - 1;
+                    } else {
+                        frame = anim->loopStart;
+                    }
+                }
+            }
         }
+        return FALSE;
+    }
+}
 
-        // Approximation of the animation frame update function to iterate frames
-        if (anim->flags & ANIM_FLAG_FORWARD) {
-            frame--;
+s32 troll_cur_obj_check_if_at_animation_end(void) {
+    if (gCurrentObject->header.gfx.animInfo.curAnim == NULL) return TRUE;
+    else {
+        s32 animFrame = gCurrentObject->header.gfx.animInfo.animFrame;
+        s32 lastFrame = gCurrentObject->header.gfx.animInfo.curAnim->loopEnd - 1;
 
-            if (frame < anim->loopStart) {
-                if (anim->flags & ANIM_FLAG_NOLOOP) {
-                    frame = anim->loopStart;
-                } else {
-                    frame = anim->loopEnd - 1;
-                }
-            }
+        if (animFrame == lastFrame) {
+            return TRUE;
         } else {
-            frame++;
-
-            if (frame >= anim->loopEnd) {
-                if (anim->flags & ANIM_FLAG_NOLOOP) {
-                    frame = anim->loopEnd - 1;
-                } else {
-                    frame = anim->loopStart;
-                }
-            }
+            return FALSE;
         }
     }
-    return FALSE;
 }
 
 s32 troll_cur_obj_check_if_near_animation_end(void) {
-    struct Animation *anim = gCurrentObject->header.gfx.animInfo.curAnim;
-    u32 animFlags = (s32)anim->flags;
-    s32 animFrame = gCurrentObject->header.gfx.animInfo.animFrame;
-    s32 nearLoopEnd = anim->loopEnd - 2;
-    s32 i;
+    if (gCurrentObject->header.gfx.animInfo.curAnim == NULL) return TRUE;
+    else {
+        struct Animation *anim = gCurrentObject->header.gfx.animInfo.curAnim;
+        u32 animFlags = (s32)anim->flags;
+        s32 animFrame = gCurrentObject->header.gfx.animInfo.animFrame;
+        s32 nearLoopEnd = anim->loopEnd - 2;
+        s32 i;
 
-    for (i = 0; i < render_frame_count; i++) {
-        if (animFlags & ANIM_FLAG_NOLOOP && nearLoopEnd + 1 == animFrame) {
-            return TRUE;
-        }
+        for (i = 0; i < render_frame_count; i++) {
+            if (animFlags & ANIM_FLAG_NOLOOP && nearLoopEnd + 1 == animFrame) {
+                return TRUE;
+            }
 
-        if (animFrame == nearLoopEnd) {
-            return TRUE;
-        }
+            if (animFrame == nearLoopEnd) {
+                return TRUE;
+            }
 
-        // Approximation of the animation frame update function to iterate frames
-        if (animFlags & ANIM_FLAG_FORWARD) {
-            animFrame--;
+            // Approximation of the animation frame update function to iterate frames
+            if (animFlags & ANIM_FLAG_FORWARD) {
+                animFrame--;
 
-            if (animFrame < anim->loopStart) {
-                if (animFlags & ANIM_FLAG_NOLOOP) {
-                    animFrame = anim->loopStart;
-                } else {
-                    animFrame = anim->loopEnd - 1;
+                if (animFrame < anim->loopStart) {
+                    if (animFlags & ANIM_FLAG_NOLOOP) {
+                        animFrame = anim->loopStart;
+                    } else {
+                        animFrame = anim->loopEnd - 1;
+                    }
+                }
+            } else {
+                animFrame++;
+
+                if (animFrame >= anim->loopEnd) {
+                    if (animFlags & ANIM_FLAG_NOLOOP) {
+                        animFrame = anim->loopEnd - 1;
+                    } else {
+                        animFrame = anim->loopStart;
+                    }
                 }
             }
-        } else {
-            animFrame++;
-
-            if (animFrame >= anim->loopEnd) {
-                if (animFlags & ANIM_FLAG_NOLOOP) {
-                    animFrame = anim->loopEnd - 1;
-                } else {
-                    animFrame = anim->loopStart;
-                }
-            }
         }
+
+        return FALSE;
     }
-
-    return FALSE;
 }
 
 

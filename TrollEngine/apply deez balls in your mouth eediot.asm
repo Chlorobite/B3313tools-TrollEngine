@@ -69,7 +69,7 @@ OR      A2, T7, R0
 ; sound pools
 .orga 0xEE2AC
 .word 0x8000 ; permanent note partition
-.word 0xB330 ; temporary note partition
+.word 0xB000 ; temporary note partition
 
 
 

@@ -284,17 +284,17 @@ int nowPlaying_seqId = 0;
 int nowPlaying_nlst = 0;
 int nowPlaying_tempo = 0;
 int soundTestSelection = 0;
-void sound_test() {
+void sound_test(register u32 buttonPressed) {
 	print_text(HUD_LEFT_X, HUD_TOP_Y, "SOUND TEST");
 	
 	print_text(HUD_LEFT_X + (soundTestSelection == 0 ? 16 : 0), HUD_TOP_Y - 24, "MUSIC");
 	sprintf_decimal(musSelection);
 	print_text(HUD_LEFT_X + (soundTestSelection == 0 ? 16 : 0) + 80, HUD_TOP_Y - 24, float_buffer);
 	if (soundTestSelection == 0) {
-		if (gPlayer1Controller->buttonPressed & L_JPAD) {
+		if (buttonPressed & L_JPAD) {
 			if (--musSelection < 0) musSelection = 0;
 		}
-		if (gPlayer1Controller->buttonPressed & R_JPAD) {
+		if (buttonPressed & R_JPAD) {
 			if (++musSelection > 255) musSelection = 255;
 		}
 	}
@@ -308,10 +308,10 @@ void sound_test() {
 		print_text(HUD_LEFT_X + (soundTestSelection == 1 ? 16 : 0) + 80, HUD_TOP_Y - 40, float_buffer);
 	}
 	if (soundTestSelection == 1) {
-		if (gPlayer1Controller->buttonPressed & L_JPAD) {
+		if (buttonPressed & L_JPAD) {
 			if (--musForceNLST < 0) musForceNLST = 0;
 		}
-		if (gPlayer1Controller->buttonPressed & R_JPAD) {
+		if (buttonPressed & R_JPAD) {
 			if (++musForceNLST > 37) musForceNLST = 37;
 		}
 	}
@@ -332,10 +332,10 @@ void sound_test() {
 	sprintf_decimal(musPitch);
 	print_text(HUD_LEFT_X + (soundTestSelection == 3 ? 16 : 0) + 80, HUD_TOP_Y - 72, float_buffer);
 	if (soundTestSelection == 3) {
-		if (gPlayer1Controller->buttonPressed & L_JPAD) {
+		if (buttonPressed & L_JPAD) {
 			if (--musPitch < 0) musPitch = 0;
 		}
-		if (gPlayer1Controller->buttonPressed & R_JPAD) {
+		if (buttonPressed & R_JPAD) {
 			if (++musPitch > 15) musPitch = 15;
 		}
 	}
@@ -344,10 +344,10 @@ void sound_test() {
 	sprintf_decimal(musTranspose);
 	print_text(HUD_LEFT_X + (soundTestSelection == 4 ? 16 : 0) + 80, HUD_TOP_Y - 88, float_buffer);
 	if (soundTestSelection == 4) {
-		if (gPlayer1Controller->buttonPressed & L_JPAD) {
+		if (buttonPressed & L_JPAD) {
 			if (--musTranspose < -8) musTranspose = -8;
 		}
-		if (gPlayer1Controller->buttonPressed & R_JPAD) {
+		if (buttonPressed & R_JPAD) {
 			if (++musTranspose > 7) musTranspose = 7;
 		}
 	}
@@ -365,24 +365,24 @@ void sound_test() {
 	
 	
 	
-	if (gPlayer1Controller->buttonPressed & U_JPAD) {
+	if (buttonPressed & U_JPAD) {
 		if (--soundTestSelection < 0) soundTestSelection = 4;
 	}
-	if (gPlayer1Controller->buttonPressed & D_JPAD) {
+	if (buttonPressed & D_JPAD) {
 		if (++soundTestSelection > 4) soundTestSelection = 0;
 	}
 }
 
-void haks() {
+void haks(register u32 buttonPressed) {
 	print_text(HUD_LEFT_X, HUD_TOP_Y, "HAKS");
 	
 	print_text(HUD_LEFT_X, HUD_TOP_Y - 16, "LEFT   DEBUG MOVE");
-	if (gPlayer1Controller->buttonPressed & L_JPAD) {
+	if (buttonPressed & L_JPAD) {
 		set_mario_action(gMarioState, gMarioState->action == ACT_DEBUG_FREE_MOVE ? ACT_IDLE : ACT_DEBUG_FREE_MOVE, 0);
 	}
 
 	/*print_text(HUD_LEFT_X, HUD_TOP_Y - 32, "RIGHT  FUNY SPAWN");
-	if (gPlayer1Controller->buttonPressed & R_JPAD) {
+	if (buttonPressed & R_JPAD) {
 		// spawn object
 		u8 spawnModel = 0;
 		u32 *spawnBhv = (u32*)segmented_to_virtual(bhvTextOnScreen);
@@ -423,11 +423,12 @@ void haks() {
 int tab = 0;
 int tab2 = 0;
 
-void stats_tracking_debug_display() {
+void stats_tracking_debug_display(register u32 buttonPressed) {
 	switch (tab2) {
 		case 0:
 			switch (tab) {
 				case 0:
+					print_text(HUD_LEFT_X, HUD_TOP_Y - 96, "ligma balls");
 					break;
 				case 1:
 					print_level_information();
@@ -459,15 +460,15 @@ void stats_tracking_debug_display() {
 			}
 			break;
 		case 1:
-			sound_test();
+			sound_test(buttonPressed);
 			break;
 		case 2:
-			haks();
+			haks(buttonPressed);
 			break;
 	}
 	
 	
-	if (gPlayer1Controller->buttonPressed & L_TRIG) {
+	if (buttonPressed & L_TRIG) {
 		if (gPlayer1Controller->buttonDown & U_CBUTTONS) {
 			tab2 = (tab2 + 1) % 3;
 		}

@@ -29,6 +29,7 @@
 
 .definelabel gFramebuffers, 0x8038f800
 .definelabel sRenderedFramebuffer, 0x8032d5d8
+.definelabel sRenderingFramebuffer, 0x8032d5dc
 
 .definelabel gPlayer1Controller, 0x8032d5e4
 .definelabel gControllers, 0x8033af90
@@ -1753,3 +1754,5 @@
 .definelabel reset_pan_distance, 0x8029051C
 .definelabel update_fixed_camera, 0x80282280
 .definelabel update_parallel_tracking_camera, 0x80281904
+.definelabel display_and_vsync, 0x80248090
+.definelabel gPhysicalFramebuffers, 0x8033b050                

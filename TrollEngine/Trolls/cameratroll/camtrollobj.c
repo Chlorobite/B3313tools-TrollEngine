@@ -47,7 +47,7 @@ s32 camtrollobj_in_door_signal_bounds(register Vec3f p) {
     else {
         // beta lobby
         // the lobby yknow
-        if (absf(p[0]) > 1850.f || p[2] < -810.f) return 0;
+        if (absf(p[0]) > 1850.f || p[2] < -850.f) return 0;
     }
 
     return 1;
