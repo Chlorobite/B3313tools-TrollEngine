@@ -449,7 +449,7 @@ s32 osEepromGetTime(OSMesgQueue *mq, u8 *buffer) {
     __osSiGetAccess();
     sp34 = __osEepStatus(mq, &sp28);
     if (sp34 != 0 || sp28.unk00 != 0x8000) {
-
+        __osSiRelAccess();
         return 8;
     }
     while (sp28.unk02 & 0x80) {
@@ -515,10 +515,10 @@ void updateRTC() {
     
     rtcbuffer[2] = 0;
 
-    if (get_red_star_count(gCurrSaveFileNum - 1) < 4) {
-        h = 80;
+    /*if (get_red_star_count(gCurrSaveFileNum - 1) < 4) {
+        h = 0x80;
     }
-    else {
+    else*/ {
         osEepromGetTime(&gSIEventMesgQueue, rtcbuffer);
         h = rtcbuffer[2] - 0x80;
         h = ((h & 240) >> 4) * 10 + (h & 15);
@@ -526,9 +526,13 @@ void updateRTC() {
         m = ((m & 240) >> 4) * 10 + (m & 15);
         s = rtcbuffer[0];
         s = ((s & 240) >> 4) * 10 + (s & 15);
+        
+        if (h >= 24) h = 0x80;
+        if (m >= 60) h = 0x80;
+        if (s >= 60) h = 0x80;
     }
 
-    if (h != 80) {
+    if (h != 0x80) {
         rtcHour = h;
         rtcMinute = m;
         rtcSecond = s;
