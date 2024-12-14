@@ -515,10 +515,10 @@ void updateRTC() {
     
     rtcbuffer[2] = 0;
 
-    /*if (get_red_star_count(gCurrSaveFileNum - 1) < 4) {
+    if (get_red_star_count(gCurrSaveFileNum - 1) < 4) {
         h = 0x80;
     }
-    else*/ {
+    else {
         osEepromGetTime(&gSIEventMesgQueue, rtcbuffer);
         h = rtcbuffer[2] - 0x80;
         h = ((h & 240) >> 4) * 10 + (h & 15);
