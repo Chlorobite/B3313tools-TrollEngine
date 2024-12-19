@@ -200,23 +200,8 @@ s16 camera_course_processing(register struct Camera *c) {
                 }
                 break;
 
-            case AREA_SSL_PYRAMID:
-                set_mode_if_not_set_by_surface(c, CAMERA_MODE_OUTWARD_RADIAL);
-                break;
-
-            case AREA_SSL_OUTSIDE:
-                set_mode_if_not_set_by_surface(c, CAMERA_MODE_RADIAL);
-                break;
-
-            case AREA_THI_HUGE:
-                break;
-
             case AREA_THI_TINY:
                 surface_type_modes_thi(c);
-                break;
-
-            case AREA_TTC:
-                set_mode_if_not_set_by_surface(c, CAMERA_MODE_OUTWARD_RADIAL);
                 break;
 
             case AREA_BOB:
@@ -249,11 +234,6 @@ s16 camera_course_processing(register struct Camera *c) {
                 }
                 break;
 
-            case AREA_DDD_WHIRLPOOL:
-                //! @bug this does nothing
-                gLakituState.defMode = CAMERA_MODE_OUTWARD_RADIAL;
-                break;
-
             case AREA_DDD_SUB:
                 if ((c->mode != CAMERA_MODE_BEHIND_MARIO)
                     && (c->mode != CAMERA_MODE_WATER_SURFACE)) {
@@ -267,8 +247,6 @@ s16 camera_course_processing(register struct Camera *c) {
                         }
                     }
                 }
-                //! @bug this does nothing
-                gLakituState.defMode = CAMERA_MODE_FREE_ROAM;
                 break;
         }
     }
