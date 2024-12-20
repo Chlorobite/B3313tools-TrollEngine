@@ -198,6 +198,15 @@ NOP
 LW      RA, 0x0014 (SP)
 JR      RA
 ADDIU   SP, SP, 0x18
+
+; level scaled rom mangler star spawn fix
+.orga 0x01203F30 ; gomba thing
+JAL     spawn_default_star_at_prescaled
+.orga 0x01203FA4 ; spawn when unloaded
+J       spawn_default_star_at_prescaled
+
+
+
 .close 
 
 

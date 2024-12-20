@@ -35,6 +35,17 @@
 .importobj "AI/trolls/cutscene_door_mode.o"
 .endarea
 
+; unhardcode shit
+.org 0x802963b8
+.area 0x8029652c-0x802963b8,0x00
+.importobj "AI/trolls/cutscene_non_painting_set_cam_pos.o"
+.endarea
+
+.org 0x8029652c
+.area 0x8029665c-0x8029652c,0x00
+.importobj "AI/trolls/cutscene_non_painting_set_cam_focus.o"
+.endarea
+
 ; init_camera
 .org 0x80287660 ; i fucking hate this stupif sfucking gam
 NOP

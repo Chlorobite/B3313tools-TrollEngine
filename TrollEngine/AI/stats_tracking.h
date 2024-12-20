@@ -55,8 +55,8 @@ extern f32 TRACKER_accum_murder;
 
 // recent stars: a high value indicates breezing through the game
 extern f32 TRACKER_accum_stars;
-// drop one every ~11 minutes
-#define TRACKER_accum_stars_DECAY 0.00005f
+// drop one every ~5.5 minutes, which can still be counteracted by most players (snooplax gets 15 stars/hour, or one every 4 minutes)
+#define TRACKER_accum_stars_DECAY 0.0001f
 // the following are the stars categorized, used to target the player's preferences
 // [gameplay]
 extern f32 TRACKER_accum_stars_prefer_boss; //[X] auto assigned to stars dropped by bosses [0x01]

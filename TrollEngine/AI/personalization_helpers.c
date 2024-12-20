@@ -1702,6 +1702,13 @@ struct Object *troll_spawn_star(struct Object *sp30, f32 sp34, f32 sp38, f32 sp3
     return sp30;
 }
 
+void spawn_default_star(f32 sp20, f32 sp24, f32 sp28);
+// this is for top behavior shit
+// the values get scaled up above so they must be unscaled here first
+void spawn_default_star_at_prescaled(f32 preScaleX, f32 preScaleY, f32 preScaleZ) {
+    spawn_default_star(preScaleX / levelScaleH, preScaleY / levelScaleV, preScaleZ / levelScaleH);
+}
+
 void troll_spawn_bowser_star() {
     register struct Object *obj;
     

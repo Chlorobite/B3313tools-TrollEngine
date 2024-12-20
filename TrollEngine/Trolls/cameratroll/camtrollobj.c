@@ -27,6 +27,8 @@ s32 camtrollobj_in_mode_bounds(register Vec3f p) {
         // cutouts for foyer staircase (at least the part where your y can be >-450)
         if (p[1] < -100.f && (p[0] > -1300.f && p[0] < -750.f) && p[2] < 400.f) return 0;
         if (p[1] < 200.f && (p[0] > -1300.f && p[0] < -750.f) && p[2] < -100.f) return 0;
+        // section behind pech
+        if (p[1] > 850.f && p[2] > 1550.f) return 0;
     }
     else {
         // beta lobby
@@ -52,27 +54,20 @@ s32 camtrollobj_in_door_signal_bounds(register Vec3f p) {
 
     return 1;
 }
-s32 camtrollobj_in_untroll_bounds(register Vec3f p) {
-    if (gCurrLevelNum == LEVEL_CASTLE) {
-        // section behind pech
-        if (p[1] > 850.f && p[2] > 1550.f) return 1;
-    }
-
-    return 0;
-}
 
 void bhv_camtrollobj_insidecastle() {
     Vec3f p;
     vec3f_copy(p, gMarioState->pos);
 
-    if (camtrollobj_in_untroll_bounds(p)) {
+    if (!camtrollobj_in_door_signal_bounds(p)) {
         if (gLakituState.mode == CAMERA_MODE_FIXED) gLakituState.mode = CAMERA_MODE_CLOSE;
         return;
     }
-
-    if (!camtrollobj_in_door_signal_bounds(p)) return;
     camera_troll_signal = 1;
-    if (!camtrollobj_in_mode_bounds(p)) return;
+    if (!camtrollobj_in_mode_bounds(p)) {
+        if (gLakituState.mode == CAMERA_MODE_FIXED) gLakituState.mode = CAMERA_MODE_CLOSE;
+        return;
+    }
 
     vec3f_copy(sFixedModeBasePosition, &o->oPosX);
     if (gLakituState.mode == CAMERA_MODE_CLOSE) gLakituState.mode = CAMERA_MODE_FIXED;

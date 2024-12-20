@@ -1756,3 +1756,6 @@
 .definelabel update_parallel_tracking_camera, 0x80281904
 .definelabel display_and_vsync, 0x80248090
 .definelabel gPhysicalFramebuffers, 0x8033b050                
+
+.definelabel sCutsceneVars, 0x8033ca60                
+.definelabel offset_rotated, 0x8028cbf0                

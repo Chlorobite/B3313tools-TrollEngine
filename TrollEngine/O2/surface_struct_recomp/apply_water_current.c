@@ -1,5 +1,7 @@
 #include "mario_actions_submerged_headers.h"
 
+extern s32 gCurrLevelArea;
+
 void apply_water_current(struct MarioState *m, Vec3f step) {
     s32 i;
     f32 whirlpoolRadius = 2000.0f;
@@ -7,6 +9,13 @@ void apply_water_current(struct MarioState *m, Vec3f step) {
     if (m->floor->type == SURFACE_FLOWING_WATER) {
         s16 currentAngle = m->floor->force << 8;
         f32 currentSpeed = m->floor->force >> 8;
+
+        // bob river fix: nintendo ahh solution edition
+        // actual solution would be to reimport the level and add these values in
+        if (gCurrLevelArea == 0xC1) {
+            currentAngle = 0x1000;
+            currentSpeed = 8.f;
+        }
 
         step[0] += currentSpeed * sins(currentAngle);
         step[2] += currentSpeed * coss(currentAngle);

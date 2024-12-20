@@ -40,6 +40,7 @@ CVT.S.W    F0, F0
 .importobj "AI/stats_tracking.o"
 .importobj "AI/audio_trolls.o"
 .importobj "AI/frameskip_engine.o"
+.importobj "AI/frameskip_engine_animation_update.o"
 .importobj "AI/troll_hud.o"
 .importobj "AI/yellow_coin_geo.o"
 .importobj "AI/save_file.o"

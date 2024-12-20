@@ -46,7 +46,7 @@ f32 TRACKER_speed = 24.0f;
 f32 TRACKER_air_time = 0.25f;
 f32 TRACKER_water = 0.1f;
 
-f32 TRACKER_hp = 4.0f;
+f32 TRACKER_hp = 6.0f;
 f32 TRACKER_boss_performance = 0.0f;
 f32 TRACKER_accum_deaths = 0.0f;
 
@@ -296,7 +296,7 @@ void TRACKER_record_mario_state(struct MarioState *m) {
 		LERP(TRACKER_speed, absf(m->forwardVel), TRACKER_speed_LERP / (m->forwardVel > TRACKER_speed ? 1.0f : 3.0f));
 		LERP(TRACKER_air_time, air_time_target, TRACKER_air_time_LERP / (air_time_target > TRACKER_air_time ? 1.0f : 2.0f));
 		LERP(TRACKER_water, water_target, TRACKER_water_LERP / (water_target > TRACKER_water ? 1.0f : 2.0f));
-		LERP(TRACKER_hp, (f32)(m->health >> 8), TRACKER_hp_LERP / ((f32)(m->health >> 8) < TRACKER_hp ? 1.0f : 2.0f));
+		LERP(TRACKER_hp, (f32)(m->health >> 8), TRACKER_hp_LERP / ((f32)(m->health >> 8) < TRACKER_hp ? 1.0f : 4.0f));
 		
 		// calculate "conclusions"
 		// collect = sqrt(accum stars + accum stars collect + accum stars secret courses)
@@ -320,7 +320,7 @@ void TRACKER_record_mario_state(struct MarioState *m) {
 		if (unlockDynamicDifficulty)
 			TRACKER_difficulty_modifier = __max(
 				moveTo(
-					(((TRACKER_speed - 24.0f) / 16.0f) + TRACKER_accum_stars / 8.0f - TRACKER_accum_deaths) / 6.0f + __max(TRACKER_accum_murder / 6.0f, 0.4f) + 0.5f + TRACKER_boss_performance / 20.0f
+					(((TRACKER_speed - 24.0f) / 16.0f) + TRACKER_accum_stars / 16.0f - TRACKER_accum_deaths) / 5.0f + (TRACKER_hp - 6.0f) / 10.0f + __max(TRACKER_accum_murder / 6.0f, 0.4f) + 0.5f + TRACKER_boss_performance / 20.0f
 				, 1.0f, 0.1f)
 			, 0.0f);
 		else

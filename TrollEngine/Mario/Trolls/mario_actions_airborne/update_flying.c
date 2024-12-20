@@ -18,7 +18,7 @@ void update_flying(struct MarioState *m) {
 	// so let's give the wing cap an actual use
     if (m->flags & MARIO_WING_CAP) {
         m->particleFlags |= PARTICLE_SPARKLES;
-        LERP(m->forwardVel, 48.0f, 0.05f);
+        LERP(m->forwardVel, 36.0f, 0.05f);
     }
 	// END ADD
 

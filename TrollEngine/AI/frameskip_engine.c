@@ -117,6 +117,9 @@ s32 troll_lvl_init_or_update(s16 initOrUpdate) {
                     render_frame_count = i + 1;
                     return result;
                 }
+                else {
+                    physics_geo_process_root(gCurrentArea->unk04);
+                }
         }
     }
 
