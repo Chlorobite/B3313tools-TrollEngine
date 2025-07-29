@@ -1,6 +1,5 @@
 #include <PR/ultratypes.h>
 
-#include "!debug_mode.h"
 #include "sm64.h"
 #include "game/ingame_menu.h"
 #include "engine/graph_node.h"

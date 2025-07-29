@@ -1,5 +1,5 @@
 .n64
-.open "../Bee/b3313 silved.z64", "../Bee/b3313 temp.z64", 0
+.open "../Bee/b3313 optimized.z64", "../Bee/b3313 temp.z64", 0
 .include "trollfinity.asm" ; the asm behind the trolling
 
 ; osPiStartDma

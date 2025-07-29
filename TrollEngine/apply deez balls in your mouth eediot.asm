@@ -1,8 +1,7 @@
 .n64
-.open "../Bee/b3313 silved.z64", "../Bee/b3313 new.z64", 0
+.open BEE, "../Bee/b3313 new.z64", 0
 .include "trollfinity.asm" ; the asm behind the trolling
 .definelabel osPiStartDma, 0x80324460
-.include "!debug_mode.asm"
 
 
 .include "AI/ai.asm" ; no way there is a personaliatoin real ai ai chatgpt real stable diffusion
@@ -42,7 +41,7 @@
 .include "crashfix.asm"
 
 ; cavin's code with source code aint no fucking way
-.include "Cavins_B3313_ASM.asm"
+.include "Objects/Cavins_B3313_ASM.asm"
 
 
 .orga 0x130C ;8024630C

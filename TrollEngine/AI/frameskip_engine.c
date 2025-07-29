@@ -1,7 +1,6 @@
 #include <ultra64.h>
 #include <PR/rcp.h>
 
-#include "!debug_mode.h"
 #include "sm64.h"
 #include "gfx_dimensions.h"
 #include "audio/external.h"

@@ -1,7 +1,7 @@
-.definelabel rmseg13, readu8("../Bee/b3313 silved.z64", 0x2ABCD7) + \
-                     (readu8("../Bee/b3313 silved.z64", 0x2ABCD6) << 8) + \
-                     (readu8("../Bee/b3313 silved.z64", 0x2ABCD5) << 16) + \
-                     (readu8("../Bee/b3313 silved.z64", 0x2ABCD4) << 24) ; when the little endian ???
+.definelabel rmseg13, readu8(BEE, 0x2ABCD7) + \
+                     (readu8(BEE, 0x2ABCD6) << 8) + \
+                     (readu8(BEE, 0x2ABCD5) << 16) + \
+                     (readu8(BEE, 0x2ABCD4) << 24) ; when the little endian ???
 
 .notice "segment 13 address " + tohex(rmseg13)
 

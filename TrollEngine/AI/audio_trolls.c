@@ -1,7 +1,6 @@
 #include <PR/ultratypes.h>
 #include <ultra64.h>
 
-#include "!debug_mode.h"
 #include "audio/data.h"
 #include "audio/effects.h"
 #include "audio/external.h"

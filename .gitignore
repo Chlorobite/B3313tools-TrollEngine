@@ -1,11 +1,19 @@
 # roms n shit
 *.z64
+*.eeprom
 *.config
 *.zip
 *.7z
 sym.txt
+paintingcfg.txt
+
+*.o
+*.inc.c
 
 # microsoft software shame
 .vscode/
 # pilzinsel software shame
 Bee/rm/
+# llvm development group software shame
+compile_commands.json
+.cache
