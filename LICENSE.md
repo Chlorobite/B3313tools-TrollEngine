@@ -1,4 +1,5 @@
 Copyright © 2022-2025 Chlorobyte
+
 Copyright © 2024 Emax64
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:

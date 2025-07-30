@@ -28,5 +28,6 @@ Licensing currently remains unsolved for:
 - someone2639's contributions (TrollEngine/Objects/custom_purple_switch/)
 - Cavin789's contributions (TrollEngine/Cavins_B3313_ASM.asm)
 - Kaze Emanuar's contributions (TrollEngine/Objects/corrupt/)
+- JoshTheBosh06's contributions (TrollEngine/Objects/blooper_bhv/)
 
 B3313 is not affiliated with or endorsed by Nintendo; any references to the company are strictly for storytelling purposes. A legal copy of Super Mario 64 is required in order to use this repository.
