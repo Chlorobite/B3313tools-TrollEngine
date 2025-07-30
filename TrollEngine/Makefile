@@ -90,12 +90,12 @@ $(SILVED_BEE): objs $(ASM) $(ARMIPS) $(N64CKSUM) compile_commands.json
 	$(call print,(Apply) Applying ASM)
 	$(ARMIPS_SILVED) "apply deez balls in your mouth eediot.asm" -sym "sym.txt" $(ARMIPSDB)
 	@mv $(NEW_BEE) $(SILVED_BEE)
-ifeq ($(shell test -e $(PAINTING64) && echo -n pain),pain)
+ifeq ($(shell test -e $(PAINTING64) && test -e $(PAINTING_CFG) && echo -n pain),pain)
 	$(call print,(Apply) Applying Painting64)
 	@chmod +x $(PAINTING64)
 	@cd ../Bee && ../TrollEngine/$(PAINTING64) $(SILVED_BEE) --automatic
 else
-	$(call print,(Apply) Please install Painting64 into $(PAINTING64) to apply paintingcfg.txt)
+	$(call print,(Apply) Please install Painting64 into $(PAINTING64) & set up paintingcfg.txt to apply paintings)
 endif
 	$(call print,(Apply) Calculating CRC Checksum)
 	@$(N64CKSUM) $(SILVED_BEE)
@@ -104,7 +104,7 @@ apply: $(SILVED_BEE)
 
 
 $(OPTIMIZED_BEE): $(SILVED_BEE) $(ARMIPS) $(N64CKSUM) $(BEEIEOPTIMIZER)
-ifeq ($(shell test -e $(PAINTING64) && test -e $(BEEIEOPTIMIZER) && echo -n pain),pain)
+ifeq ($(shell test -e $(PAINTING64) && test -e $(PAINTING_CFG) && test -e $(BEEIEOPTIMIZER) && echo -n pain),pain)
 	@cp $(SILVED_BEE) $(OPTIMIZED_BEE)
 	@cp $(SILVED_CONFIG) $(OPTIMIZED_CONFIG)
 	@chmod +x $(BEEIEOPTIMIZER)
@@ -116,11 +116,11 @@ ifeq ($(shell test -e $(PAINTING64) && test -e $(BEEIEOPTIMIZER) && echo -n pain
 	@$(N64CKSUM) $(NEW_BEE)
 	@mv $(NEW_BEE) $(OPTIMIZED_BEE)
 else
-	$(call print,(Optimize) Please install Painting64 into $(PAINTING64) & BeeieOptimizer into $(BEEIEOPTIMIZER) to create optimized bee)
+	$(call print,(Optimize) Please install Painting64 into $(PAINTING64) & BeeieOptimizer into $(BEEIEOPTIMIZER) & set up paintingcfg.txt to create optimized bee)
 endif
 
 $(SHIFTED_BEE): $(OPTIMIZED_BEE) $(ARMIPS) $(N64CKSUM)
-ifeq ($(shell test -e $(PAINTING64) && test -e $(BEEIEOPTIMIZER) && echo -n pain),pain)
+ifeq ($(shell test -e $(PAINTING64) && test -e $(PAINTING_CFG) && test -e $(BEEIEOPTIMIZER) && echo -n pain),pain)
 	$(call print,(Shift) Applying ASM)
 	$(ARMIPS_OPTIMIZED) "shiftma.asm"
 	$(call print,(Shift) Trimming to 64 MB)
