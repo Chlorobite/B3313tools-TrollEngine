@@ -12,8 +12,11 @@ paintingcfg.txt
 
 # microsoft software shame
 .vscode/
+*Zone.Identifier
 # pilzinsel software shame
 Bee/rm/
 # llvm development group software shame
 compile_commands.json
 .cache
+# trollengine public edition shame
+Bee/*

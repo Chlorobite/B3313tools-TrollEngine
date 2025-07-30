@@ -28,7 +28,19 @@ BEEIEOPTIMIZER = tools/BeeieOptimizer/BeeieOptimizer
 ARMIPS_SILVED = $(ARMIPS) -strequ BEE $(SILVED_BEE)
 ARMIPS_OPTIMIZED = $(ARMIPS) -strequ BEE $(OPTIMIZED_BEE)
 
-CFLAGS = -c -G 0 -O2 -Wo,-loopunroll,0 -nostdinc -DTARGET_N64 -D_LANGUAGE_C -mips2 -IDecompHeaders/include -IDecompHeaders/src -IDecompHeaders/. -I. -IDecompHeaders/include/libc -IDecompHeaders/src/game -DVERSION_US=1 -DF3D_OLD=1 -non_shared -Wab,-r4300_mul -Xcpluscomm -Xfullwarn -signed -32
+DEFINES := VERSION_US=1 F3D_OLD=1
+
+OPT_FLAGS := -O2 -Wo,-loopunroll,0
+
+TARGET_CFLAGS := -nostdinc -DTARGET_N64 -D_LANGUAGE_C
+
+INCLUDE_DIRS := DecompHeaders/include DecompHeaders/src DecompHeaders/. . DecompHeaders/include/libc DecompHeaders/src/game
+
+C_DEFINES := $(foreach d,$(DEFINES),-D$(d))
+
+DEF_INC_CFLAGS := $(foreach i,$(INCLUDE_DIRS),-I$(i)) $(C_DEFINES)
+
+CFLAGS = -c -G 0 $(OPT_FLAGS) $(TARGET_CFLAGS) -mips2 $(DEF_INC_CFLAGS) -non_shared -Wab,-r4300_mul -Xcpluscomm -Xfullwarn -signed -32
 
 ifeq ($(DEBUG),1)
 	CFLAGS += -DTROLLDEBUG=1
@@ -79,12 +91,14 @@ tools: $(TOOLS)
 	$(call print2,Compiling:,$<,$@)
 	@$(CC) $(CFLAGS) -o '$@' '$<'
 
+AI/crash_screen.o: OPT_FLAGS := -O2
+
 objs: $(PNG_INC_C) $(OBJ)
 
 
 %.inc.c: %.png $(N64GRAPHICS)
 	$(call print2,Converting:,$<,$@)
-	@$(N64GRAPHICS) -s u8 -i '$@' -g '$<' -f rgba16
+	@$(N64GRAPHICS) -s u8 -i $@ -g $< -f $(lastword ,$(subst ., ,$(basename $<)))
 
 $(SILVED_BEE): objs $(ASM) $(ARMIPS) $(N64CKSUM) compile_commands.json
 	$(call print,(Apply) Applying ASM)

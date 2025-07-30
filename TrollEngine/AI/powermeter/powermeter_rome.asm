@@ -10,24 +10,20 @@
 
 .orga tex_stars_start
 .area (2*32*32*8*2),0x00
-.incbin "AI/powermeter/star/star_yellow.bin"
-.incbin "AI/powermeter/star/star_red.bin"
+.importobj "AI/powermeter/star/stars.o"
 .endarea
 .orga hud_crosses_start
 .area (3*16*16*2),0x00
-.incbin "AI/powermeter/hud/brollcross.bin"
-.incbin "AI/powermeter/hud/sonkcross.bin"
-.incbin "AI/powermeter/hud/vanillacross.bin"
+.importobj "AI/powermeter/hud/crosses.o"
 .endarea
 .orga hud_stars_start
 .area (2*16*16*2),0x00
-.incbin "AI/powermeter/hud/brollstar.bin"
-.incbin "AI/powermeter/hud/sonkstar.bin"
+.importobj "AI/powermeter/hud/stars.o"
 .endarea
 .orga hud_numbers_start
 .area (2*10*16*16*2),0x00
-.incbin "AI/powermeter/hud/betanum.bin"
-.incbin "AI/powermeter/hud/vanillanum.bin"
+.importobj "AI/powermeter/hud/betanum.o"
+.importobj "AI/powermeter/hud/vanillanum.o"
 .endarea
 .orga vanilla_start
 .area (8*32*32*2),0x00

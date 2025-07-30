@@ -78,7 +78,7 @@ static const Vtx coin_pink[] = {
 };
 
 static const Texture tex_coin_outline[] = {
-#include "coin_outline.ia16.inc"
+#include "coin_outline.ia16.inc.c"
 };
 
 
