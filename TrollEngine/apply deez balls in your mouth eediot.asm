@@ -28,6 +28,10 @@
 .include "Objects/topbhv/topbhv.asm"
 .include "Objects/corrupt/kazeshit.asm"
 .include "Objects/GhostPeach.asm"
+.include "Objects/hopper/hopper.asm"
+.include "Objects/plank/plank.asm"
+.include "Objects/elevator_model/elevator_model.asm"
+.include "Objects/junuary/junuary hypertroll.asm"
 
 ; "O2" is a project to optimize some hot game functions (mainly collision) so it doesn't lagma like shit
 ; then level scale happened, so it was split into 2
