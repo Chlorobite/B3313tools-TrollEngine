@@ -1,63 +1,74 @@
-; part 1 (0x80367460-0x80378800)
-.headersize 0x80367460-0x10C280
-.orga 0x10C280 ; rip blue gomba texture
-.area 0x113A0,0x01
+.definelabel aiseg1_start, 0x80367460
+.definelabel aiseg1_romstart, 0x10C280
+.definelabel aiseg1_end, 0x80367460+0x113A0
 
-; absf and roundf
-.definelabel absf, 0x80367460
-JR         RA
-ABS.S      F0, F12
-.definelabel roundf, 0x80367468
-ROUND.W.S  F0, F12
-JR         RA
-CVT.S.W    F0, F0
+.definelabel aiseg2p1_start, 0x007E0000
+.definelabel aiseg2p1_romstart, 0x188440
+.definelabel aiseg2p1_end, 0x007E0000+0xB000
 
-.importobj "AI/objects_collision.o"
-.importobj "AI/personalization_helpers.o"
-.importobj "AI/post_object_load_pass.o"
-.ifdef TROLLDEBUG
-    .importobj "AI/stats_tracking_debug.o"
-.endif
+.definelabel aiseg2p2_start, 0x807EB000
+.definelabel aiseg2p2_romstart, 0x193440
+.definelabel aiseg2p2_end, 0x807EB000+0x9000
+
+.definelabel aiseg1_size, ((aiseg1_end-aiseg1_start) - 1)
+.definelabel aiseg2_size, ((aiseg2p1_end-aiseg2p1_start) + (aiseg2p2_end-aiseg2p2_start) - 1)
+
+.headersize aiseg1_start-aiseg1_romstart
+.org aiseg1_start
+.area aiseg1_end-aiseg1_start,0x01
+    ; absf and roundf
+    .definelabel absf, 0x80367460
+    JR         RA
+    ABS.S      F0, F12
+    .definelabel roundf, 0x80367468
+    ROUND.W.S  F0, F12
+    JR         RA
+    CVT.S.W    F0, F0
+
+    .importobj "AI/objects_collision.o"
+    .importobj "AI/personalization_helpers.o"
+    .importobj "AI/post_object_load_pass.o"
+    .ifdef TROLLDEBUG
+        .importobj "AI/stats_tracking_debug.o"
+    .endif
 .endarea
 
-; part 2 (0x807E0000-0x807EC000)
-.headersize 0x007E0000-0x188440
-.orga 0x188440
-.area 0xB000,0x01
 
-.definelabel topbhv_funcs_start, 0x807E0000
-.include "Objects/topbhv/funcs.asm"
-.importobj "AI/more_models/more_models_levelscript.o"
-.importobj "AI/more_models/more_models_geo.o"
-.importobj "AI/more_models/more_models_models.o"
+.headersize aiseg2p1_start-aiseg2p1_romstart
+.org aiseg2p1_start
+.area aiseg2p1_end-aiseg2p1_start,0x01
+    .definelabel topbhv_funcs_start, 0x807E0000
+    .include "Objects/topbhv/funcs.asm"
+    .importobj "AI/more_models/more_models_levelscript.o"
+    .importobj "AI/more_models/more_models_geo.o"
+    .importobj "AI/more_models/more_models_models.o"
 .endarea
-; part 3 (0x807EC000-0x807F4000)
-.headersize 0x807E0000-0x188440
-.orga 0x188440+0xB000
-.area 0x9000,0x01
 
-.importobj "Trolls/cameratroll/camtrollobj.o"
-.importobj "AI/stats_tracking.o"
-.importobj "AI/audio_trolls.o"
-.importobj "AI/frameskip_engine.o"
-.importobj "AI/frameskip_engine_animation_update.o"
-.importobj "AI/troll_hud.o"
-.importobj "AI/yellow_coin_geo.o"
-.importobj "AI/save_file.o"
+.headersize aiseg2p2_start-aiseg2p2_romstart
+.org aiseg2p2_start
+.area aiseg2p2_end-aiseg2p2_start,0x01
+    .importobj "Trolls/cameratroll/camtrollobj.o"
+    .importobj "AI/stats_tracking.o"
+    .importobj "AI/audio_trolls.o"
+    .importobj "AI/frameskip_engine.o"
+    .importobj "AI/frameskip_engine_animation_update.o"
+    .importobj "AI/troll_hud.o"
+    .importobj "AI/yellow_coin_geo.o"
+    .importobj "AI/save_file.o"
 
-.importobj "AI/extra_dl_pools.o"
+    .importobj "AI/extra_dl_pools.o"
 
-; object behaviors
-.importobj "Objects/other_bhvs/aiseg_bhv.o"
-.include "Objects/other_bhvs/aiseg_bhv_asm.asm"
+    ; object behaviors
+    .importobj "Objects/other_bhvs/aiseg_bhv.o"
+    .include "Objects/other_bhvs/aiseg_bhv_asm.asm"
 
-.importobj "Objects/custom_purple_switch/script.o"
-.importobj "Objects/gear_bhv/gear_bhv.o"
-.importobj "Objects/blooper_bhv/bhv.o"
-.importobj "Objects/beta_boo_key/beta_boo_key.o"
+    .importobj "Objects/custom_purple_switch/script.o"
+    .importobj "Objects/gear_bhv/gear_bhv.o"
+    .importobj "Objects/blooper_bhv/bhv.o"
+    .importobj "Objects/beta_boo_key/beta_boo_key.o"
 
-.importobj "Objects/beta_boo_key/boo_with_key.o"
-.importobj "Objects/text/text.o"
+    .importobj "Objects/beta_boo_key/boo_with_key.o"
+    .importobj "Objects/text/text.o"
 .endarea
 
 
@@ -124,38 +135,41 @@ CVT.S.W    F0, F0
 
 
 ; Code to load stuff, including the AI segments
-.orga 0x3A24 ; 80248A24
+.orga 0x3A24 ; 0x80248A24 (setup_game_memory)
 LUI     A1, 0x8034
 SW      V0, 0xB060 (A1)
 LW      A1, 0xB060 (A1)
-JAL     0x80277EE0
+JAL     set_segment_base_addr
 ADDIU   A0, R0, 0x0011
 LUI     A0, 0x8034
 LUI     A1, 0x004F
 LW      A2, 0xB060 (A0)
 ADDIU   A1, A1, 0xC000
-JAL     0x80279028
+JAL     setup_dma_table_list
+; dma_read: part 1
 ADDIU   A0, A0, 0xB080
 ; RAM dest
-LUI     A0, 0x8036
-ORI     A0, A0, 0x7460
-; ROM start
-LUI     A1, 0x0010
-ORI     A1, A1, 0xC280
-; ROM end
-LUI     A2, ((0x0010C280+0x0001139F) >> 16)
-JAL     0x80278504
-ORI     A2, A2, ((0x0010C280+0x0001139F) & 0xFFFF)
+LUI     A0, (aiseg1_start >> 16) ; high
+ORI     A0, A0, aiseg1_start & 0xFFFF ; low
+; ROM srcStart
+LUI     A1, (aiseg1_romstart >> 16) ; high
+ORI     A1, A1, aiseg1_romstart & 0xFFFF ; low
+; ROM srcEnd
+LUI     A2, ((aiseg1_romstart+aiseg1_size) >> 16)
+JAL     0x80278504 ; dma_read
+; dma_read: part 2 & 3
+ORI     A2, A2, ((aiseg1_romstart+aiseg1_size) & 0xFFFF)
 ; RAM dest
-LUI     A0, 0x807E
-; ROM start
-LUI     A1, ((0x00188440) >> 16)
-ORI     A1, A1, ((0x00188440) & 0xFFFF)
-; ROM end
-LUI     A2, ((0x00188440+0x13FFF) >> 16)
-JAL     0x80278504
-ORI     A2, A2, ((0x00188440+0x13FFF) & 0xFFFF)
+LUI     A0, (aiseg2p2_start >> 16)
+; ROM srcStart
+LUI     A1, (aiseg2p1_romstart >> 16)
+ORI     A1, A1, (aiseg2p1_romstart & 0xFFFF)
+; ROM srcEnd
+LUI     A2, ((aiseg2p1_romstart+aiseg2_size) >> 16)
+JAL     0x80278504 ; dma_read
+; setup
+ORI     A2, A2, ((aiseg2p1_romstart+aiseg2_size) & 0xFFFF)
 JAL     troll_setup
 NOP
 NOP
-; 80248A90
+; 0x80248A90 (thread5_game_loop) DO NOT GO BEYOND
