@@ -1759,3 +1759,5 @@
 
 .definelabel sCutsceneVars, 0x8033ca60
 .definelabel offset_rotated, 0x8028cbf0
+
+.definelabel setup_dma_table_list, 0x80279028
