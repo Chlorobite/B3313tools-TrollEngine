@@ -91,7 +91,13 @@ tools: $(TOOLS)
 	$(call print2,Compiling:,$<,$@)
 	@$(CC) $(CFLAGS) -o '$@' '$<'
 
+# the following files are from before troll engine. back then, files were only compiled with O2
 AI/crash_screen.o: OPT_FLAGS := -O2
+Trolls/bhv/tumbling_bridge.inc.c__%.o: OPT_FLAGS := -O2
+Objects/hopper/%.o: OPT_FLAGS := -O2
+Objects/plank/%.o: OPT_FLAGS := -O2
+Objects/elevator_model/%.o: OPT_FLAGS := -O2
+Objects/junuary/%/%.o: OPT_FLAGS := -O2
 
 objs: $(PNG_INC_C) $(OBJ)
 
