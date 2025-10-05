@@ -3,6 +3,9 @@
 .include "trollfinity.asm" ; the asm behind the trolling
 .definelabel osPiStartDma, 0x80324460
 
+.macro readword,rom_address
+.word readu8(BEE, rom_address+3) + (readu8(BEE, rom_address+2) << 8) + (readu8(BEE, rom_address+1) << 16) + (readu8(BEE, rom_address) << 24)
+.endmacro
 
 .include "AI/ai.asm" ; no way there is a personaliatoin real ai ai chatgpt real stable diffusion
 
@@ -28,6 +31,10 @@
 .include "Objects/topbhv/topbhv.asm"
 .include "Objects/corrupt/kazeshit.asm"
 .include "Objects/GhostPeach.asm"
+.include "Objects/hopper/hopper.asm"
+.include "Objects/plank/plank.asm"
+.include "Objects/elevator_model/elevator_model.asm"
+.include "Objects/junuary/junuary hypertroll.asm"
 
 ; "O2" is a project to optimize some hot game functions (mainly collision) so it doesn't lagma like shit
 ; then level scale happened, so it was split into 2

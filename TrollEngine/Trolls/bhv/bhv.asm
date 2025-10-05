@@ -431,6 +431,16 @@ ADDIU   SP, SP, 0x20
 .importobj "Trolls/bhv/switch_hidden_objects.inc.c__hidden_unbreakable_box_actions.o"
 .endarea
 
+.org 0x802ad76c
+.area 0x88
+.importobj "Trolls/bhv/tumbling_bridge.inc.c__tumbling_bridge_act_2.o"
+.endarea
+
+.org 0x802ad828
+.area 0x68
+.importobj "Trolls/bhv/tumbling_bridge.inc.c__tumbling_bridge_act_0.o"
+.endarea
+
 .org 0x802A8CDC
 .area 0x802A8D48-0x802A8CDC
 .importobj "Trolls/bhv/water_objs.inc.c__bhv_fish_group_loop.o"
